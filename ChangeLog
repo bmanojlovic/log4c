@@ -1,3 +1,85 @@
+2004-08-16  Cedric Le Goater  <legoater@meiosys.com>
+
+	* doc/main.doc.in: updated supported plateform
+
+	* configure.in: increase current revision
+
+	* log4c.m4: added missing include
+
+	* tests/log4c/test_category.c: fixed compulation problems with gcc-3.4
+	Patch by Olaf Freyer <aaron@cs.tu-berlin.de>
+	(http://bugs.gentoo.org/show_bug.cgi?id=60061)
+
+	* doc/Makefile.am: use $(DESTDIR) when installing
+
+	* configure.in: fixed condition on documentation creation
+
+2004-08-16  Cedric Le Goater  <legoater@meiosys.com>
+
+	* doc/main.doc.in: updated supported plateform
+
+	* configure.in: increase current revision
+
+	* log4c.m4: added missing include
+
+	* tests/log4c/test_category.c: fixed compulation problems with gcc-3.4
+	Patch by Olaf Freyer <aaron@cs.tu-berlin.de>
+	(http://bugs.gentoo.org/show_bug.cgi?id=60061)
+
+	* doc/Makefile.am: use $(DESTDIR) when installing
+
+	* configure.in: fixed condition on documentation creation
+
+2003-09-13  Cedric Le Goater  <legoater@meiosys.com>
+
+	* src/log4c/appender.c, src/log4c/appender_type_mmap.c,
+	src/log4c/appender_type_stream.c,
+	src/log4c/appender_type_syslog.c, src/log4c/category.c,
+	src/log4c/layout.c, src/log4c/layout_type_basic.c,
+	src/log4c/layout_type_dated.c: BugId: 764485
+
+	Removed labels within structs which is a GNU C extension.
+
+	* src/sd/test.c: BugId: 769637
+
+	Fixed getopt return value for AIX
+
+2003-09-12  Cedric Le Goater  <legoater@meiosys.com>
+
+	* src/sd/test.h, tests/log4c/appender_test.c,
+	tests/log4c/layout_test.c, tests/log4c/test_category.c,
+	tests/log4c/test_rc.c, src/log4c.h, src/log4c/appender.c,
+	src/log4c/appender.h, src/log4c/appender_type_mmap.c,
+	src/log4c/appender_type_mmap.h, src/log4c/appender_type_stream.c,
+	src/log4c/appender_type_stream.h,
+	src/log4c/appender_type_syslog.c,
+	src/log4c/appender_type_syslog.h, src/log4c/category.c,
+	src/log4c/category.h, src/log4c/defs.h, src/log4c/init.c,
+	src/log4c/init.h, src/log4c/layout.c, src/log4c/layout.h,
+	src/log4c/layout_type_basic.c, src/log4c/layout_type_basic.h,
+	src/log4c/layout_type_dated.c, src/log4c/layout_type_dated.h,
+	src/log4c/location_info.h, src/log4c/logging_event.c,
+	src/log4c/logging_event.h, src/log4c/priority.c,
+	src/log4c/priority.h, src/log4c/rc.c, src/log4c/rc.h,
+	src/log4c/version.c, src/log4c/version.h.in, src/sd/defs.h,
+	src/sd/domnode-xml.c, src/sd/domnode-xml.h, src/sd/domnode.c,
+	src/sd/domnode.h, src/sd/error.h, src/sd/factory.c,
+	src/sd/factory.h, src/sd/hash.c, src/sd/hash.h, src/sd/list.c,
+	src/sd/list.h, src/sd/malloc.h, src/sd/sprintf.c,
+	src/sd/sprintf.h, src/sd/stack.h, src/sd/test.c, ChangeLog,
+	README, bootstrap: cleanup
+
+2003-04-02  Cedric Le Goater  <legoater@meiosys.com>
+
+	* src/sd/test.h, tests/log4c/test_category.ref, src/sd/test.c,
+	src/sd/domnode.h, src/sd/stack.h, src/sd/domnode-xml.c,
+	src/sd/domnode-xml.h, src/sd/domnode.c,
+	src/sd/domnode-xml-scanner.h, src/sd/domnode-xml-parser.h,
+	src/sd/domnode-xml-scanner.c, src/sd/domnode-xml-parser.c,
+	src/sd/Makefile.am, src/log4c/category.c, src/log4c/Makefile.am,
+	config/configure-solaris.patch, doc/main.doc.in, log4c.spec.in,
+	configure.in, README, ChangeLog: removed expat parser
+
 2003-04-02 Cedric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.11
