@@ -36,20 +36,15 @@ log4c was successfully compiled and run on the following platforms :
 
 @li HP-UX release 11.00
 @li Tru 64 release 4.0F and 5.1
-@li Red Hat Linux Intel release 7.x
-@li Solaris Intel release 8
+@li Red Hat Linux Intel release 7.x, 8, 9, 3AS
+@li Red Hat Enterprise Linux AS 3A (Intel, Opteron, Itanium2)
+@li Solaris Intel release 8, 9
 
-log4c should compile and run on the following platforms, but has never
-been :
-
-@li The BSD family: Open, Net or Free
-@li Other Linux distributions
-
-log4c will need some work before it compiles and runs on the following
-platforms :
+log4c should compile and run on the following platforms :
 
 @li AIX
-@li Windows family
+@li The BSD family: Open, Net or Free
+@li Other Linux distributions
 
 @subsection software Software
  
@@ -79,8 +74,8 @@ platforms:
 
 @code
 
-$ gzip -dc log4c-x.y.x.tar.gz | tar tvf -
-$ cd log4c-x.y.x/
+$ gzip -dc log4c-@VERSION@.tar.gz | tar tvf -
+$ cd log4c-@VERSION@/
 $ ./configure --prefix=/path/of/installation
 $ make
 $ make install
@@ -172,9 +167,13 @@ href="http://jakarta.apache.org/log4j">Log4j</a>, nor without
 Bastiaan Bakker <bastiaan.bakker@lifeline.nl>, who intiated me with <a
 href="http://log4cpp.sourceforge.net/">Log4Cpp</a>.
 
+Very much thanks to Jeff Smith for writing a primer on <a
+href="http://jefficus.usask.ca/article.php?story=20040613140849924">how
+to use Log4c effectively</a>
+
 @section copyright Copyright
 
-All software in this package is Copyright © 2001-2002 Meiosys
+All software in this package is Copyright © 2003-2004 Meiosys
 http://www.meiosys.com and Cédric Le Goater <legoater@free.fr> and is
 distributed under the <a
 href="http://www.gnu.org/licenses/lgpl.html">LGPL</a> License. See the @c
