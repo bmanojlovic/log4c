@@ -10,7 +10,7 @@ AM_CONFIG_HEADER(src/config.h)
 LOG4C_MAJOR_VERSION=1
 LOG4C_MINOR_VERSION=0
 LOG4C_MICRO_VERSION=11
-VERSION=$LOG4C_MAJOR_VERSION.$LOG4C_MINOR_VERSION.$LOG4C_MICRO_VERSION
+VERSION=$LOG4C_MAJOR_VERSION.$LOG4C_MINOR_VERSION.$LOG4C_MICRO_VERSION${SNAPSHOT:+.$SNAPSHOT}
 
 # +1 : ? : +1  == new interface that does not break old one
 # +1 : ? : 0   == new interface that breaks old one
@@ -84,9 +84,6 @@ AC_FUNC_MMAP
 AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp utime])
-
-# Checks for expat
-AM_PATH_EXPAT(1.95.1)
 
 # Checks for doxygen
 AC_PATH_PROG(DOXYGEN, doxygen, )

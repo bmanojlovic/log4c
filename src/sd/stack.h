@@ -1,7 +1,7 @@
 /* $Id$
  *
- * Copyright 2002, Meiosys SA (www.meiosys.com). All rights reserved.
- * Author: Cedric Le Goater <legoater@meiosys.com>
+ * Copyright 2001-2003, Meiosys SA (www.meiosys.com). All rights reserved.
+ *
  * See the COPYING file for the terms of usage and distribution.
  */
 

@@ -1,6 +1,6 @@
 --- configure.orig	Tue Nov 26 11:29:01 2002
 +++ configure	Tue Nov 26 11:46:39 2002
-@@ -5545,9 +5545,8 @@
+@@ -5543,9 +5543,8 @@
      fi
      # $CC -shared without GNU ld will not create a library from C++
      # object files and a static libstdc++, better avoid it by now

@@ -1,7 +1,6 @@
 INCLUDES = \
 	-I$(top_srcdir)/src \
-	-DLOG4C_RCPATH="\"$(sysconfdir)\"" \
-	@EXPAT_CFLAGS@
+	-DLOG4C_RCPATH="\"$(sysconfdir)\""
 
 lib_LTLIBRARIES  = liblog4c.la
 
@@ -21,7 +20,7 @@ liblog4c_la_SOURCES = \
 	category.c
 
 liblog4c_la_LDFLAGS = -version-info @LT_VERSION@
-liblog4c_la_LIBADD  = @EXPAT_LIBS@ ../sd/liblog4c_sd.la
+liblog4c_la_LIBADD  = ../sd/liblog4c_sd.la
 
 pkginclude_HEADERS = \
 	rc.h \

@@ -1,3 +1,10 @@
+2003-04-02 Cédric Le goater <legoater@meiosys.com>
+
+	* Changelog: log4c-1.0.11
+	* configure.in, Makefile.am, ...: removed expat
+	* category.c: replaced bsd rindex() by strrchr()
+	* sd/ : new library with local XML parser.
+
 2002-11-22 Cédric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.10

@@ -1,10 +1,11 @@
 static const char version[] = "$Id$";
 
-/*
- * Simple test framework
- * 
- * Author: Cedric Le Goater <legoater@meiosys.com>, (c) Cimai 2002
+/* 
+ * Copyright 2001-2003, Meiosys SA (www.meiosys.com). All rights reserved.
+ *
+ * See the COPYING file for the terms of usage and distribution.
  */
+
 #ifdef HAVE_CONFIG_H
 #       include "config.h"
 #endif
@@ -25,12 +26,16 @@ static const char version[] = "$Id$";
         typedef unsigned long long usec_t;
 #endif
 
+#define DIFF_CMD  "/usr/bin/diff -q"
 #define MAX_NFUNC 100
 
 struct __sd_test
 {
     const char*         name;
+    char                in_filename[128];
+    char                ref_filename[128];
     char                out_filename[128];
+    FILE*               in;
     FILE*               out;
     FILE*               err;
     int                 verbose;
@@ -52,6 +57,20 @@ static usec_t now(void)
 }
 
 /******************************************************************************/
+static int test_compare(sd_test_t* this, int a_argc, char* a_argv[])
+{
+    char cmd[1024];
+
+    if (access(this->ref_filename, R_OK) || access(this->out_filename, R_OK))
+        return 1;
+
+    snprintf(cmd, sizeof(cmd), "%s %s %s 1>/dev/null 2>&1", DIFF_CMD,
+             this->ref_filename, this->out_filename);
+
+    return ! system(cmd);
+}
+
+/******************************************************************************/
 extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
 {
     sd_test_t* this;
@@ -61,9 +80,14 @@ extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
     this->funcs = sd_calloc(MAX_NFUNC, sizeof(sd_test_func_t));
     this->name  = strstr(a_argv[0], "lt-") ? a_argv[0] + 3 : a_argv[0];
 
+    snprintf(this->ref_filename, sizeof(this->ref_filename), "%s.ref",
+	     this->name);
+    snprintf(this->in_filename,  sizeof(this->in_filename),  "%s.in",
+	     this->name);
     snprintf(this->out_filename, sizeof(this->out_filename), "%s.out",
 	     this->name);
     
+    this->in    = fopen(this->in_filename,  "r");
     this->out   = fopen(this->out_filename, "w");
     this->err   = 0;
     this->verbose= 0;
@@ -88,6 +112,7 @@ extern void sd_test_delete(sd_test_t* this)
     if (!this)
         return;
 
+    if (this->in) fclose(this->in);
     if (this->out) fclose(this->out);
     free(this->funcs);
     free(this);
@@ -112,6 +137,15 @@ extern int sd_test_set_verbose(sd_test_t* this, int a_verbose)
         return 0;
 
     return this->verbose = a_verbose;
+}
+
+/******************************************************************************/
+extern FILE* sd_test_in(sd_test_t* this)
+{
+    if (!this)
+        return NULL;
+
+    return this->in ? this->in : stdin;
 }
 
 /******************************************************************************/
@@ -143,6 +177,8 @@ extern int sd_test_run(sd_test_t* this, int argc, char* argv[])
     if (!this)
         return -1;
 
+    sd_test_add(this, test_compare);
+    
     fprintf(sd_test_err(this), "%s: ", this->name);
     
     for (i = 0; i < this->size; i++) {

@@ -16,16 +16,13 @@ This is the distribution of Log4C
 
 * What you will need
 
-   You will need expat and g++3
+   g++3
 
 * Where to find ...
 
    g++3		http://gcc.gnu.org
 
-   expat	http://sourceforge.net/projects/expat
-
-   log4c	http://www.meiosys.com/opensource/log4c
-		http://sourceforge.net/projects/log4c
+   log4c	http://log4c.sf.net/
 		
 
    The SourceForge site is only used as a package repository. It should

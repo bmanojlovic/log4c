@@ -1,6 +1,5 @@
 INCLUDES = \
-        -I$(top_srcdir)/src \
-	@EXPAT_CFLAGS@
+        -I$(top_srcdir)/src
 
 noinst_LTLIBRARIES  = liblog4c_sd.la
 
@@ -14,6 +13,12 @@ liblog4c_sd_la_SOURCES = \
         malloc.h \
         malloc.c \
         domnode.h \
+        domnode-xml.h \
+        domnode-xml.c \
+        domnode-xml-parser.h \
+	domnode-xml-parser.c \
+        domnode-xml-scanner.h \
+        domnode-xml-scanner.c \
         domnode.c \
         factory.h \
         factory.c \
@@ -23,7 +28,7 @@ liblog4c_sd_la_SOURCES = \
         sprintf.c \
         test.h \
         test.c
-liblog4c_sd_la_LDFLAGS = @EXPAT_LIBS@
+liblog4c_sd_la_LDFLAGS =
 
 EXTRA_liblog4c_sd_la_SOURCES = \
         sprintf.osf.c

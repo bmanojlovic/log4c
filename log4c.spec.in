@@ -15,7 +15,7 @@ Packager:	Cedric Le Goater <legoater@meiosys.com>
 Url:		http://%name.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%name/%name-%version.tar.gz
 BuildRoot:	%_tmppath/%name-%version-root
-Requires: 	/sbin/ldconfig, expat
+Requires: 	/sbin/ldconfig
 
 %description
 %name is a Logging FrameWork for C, as Log4j or Log4Cpp.

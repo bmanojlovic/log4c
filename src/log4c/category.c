@@ -251,7 +251,7 @@ static const char* dot_dirname(char* a_string)
     if (!a_string)
 	return NULL;
 
-    if ( (p = rindex(a_string, '.')) == NULL)
+    if ( (p = strrchr(a_string, '.')) == NULL)
 	return LOG4C_CATEGORY_DEFAULT;
     
     *p = '\0';

@@ -57,8 +57,6 @@ The following softwares are needed to generate log4c:
 
 @li <a href="http://gcc.gnu.org">GCC</a> 3.0.1+, to generate log4c,
 but hopefully not to use it. 
-@li <a href="http://sourceforge.net/projects/expat">expat</a> 1.95.1+, a
-library for parsing XML.
 @li <a href="http://www.stack.nl/~dimitri/doxygen/index.html">doxygen</a>
 1.2.13+, a documentation system for C/C++ needed to generate the
 documentation.
