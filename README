@@ -16,11 +16,11 @@ This is the distribution of Log4C
 
 * What you will need
 
-   g++3
+   gcc3
 
 * Where to find ...
 
-   g++3		http://gcc.gnu.org
+   gcc3		http://gcc.gnu.org
 
    log4c	http://log4c.sf.net/
 		

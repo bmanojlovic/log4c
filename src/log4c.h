@@ -2,8 +2,7 @@
  *
  * log4c.h
  *
- * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
- * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
+ * Copyright 2001-2002, Meiosys (www.meiosys.com). All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */

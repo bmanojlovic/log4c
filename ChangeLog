@@ -1,11 +1,12 @@
-2003-04-02 Cédric Le goater <legoater@meiosys.com>
+2003-04-02 Cedric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.11
 	* configure.in, Makefile.am, ...: removed expat
 	* category.c: replaced bsd rindex() by strrchr()
 	* sd/ : new library with local XML parser.
+	* copyright cleanups
 
-2002-11-22 Cédric Le goater <legoater@meiosys.com>
+2002-11-22 Cedric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.10
 	* rc.h: remove useless include
@@ -17,20 +18,20 @@
 	* init.h: exported resource configuration API rc.h
 	* sd: synchronized from sd dev tree
 
-2002-08-20 Cédric Le goater <legoater@meiosys.com>
+2002-08-20 Cedric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.8
 	* configure.in: upgraded to 2.52
 	* sd: synchronized from sd dev tree
 
-2002-05-15 Cédric Le goater <legoater@cimai.com>
+2002-05-15 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.7	
 	* init.c, init.h: constructors and destructors routines are now
 	exported
 	* category.c (call_appenders): reversed change made in 1.0.4
 
-2002-05-02 Cédric Le goater <legoater@cimai.com>
+2002-05-02 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.6
 	* rc.c: rewrote all configuration system with a DOM like interface
@@ -46,29 +47,29 @@
 	of the <log4c> element are parsed (bug fix)
 	
 
-2002-04-10 Cédric Le goater <legoater@cimai.com>
+2002-04-10 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.4
 	* appender_stream.c (stream_open): switched to unbuffered mode
 	* category.c (call_appenders): check current category priority
 	before appending events	
 
-2002-02-06 Cédric Le goater <legoater@cimai.com>
+2002-02-06 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.3
 	* solaris 8 modifications
 
-2002-01-10 Cédric Le goater <legoater@cimai.com>
+2002-01-10 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.2
 	* type names changes
 
-2002-01-07 Cédric Le goater <legoater@cimai.com>
+2002-01-07 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.1
 	* osf4.0f modifications
 
-2001-12-20 Cédric Le goater <legoater@cimai.com>
+2001-12-20 Cedric Le goater <legoater@cimai.com>
 
 	* Changelog: log4c-1.0.0
 	* initial revision
