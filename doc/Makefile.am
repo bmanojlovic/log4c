@@ -38,7 +38,7 @@ uninstall-local:
 		echo "rm -f $(DESTDIR)$(man3dir)/$$inst"; \
 		rm -f $(DESTDIR)$(man3dir)/$$inst; \
 	done
-	rm -rf $(docdir)/*
+	rm -rf $(DESTDIR)$(docdir)/*
 
 clean-local:
 	$(RM) -r latex man html $(PACKAGE).pdf doxygen.log
