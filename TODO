@@ -1,0 +1,2 @@
+- new log4j naming conventions: category -> logger
+- multiple appenders per category

@@ -1,0 +1,9 @@
+.libs
+.deps
+Makefile
+Makefile.in
+bench
+test_dot
+test_rc
+test_category
+test_hierarchy

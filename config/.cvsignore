@@ -1,0 +1,9 @@
+Makefile
+Makefile.in
+config.guess
+config.sub
+ltmain.sh
+install-sh
+mkinstalldirs
+missing
+depcomp

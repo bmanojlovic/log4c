@@ -1,0 +1,119 @@
+# -*- mode:Shell-script -*-
+
+AC_PREREQ(2.52)
+
+AC_INIT
+AC_CONFIG_SRCDIR([configure.in])
+AC_CONFIG_AUX_DIR(config)
+AM_CONFIG_HEADER(src/config.h)
+
+LOG4C_MAJOR_VERSION=1
+LOG4C_MINOR_VERSION=0
+LOG4C_MICRO_VERSION=8
+VERSION=$LOG4C_MAJOR_VERSION.$LOG4C_MINOR_VERSION.$LOG4C_MICRO_VERSION
+
+# +1 : ? : +1  == new interface that does not break old one
+# +1 : ? : 0   == new interface that breaks old one
+#  ? : ? : 0   == no new interfaces, but breaks apps
+#  ? :+1 : ?   == just some internal changes, nothing breaks but might work 
+#                 better
+# CURRENT : REVISION : AGE
+LT_VERSION=1:8:0
+
+AC_SUBST(LOG4C_MAJOR_VERSION)
+AC_SUBST(LOG4C_MINOR_VERSION)
+AC_SUBST(LOG4C_MICRO_VERSION)
+AC_SUBST(LT_VERSION)
+
+AM_INIT_AUTOMAKE("log4c", $VERSION)
+
+AC_CANONICAL_HOST
+
+# Checks for programs.
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_LIBTOOL
+
+# plateforms idioms
+case "$host" in
+    *-hp-hpux*)
+	CFLAGS="-g"
+	;;
+    *)
+	;;
+esac
+
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+fi
+
+# declare --enable-* args 
+AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging [default=no]])
+AC_ARG_ENABLE(test, [  --enable-test       compile test programs])
+
+if test x$enable_debug = xyes; then
+    CFLAGS="$CFLAGS -D__SD_DEBUG__ -D__LOG4C_DEBUG__"
+fi
+
+AM_CONDITIONAL(TEST, test x$enable_test = xyes)
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([errno.h fcntl.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+# Checks for library functions.
+AC_FUNC_ALLOCA
+AC_FUNC_MALLOC
+AC_FUNC_MMAP
+AC_FUNC_UTIME_NULL
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp utime])
+
+# Checks for expat
+AM_PATH_EXPAT(1.95.1)
+
+# Checks for doxygen
+AC_PATH_PROG(DOXYGEN, doxygen, )
+if test x$DOXYGEN = x; then
+	enable_doc=no
+else
+	enable_doc=yes
+fi
+AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
+
+AC_CONFIG_FILES([
+    Makefile
+    log4c-config
+    log4crc
+    log4c.spec
+    config/Makefile
+    doc/Makefile
+    doc/Doxyfile
+    doc/main.doc
+    src/Makefile
+    src/log4c/Makefile
+    src/log4c/version.h
+    src/sd/Makefile
+    tests/Makefile
+    tests/log4c/Makefile
+])
+AC_CONFIG_COMMANDS([default],[[
+    chmod +x log4c-config
+]],[[]])
+AC_OUTPUT

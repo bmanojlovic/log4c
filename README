@@ -1,0 +1,49 @@
+This is the distribution of Log4C
+
+* What is Log4C
+
+   Log4C is a library of C for flexible logging to files, syslog and other
+   destinations. It is modeled after the Log for Java library
+   (http://jakarta.apache.org/log4j/), staying as close to their API as is
+   reasonable.
+
+* Licensing
+
+   Log4C libraries are released under the terms of the GNU Lesser
+   General Public License (GNU LGPL). 
+
+   You can find copies of the license in the file COPYING
+
+* What you will need
+
+   You will need expat and g++3
+
+* Where to find ...
+
+   g++3		http://gcc.gnu.org
+
+   expat	http://sourceforge.net/projects/expat
+
+   log4c	http://www.cimai.com/opensource/log4c
+		http://sourceforge.net/projects/log4c
+		
+
+   The SourceForge site is only used as a package repository. It should
+   become the main log4c site, one day.
+
+* How to ...
+
+   The log4c package uses the GNU autotools compilation and installation
+   framework. The following commands should build log4c on the supported
+   platforms:
+
+	$ ./configure --prefix=/path/of/installation
+	$ make
+	$ make install
+
+
+   Have Fun !!
+
+   Cédric Le Goater <legoater@free.fr>
+
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -x
+
+libtoolize --automake --copy
+aclocal-1.5 -I config $ACLOCAL_FLAGS
+autoheader-2.53
+automake-1.5 --add-missing --copy
+autoconf-2.53
+
+

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+refdir=../../../sd/src/sd
+copy=no
+verbose=no
+
+usage()
+{
+    cat <<EOF
+Usage: $0 [OPTION]
+
+Known values for OPTION are:
+
+  --copy	copy files
+  --help	display this help and exit
+
+EOF
+
+    exit $1
+}
+
+while test $# -gt 0; do
+    case "$1" in
+    -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) optarg= ;;
+    esac
+
+    case "$1" in
+    --copy)		copy=yes ;;
+    --verbose)		verbose=yes ;;
+    --help)		usage 0	;;
+    *)			usage 1 ;;
+    esac
+    shift
+done
+
+for i in *.[ch]; do 
+    test -f ${refdir}/$i || continue;
+    
+    if test x$verbose = xyes; then
+	echo "diff ${refdir}/$i $i"
+	diff ${refdir}/$i $i
+    else
+	diff -q ${refdir}/$i $i 1>/dev/null 2>&1
+    fi
+
+    test $? = 1 || continue
+	
+    echo $i needs sync
+
+    test x$copy = xyes && cp -f ${refdir}/$i $i
+done
+
+
+exit 0
