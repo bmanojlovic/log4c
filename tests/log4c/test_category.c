@@ -122,11 +122,11 @@ static int test4(sd_test_t* a_test, int argc, char* argv[])
 {   
     log4c_category_set_priority(root, LOG4C_PRIORITY_TRACE);
 
-    foo(root, trace);
+    foo(root, info);
     foo(root, warn);
-    foo(sub1, trace);
+    foo(sub1, info);
     foo(sub1, warn);
-    foo(sun1sub2, trace);
+    foo(sun1sub2, info);
     foo(sun1sub2, warn);
     return 1;
 }
