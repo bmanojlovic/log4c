@@ -8,4 +8,5 @@ autoheader-2.53
 automake-1.5 --add-missing --copy
 autoconf-2.53
 
+patch -p0 < config/configure-solaris.patch
 

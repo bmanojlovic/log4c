@@ -1,0 +1,14 @@
+--- configure.orig	Tue Nov 26 11:29:01 2002
++++ configure	Tue Nov 26 11:46:39 2002
+@@ -5545,9 +5545,8 @@
+     fi
+     # $CC -shared without GNU ld will not create a library from C++
+     # object files and a static libstdc++, better avoid it by now
+-    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'
+-    archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
+-		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
++    archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-h $wl$soname -o $lib'
++    archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-h $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+     hardcode_libdir_flag_spec='-R$libdir'
+     hardcode_shlibpath_var=no
+     case $host_os in
