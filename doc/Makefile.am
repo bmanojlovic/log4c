@@ -30,7 +30,7 @@ install-data-local:
 		echo "$(INSTALL_DATA) $$i $(DESTDIR)$(docdir)"; \
 		$(INSTALL_DATA) $$i $(DESTDIR)$(docdir); \
 	done
-	cp -r html $(docdir)
+	cp -r html $(DESTDIR)$(docdir)
 
 uninstall-local:
 	@for i in ./man/man3/*.3; do \
