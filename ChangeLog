@@ -1,6 +1,11 @@
-2002-11-21 Cédric Le goater <legoater@meiosys.com>
+2002-11-22 Cédric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.10
+	* rc.h: remove useless include
+
+2002-11-21 Cédric Le goater <legoater@meiosys.com>
+
+	* Changelog: log4c-1.0.9
 	* category.c (__log4c_category_vlog): did some optimizations
 	* init.h: exported resource configuration API rc.h
 	* sd: synchronized from sd dev tree
