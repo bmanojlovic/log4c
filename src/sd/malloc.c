@@ -26,6 +26,12 @@
 #include <stdlib.h>
 #include <sd/error.h>
 
+#if defined(__APPLE__)
+# include <sys/time.h>
+# include <crt_externs.h>
+# define environ (*_NSGetEnviron())
+#endif /* __APPLE__ */
+
 typedef void (*sd_malloc_handler_t)();
 
 static char*  first_break = NULL;
