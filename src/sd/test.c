@@ -74,7 +74,7 @@ static int test_compare(sd_test_t* this, int a_argc, char* a_argv[])
 extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
 {
     sd_test_t* this;
-    char c;
+    int c;
 
     this        = sd_calloc(1, sizeof(sd_test_t));
     this->funcs = sd_calloc(MAX_NFUNC, sizeof(sd_test_func_t));
