@@ -41,7 +41,7 @@ The %name-doc package contains the %name documentation
 %setup -q
 
 %build
-%configure
+%configure --enable-doc
 make
 
 %install
