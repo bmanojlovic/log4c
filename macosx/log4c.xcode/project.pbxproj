@@ -165,7 +165,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#run the configure script in order to get the version information in\n# it is running from the project directory so move on directory up\n# set a prefix to prevent it installing at some place we don't want\n#cd $BUILD_ROOT/../..\ncd ..\necho pwd\npwd\nif [ -f \"configure\" ]\n\nthen\n\n   echo \"configure exists\"\n\nelse\n\n   echo \"bootstrap\"\n   automake --add-missing --copy\n   autoconf\n\nfi\n\n$BUILD_ROOT/../../configure";
+			shellScript = "#run the configure script in order to get the version information in\n# it is running from the project directory so move on directory up\n# set a prefix to prevent it installing at some place we don't want\n#cd $BUILD_ROOT/../..\ncd ..\necho pwd\npwd\nif [ -f \"configure\" ]\n\nthen\n\n   echo \"configure exists\"\n\nelse\n\n   echo \"bootstrap\"\n   $BUILD_ROOT/../../bootstrap\n\nfi\n\n$BUILD_ROOT/../../configure";
 		};
 		648E2F2B0728DFB0007F0FD6 = {
 			explicitFileType = sourcecode.c.h;
