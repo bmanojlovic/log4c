@@ -36,6 +36,13 @@ extern int log4c_init(void)
     mtrace();
 #endif
 
+    {
+	/**
+	 * @bug init default appenders/layouts/types ?? conflicts with
+	 * constructors.
+	 */	
+    }
+
     /* load configuration files */
     {
 	static char rcfiles[][256] = {
