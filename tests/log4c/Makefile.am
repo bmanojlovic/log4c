@@ -16,10 +16,20 @@ test_rc_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 bench_SOURCES = bench.c
 bench_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 
-all-local: bench.mmap
+EXTRA_DIST = \
+        test_category.ref \
+	test_rc.ref
 
 bench.mmap:
 	dd if=/dev/zero of=$@ bs=1k count=64
+
+all-local: bench.mmap 
+
+check-local: 
+	@for i in test_category test_rc; do \
+	    ./$$i || exit 1; \
+	    test -f $(srcdir)/$$i.ref && diff $$i.out $(srcdir)/$$i.ref || exit 1; \
+	done
 
 clean-local:
 	$(RM) *.out bench.mmap

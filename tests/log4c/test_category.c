@@ -40,6 +40,18 @@ static int test0(sd_test_t* a_test, int argc, char* argv[])
 }
 
 /******************************************************************************/
+static int test00(sd_test_t* a_test, int argc, char* argv[])
+{      
+    int p;
+    log4c_category_t*	cat = log4c_category_get("a category");
+
+    for (p = 0; p < LOG4C_PRIORITY_UNKNOWN; p++)
+	log4c_category_log(cat, p * 100, "this is a %s event", 
+			   log4c_priority_to_string(p * 100));
+    return 1;
+}
+
+/******************************************************************************/
 static int test1(sd_test_t* a_test, int argc, char* argv[])
 {   
     log4c_layout_t*   layout1   = log4c_layout_get("layout1");
@@ -127,6 +139,7 @@ int main(int argc, char* argv[])
     sd_test_t* t = sd_test_new(argc, argv);
 
     sd_test_add(t, test0);
+    sd_test_add(t, test00);
     sd_test_add(t, test1);
     sd_test_add(t, test2);
     sd_test_add(t, test3);
