@@ -1,6 +1,10 @@
 #! /bin/sh
 
 prefix=@prefix@
+exec_prefix=$prefix
+libdir=@libdir@
+libexecdir=@libexecdir@
+includedir=@includedir@
 
 usage()
 {
@@ -35,8 +39,8 @@ while test $# -gt 0; do
     --prefix=*)		prefix=$optarg	;;
     --prefix)		echo $prefix	;;
     --version)		echo @VERSION@	;;
-    --cflags)		echo -I$prefix/include ;;
-    --libs)		echo -L$prefix/lib -llog4c ;;
+    --cflags)		echo -I$includedir ;;
+    --libs)		echo -L$libdir -llog4c ;;
     --help)		usage 0	;;
     *)			usage 1 ;;
     esac
