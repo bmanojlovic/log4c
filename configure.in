@@ -57,6 +57,7 @@ fi
 # declare --enable-* args 
 AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging [default=no]])
 AC_ARG_ENABLE(test, [  --enable-test       compile test programs])
+AC_ARG_ENABLE(doc, [  --enable-doc       create documentation])
 
 if test x$enable_debug = xyes; then
     CFLAGS="$CFLAGS -D__SD_DEBUG__ -D__LOG4C_DEBUG__"
@@ -85,14 +86,12 @@ AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp utime])
 
+AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 # Checks for doxygen
 AC_PATH_PROG(DOXYGEN, doxygen, )
 if test x$DOXYGEN = x; then
 	enable_doc=no
-else
-	enable_doc=yes
 fi
-AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 
 AC_CONFIG_FILES([
     Makefile
