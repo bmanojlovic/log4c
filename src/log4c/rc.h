@@ -11,7 +11,6 @@
 #ifndef __log4c_rc_h
 #define __log4c_rc_h
 
-#include <sd/hash.h>
 #include <log4c/defs.h>
 
 __LOG4C_BEGIN_DECLS
