@@ -3,7 +3,10 @@ static const char version[] = "$Id$";
 /*
  * test_rc.c
  *
- * Author: Cedric Le Goater <legoater@cimai.com>, (c) Cimai 2001
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
+ *
+ * See the COPYING file for the terms of usage and distribution.
  */
 
 #include <log4c/rc.h>
@@ -11,7 +14,6 @@ static const char version[] = "$Id$";
 #include <sd/test.h>
 #include <sd/factory.h>
 #include <stdio.h>
-
 
 /******************************************************************************/
 static void log4c_print(FILE* a_fp)

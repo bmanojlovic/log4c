@@ -3,8 +3,8 @@ static const char version[] = "$Id$";
 /*
  * category.c
  *
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
- * Copyright 2001-2002, Cedric Le Goater <legoater@cimai.com>. All rights reserved.
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */
@@ -191,19 +191,6 @@ extern void log4c_category_print(const log4c_category_t* this, FILE* a_stream)
 }
 
 /*******************************************************************************/
-static void call_appenders(const log4c_category_t*	this,
-			   log4c_logging_event_t*	a_event)
-{
-    if (!this) 
-	return;
-    
-    if (this->cat_appender)
-	log4c_appender_append(this->cat_appender, a_event);
-
-    if (this->cat_additive && this->cat_parent)
-	call_appenders(this->cat_parent, a_event);
-}
-
 extern void __log4c_category_vlog(const log4c_category_t* this, 
 				  const log4c_location_info_t* a_locinfo, 
 				  int a_priority,
@@ -212,21 +199,31 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
 {
     char* message;
     log4c_logging_event_t evt;
+    const log4c_category_t* cat;
+    int yes = 0;
 
     if (!this)
+	return;
+    
+    /* check if an appender is defined in the category hierarchy */
+    for (cat = this; cat; cat = cat->cat_parent) {
+	if (cat->cat_appender)
+	    yes++;
+    }
+
+    if (!yes)
 	return;
 
     if (!log4c_rc->config.bufsize)
 	message = sd_vsprintf(a_format, a_args);
     else {
 	int n;
-
+	
 	message = alloca(log4c_rc->config.bufsize);
 	if ( (n = vsnprintf(message, log4c_rc->config.bufsize, a_format, a_args))
 	     >= log4c_rc->config.bufsize)
 	    sd_error("truncating message of %d bytes (bufsize = %d)", n, 
-			log4c_rc->config.bufsize);
-	    
+		     log4c_rc->config.bufsize);
     }
 	
     evt.evt_category	= this->cat_name;
@@ -235,8 +232,13 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
     evt.evt_loc	        = a_locinfo;
     gettimeofday(&evt.evt_timestamp, NULL);
 
-    call_appenders(this, &evt);
-    
+    for (cat = this; cat; cat = cat->cat_parent) {
+	if (cat->cat_appender)
+	    log4c_appender_append(cat->cat_appender, &evt);
+
+	if (!cat->cat_additive) break;	
+    }
+
     if (!log4c_rc->config.bufsize) 
 	free(message);
 }

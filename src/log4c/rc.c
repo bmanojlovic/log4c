@@ -1,7 +1,10 @@
 static const char version[] = "$Id$";
 
 /*
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
+ * rc.c
+ *
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */
@@ -43,6 +46,9 @@ extern log4c_rc_t* log4c_rc_new(void)
     
     this = sd_calloc(1, sizeof(*this));
 
+    this->config.nocleanup = 0;
+    this->config.bufsize   = 0;
+    this->config.debug     = 0;
     return this;
 }
 
@@ -76,7 +82,7 @@ static int config_load(log4c_rc_t* this, sd_domnode_t* anode)
 
 	    if (this->config.bufsize)
 		sd_debug("using fixed buffer size of %d bytes", 
-			    this->config.bufsize);
+			 this->config.bufsize);
 	    else
 		sd_debug("using dynamic allocated buffer");
 	}

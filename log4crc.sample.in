@@ -4,9 +4,9 @@
 <log4c version="@VERSION@">
 
 	<config>
-		<nocleanup>0</nocleanup>
 		<bufsize>0</bufsize>
 		<debug level="0"/>
+		<nocleanup>0</nocleanup>
 	</config>
 
 	<!-- root category ========================================= -->

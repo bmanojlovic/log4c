@@ -20,7 +20,7 @@ BUILT_SOURCES=log4c-config
 m4datadir = $(datadir)/aclocal
 m4data_DATA = log4c.m4
 
-sysconf_DATA = log4crc
+sysconf_DATA = log4crc.sample
 
 rpm: dist
-	rpmbuild -ta ${distdir}.tar.gz
+	rpmbuild --clean -ta ${distdir}.tar.gz

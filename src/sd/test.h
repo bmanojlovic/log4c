@@ -2,7 +2,7 @@
  *
  * Simple test framework
  * 
- * Author: Cedric Le Goater <legoater@cimai.com>, (c) Cimai 2002
+ * Author: Cedric Le Goater <legoater@meiosys.com>, (c) Cimai 2002
  */
 
 #ifndef __sd_test_h

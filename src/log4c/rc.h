@@ -1,6 +1,9 @@
 /* $Id$
  *
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
+ * rc.h
+ *
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */
@@ -30,7 +33,6 @@ extern log4c_rc_t*	__log4c_rc(void);
 extern log4c_rc_t*	log4c_rc_new(void);
 extern void		log4c_rc_delete(log4c_rc_t* a_rc);
 extern int		log4c_rc_load(log4c_rc_t* a_rc, const char* a_filename);
-
 
 __LOG4C_END_DECLS
 

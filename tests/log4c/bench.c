@@ -23,7 +23,7 @@ static inline usec_t utime(void)
     usec_t u = utime(); \
     for (i = 0; i < count; i++) (expr); \
     u -= utime(); \
-    fprintf(stderr, name ": %lld us\n", - u / count); \
+    fprintf(stderr, name ": elapsed %lld us - average %lld us\n", -u, - u / count); \
 } 
 
 log4c_category_define(mmap, "mmap");

@@ -1,8 +1,8 @@
 static const char version[] = "$Id$";
 
 /* 
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
- * Author: Marc Vertes <mvertes@cimai.com>
+ * Copyright 2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ *
  * See the COPYING file for the terms of usage and distribution.
  */
 
@@ -206,7 +206,7 @@ extern void sd_hash_foreach(sd_hash_t* a_this, sd_hash_func_t a_func,
     if (a_this == 0 || a_func == 0) return;
     
     for (h = 0; h < a_this->size; h++)
-	for (p = a_this->tab[h]; p != 0; p = p->__next) {
+	for (p = a_this->tab[h]; p != 0; p = q) {
 	    p->__foreach		= 1;
 	    ret			= (*a_func)(p->key, p->data, a_data);
 	    q			= p->__next;

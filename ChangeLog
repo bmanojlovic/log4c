@@ -1,3 +1,10 @@
+2002-11-21 Cédric Le goater <legoater@meiosys.com>
+
+	* Changelog: log4c-1.0.10
+	* category.c (__log4c_category_vlog): did some optimizations
+	* init.h: exported resource configuration API rc.h
+	* sd: synchronized from sd dev tree
+
 2002-08-20 Cédric Le goater <legoater@meiosys.com>
 
 	* Changelog: log4c-1.0.8

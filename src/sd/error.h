@@ -1,6 +1,6 @@
 /* $Id$
  *
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
  * See the COPYING file for the terms of usage and distribution.
  */
 

@@ -11,7 +11,8 @@ Usage: $0 [OPTION]
 
 Known values for OPTION are:
 
-  --copy	copy files
+  --verbose	show differences
+  --copy	copy files when they differ
   --help	display this help and exit
 
 EOF
@@ -26,9 +27,9 @@ while test $# -gt 0; do
     esac
 
     case "$1" in
-    --copy)		copy=yes ;;
-    --verbose)		verbose=yes ;;
-    --help)		usage 0	;;
+    -c|--copy)		copy=yes ;;
+    -v|--verbose)	verbose=yes ;;
+    -h|--help)		usage 0	;;
     *)			usage 1 ;;
     esac
     shift
@@ -46,7 +47,7 @@ for i in *.[ch]; do
 
     test $? = 1 || continue
 	
-    echo $i needs sync
+    echo "$i needs sync"
 
     test x$copy = xyes && cp -f ${refdir}/$i $i
 done

@@ -72,9 +72,6 @@ so you will need GCC to compile it. This will probably change one day.
  
 @subsection installation_tarballs Building from source tarballs
 
-Local tarballs:
-@li <a href="log4c-@VERSION@.tar.gz">log4c-@VERSION@.tar.gz</a>
-
 on SourceForge:
 @li <a href="http://prdownloads.sourceforge.net/log4c/log4c-@VERSION@.tar.gz">log4c-@VERSION@.tar.gz</a>
 
@@ -96,11 +93,6 @@ Checkout the @c INSTALL file for installation and the generated doxygen
 documentation for more information.
 
 @subsection installation_rpm Using RPMs
-
-Local RPMs:
-@li <a href="log4c-@VERSION@-1.i386.rpm">log4c-@VERSION@-1.i386.rpm</a>
-@li <a href="log4c-devel-@VERSION@-1.i386.rpm">log4c-devel-@VERSION@-1.i386.rpm</a>
-@li <a href="log4c-doc-@VERSION@-1.i386.rpm">log4c-doc-@VERSION@-1.i386.rpm</a>
 
 on SourceForge:
 @li <a href=""http://prdownloads.sourceforge.net/log4c/log4c-@VERSION@-1.i386.rpm">log4c-@VERSION@-1.i386.rpm</a>
@@ -184,8 +176,8 @@ href="http://log4cpp.sourceforge.net/">Log4Cpp</a>.
 
 @section copyright Copyright
 
-All software in this package is Copyright © 2001-2002 Cimai Technology
-http://www.cimai.com and Cédric Le Goater <legoater@free.fr> and is
+All software in this package is Copyright © 2001-2002 Meiosys
+http://www.meiosys.com and Cédric Le Goater <legoater@free.fr> and is
 distributed under the <a
 href="http://www.gnu.org/licenses/lgpl.html">LGPL</a> License. See the @c
 COPYING file for full legal details.

@@ -7,15 +7,12 @@ lib_LTLIBRARIES  = liblog4c.la
 
 liblog4c_la_SOURCES = \
 	rc.c \
-	rc.h \
-	\
 	init.c \
 	appender_type_stream.c \
 	appender_type_syslog.c \
 	appender_type_mmap.c \
 	layout_type_basic.c \
 	layout_type_dated.c \
-	\
 	version.c \
 	logging_event.c \
 	priority.c \
@@ -27,6 +24,7 @@ liblog4c_la_LDFLAGS = -version-info @LT_VERSION@
 liblog4c_la_LIBADD  = @EXPAT_LIBS@ ../sd/liblog4c_sd.la
 
 pkginclude_HEADERS = \
+	rc.h \
 	init.h \
 	defs.h \
 	version.h \

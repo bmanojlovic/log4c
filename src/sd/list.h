@@ -1,7 +1,7 @@
 /* $Id$
  *
- * Copyright 2002, Cimai Technology SA (www.cimai.com). All rights reserved.
- * Author: Cedric Le Goater <legoater@cimai.com>
+ * Copyright 2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Author: Cedric Le Goater <legoater@meiosys.com>
  * See the COPYING file for the terms of usage and distribution.
  */
 
@@ -184,7 +184,6 @@ extern void sd_list_iter_del(sd_list_iter_t* a_this);
  */
 extern sd_list_iter_t* sd_list_iter_insert(sd_list_iter_t* a_this,
 					   void* a_data);
-
 
 __SD_END_DECLS
 

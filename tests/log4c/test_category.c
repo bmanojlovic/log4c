@@ -3,7 +3,10 @@ static const char version[] = "$Id$";
 /*
  * test_category.c
  *
- * Author: Cedric Le Goater <legoater@cimai.com>, (c) Cimai 2001
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
+ *
+ * See the COPYING file for the terms of usage and distribution.
  */
 
 #include <log4c/appender.h>

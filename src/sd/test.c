@@ -3,7 +3,7 @@ static const char version[] = "$Id$";
 /*
  * Simple test framework
  * 
- * Author: Cedric Le Goater <legoater@cimai.com>, (c) Cimai 2002
+ * Author: Cedric Le Goater <legoater@meiosys.com>, (c) Cimai 2002
  */
 #ifdef HAVE_CONFIG_H
 #       include "config.h"

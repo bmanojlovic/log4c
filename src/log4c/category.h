@@ -2,8 +2,8 @@
  *
  * category.h
  * 
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
- * Copyright 2001-2002, Cedric Le Goater <legoater@cimai.com>. All rights reserved.
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Copyright 2001-2002, Cedric Le Goater <legoater@meiosys.com>. All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */
@@ -292,7 +292,6 @@ static inline void log4c_category_vlog(const log4c_category_t* a_category,
     __log4c_category_vlog(a_category, &locinfo, a_priority, a_format, a_args);
 }
 
-
 /** 
  * Log a message with the specified priority.
  * @param a_category the log4c_category_t object
@@ -492,7 +491,6 @@ static inline void __log4c_category_trace(const log4c_category_t* a_category,
 #  define log4c_category_trace __log4c_category_trace
 #endif
 
-
 /**
  * Helper macro to define static categories.
  *
@@ -508,7 +506,6 @@ static void __attribute__ ((constructor)) __log4c_init_category##a_category(void
 #else
 #   define log4c_category_define(a_category, a_name)
 #endif
-
 
 /**
  * @internal

@@ -9,8 +9,6 @@ liblog4c_sd_la_SOURCES = \
         defs.h \
         stack.h \
         stack.c \
-        store.h \
-        store.c \
         list.h \
         list.c \
         malloc.h \

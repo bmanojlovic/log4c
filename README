@@ -24,7 +24,7 @@ This is the distribution of Log4C
 
    expat	http://sourceforge.net/projects/expat
 
-   log4c	http://www.cimai.com/opensource/log4c
+   log4c	http://www.meiosys.com/opensource/log4c
 		http://sourceforge.net/projects/log4c
 		
 
@@ -41,9 +41,7 @@ This is the distribution of Log4C
 	$ make
 	$ make install
 
-
    Have Fun !!
 
    Cédric Le Goater <legoater@free.fr>
-
 

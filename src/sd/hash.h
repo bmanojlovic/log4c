@@ -1,7 +1,7 @@
 /* $Id$
  *
- * Copyright 2001-2002, Cimai Technology SA (www.cimai.com). All rights reserved.
- * Author: Marc Vertes <mvertes@cimai.com>
+ * Copyright 2001-2002, Meiosys SA (www.meiosys.com). All rights reserved.
+ * Author: Marc Vertes <mvertes@meiosys.com>
  * See the COPYING file for the terms of usage and distribution.
  */
 
