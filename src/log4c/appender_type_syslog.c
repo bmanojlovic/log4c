@@ -67,10 +67,10 @@ static int syslog_close(log4c_appender_t*	this)
 
 /*******************************************************************************/
 const log4c_appender_type_t log4c_appender_type_syslog = {
-    name:	"syslog",
-    open:	syslog_open,
-    append:	syslog_append,
-    close:	syslog_close,
+    "syslog",
+    syslog_open,
+    syslog_append,
+    syslog_close,
 };
 
 log4c_appender_type_define(log4c_appender_type_syslog);

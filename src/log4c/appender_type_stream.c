@@ -50,10 +50,10 @@ static int stream_close(log4c_appender_t* this)
 
 /*******************************************************************************/
 const log4c_appender_type_t log4c_appender_type_stream = {
-    name:	"stream",
-    open:	stream_open,
-    append:	stream_append,
-    close:	stream_close,
+    "stream",
+    stream_open,
+    stream_append,
+    stream_close,
 };
 
 log4c_appender_type_define(log4c_appender_type_stream);

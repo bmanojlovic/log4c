@@ -29,8 +29,8 @@ static const char* basic_format(
 
 /*******************************************************************************/
 const log4c_layout_type_t log4c_layout_type_basic = {
-    name:	"basic",
-    format:	basic_format,
+    "basic",
+    basic_format,
 };
 
 log4c_layout_type_define(log4c_layout_type_basic);

@@ -140,10 +140,10 @@ static int mmap_close(log4c_appender_t*	this)
 
 /*******************************************************************************/
 const log4c_appender_type_t log4c_appender_type_mmap = {
-    name:	"mmap",
-    open:	mmap_open,
-    append:	mmap_append,
-    close:	mmap_close,
+    "mmap",
+    mmap_open,
+    mmap_append,
+    mmap_close,
 };
 
 log4c_appender_type_define(log4c_appender_type_mmap);

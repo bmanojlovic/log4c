@@ -41,9 +41,9 @@ static const char LOG4C_CATEGORY_DEFAULT[] = "root";
 extern log4c_category_t* log4c_category_get(const char* a_name)
 {
     static const sd_factory_ops_t log4c_category_factory_ops = {
-	fac_new:	(void*) log4c_category_new,
-	fac_delete:	(void*) log4c_category_delete,
-	fac_print:	(void*) log4c_category_print,
+	(void*) log4c_category_new,
+	(void*) log4c_category_delete,
+	(void*) log4c_category_print,
     };
 
     if (!log4c_category_factory) {

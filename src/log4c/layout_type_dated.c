@@ -37,8 +37,8 @@ static const char* dated_format(
 
 /*******************************************************************************/
 const log4c_layout_type_t log4c_layout_type_dated = {
-    name:	"dated",
-    format:	dated_format,
+    "dated",
+    dated_format,
 };
 
 log4c_layout_type_define(log4c_layout_type_dated);

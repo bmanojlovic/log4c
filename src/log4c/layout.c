@@ -79,9 +79,9 @@ extern const log4c_layout_type_t* log4c_layout_type_set(
 extern log4c_layout_t* log4c_layout_get(const char* a_name)
 {
     static const sd_factory_ops_t log4c_layout_factory_ops = {
-	fac_new:	(void*) log4c_layout_new,
-	fac_delete:	(void*) log4c_layout_delete,
-	fac_print:	(void*) log4c_layout_print,
+	(void*) log4c_layout_new,
+	(void*) log4c_layout_delete,
+	(void*) log4c_layout_print,
     };
 
     if (!log4c_layout_factory) {
