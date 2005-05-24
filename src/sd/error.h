@@ -13,14 +13,10 @@
 
 #ifdef __SD_DEBUG__ 
 
-#   define __sd_str(n) #n
-#   define __sd_location(n) __FUNCTION__"() at " __FILE__":" __sd_str(n)
-#   define sd_location  __sd_location(__LINE__)
-
 #   define sd_debug(a_format, ...) \
-	(getenv("SD_DEBUG") ? fprintf(stderr, "[DEBUG] "sd_location" "a_format"\n", ##__VA_ARGS__ ) : 0)
+	(getenv("SD_DEBUG") ? fprintf(stderr, "[DEBUG] %s() at %s:%d "a_format"\n", __FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__ ) : 0)
 #   define sd_error(a_format, ...) \
-	(getenv("SD_ERROR") ? fprintf(stderr, "[ERROR] "sd_location" "a_format"\n", ##__VA_ARGS__ ) : 0)
+	(getenv("SD_ERROR") ? fprintf(stderr, "[ERROR] %s() at %s:%d "a_format"\n", __FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__ ) : 0)
 #   define sd_oserror(afunc, aparam) \
         (sd_error("%s(%s): #%d %s", afunc, aparam, errno, strerror(errno)), -1)
 
