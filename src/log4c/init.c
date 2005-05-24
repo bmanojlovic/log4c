@@ -30,6 +30,8 @@ static const char version[] = "$Id$";
 /******************************************************************************/
 extern int log4c_init(void)
 {    
+    int ret = 0;
+
     /* activate GLIBC allocation debugging */
 #if defined(__LOG4C_DEBUG__) && defined(__GLIBC__)
     mtrace();
@@ -54,11 +56,14 @@ extern int log4c_init(void)
 	
 	snprintf(rcfiles[0], sizeof(rcfiles[0]) - 1, "%s/log4crc", 
 		 getenv("LOG4C_RCPATH") ? getenv("LOG4C_RCPATH") : LOG4C_RCPATH);
-	snprintf(rcfiles[1], sizeof(rcfiles[1]) - 1, "%s/.log4crc", getenv("HOME"));
+	snprintf(rcfiles[1], sizeof(rcfiles[1]) - 1, "%s/.log4crc",
+		 getenv("HOME") ? getenv("HOME") : "");
         
 	for (i = 0; i < nrcfiles; i++) {
-	    if (log4c_rc_load(log4c_rc, rcfiles[i]) == -1)
+	    if (log4c_rc_load(log4c_rc, rcfiles[i]) == -1) {
 		sd_error("loading %s failed", rcfiles[i]);
+		ret = -1;
+	    }
 	    else
 		sd_debug("loading %s succeeded", rcfiles[i]);		
 	}
@@ -78,7 +83,7 @@ extern int log4c_init(void)
 					log4c_appender_get(appender));
     }
 
-    return 0;
+    return ret;
 }
 
 /******************************************************************************/
