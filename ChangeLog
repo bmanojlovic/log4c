@@ -1,3 +1,52 @@
+2005-05-24  Cedric Le Goater  <legoater@meiosys.com>
+
+        * bootstrap: removed redhat 7.x support
+
+        * src/sd/error.h: BugId: 1062842
+        BugId: 1070029
+
+        Removed deprecated string concatenation with __FUNCTION__
+
+        * src/sd/hash.c, src/sd/hash.h: removed dead code
+
+        * configure.in: minor updates
+
+        * src/log4c/category.c: Added alloca support for Solaris cc
+
+        * src/sd/list.c: fixed unreached statement
+
+        * README, src/sd/Makefile.am, src/sd/domnode-xml-parser.c, src/sd/domnode-xml-parser.y, src/sd/domnode-xml-scanner.c, src/sd/domnode-xml-scanner.h, src/sd/domnode-xml-scanner.l:
+        BugId: 1062842
+
+        Added lex/yacc source code. It requires flex-2.5.27 and bison-1.35.
+
+        * src/log4c/init.c: fixed log4c_init() robustness issues
+
+2005-01-07  Cedric Le Goater  <legoater@meiosys.com>
+
+        * log4c-config.in: Added support for suse-8
+
+2004-11-17  Cedric Le Goater  <legoater@meiosys.com>
+
+        * log4c.spec.in: added support for new rpm on sles 9
+
+        * doc/Makefile.am: added missing DESTDIR
+
+2004-11-02  terranvs  <terranvs>
+
+        * macosx/log4c.xcode/project.pbxproj, bootstrap:
+        changed the bootstrap to work on Mac OS X with xcode 1.5 adapted the xcode project to work with the bootstrap
+
+2004-10-27  Cedric Le Goater  <legoater@meiosys.com>
+
+        * macosx/English.lproj/InfoPlist.strings, macosx/log4c.xcode/project.pbxproj, src/sd/malloc.c, macosx/Info.plis
+t, macosx/version.plist:
+        Added mac osx support
+
+2004-08-18  Cedric Le Goater  <legoater@rmeiosys.com>
+
+        * log4c.spec.in: enable documentation creation
+
 2004-08-16  Cedric Le Goater  <legoater@meiosys.com>
 
 	* doc/main.doc.in: updated supported plateform
