@@ -7,9 +7,15 @@ static const char version[] = "$Id$";
  *
  * See the COPYING file for the terms of usage and distribution.
  */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef  HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
 #include <sys/time.h>
 #include <sd/sprintf.h>
 #include <sd/malloc.h>
