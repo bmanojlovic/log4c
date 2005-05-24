@@ -1,6 +1,6 @@
 # -*- mode:Shell-script -*-
 
-AC_PREREQ(2.52)
+AC_PREREQ(2.57)
 
 AC_INIT
 AC_CONFIG_SRCDIR([configure.in])
@@ -30,12 +30,15 @@ AM_INIT_AUTOMAKE("log4c", $VERSION)
 AC_CANONICAL_HOST
 
 # Checks for programs.
-AC_PROG_AWK
+AC_PROG_YACC
 AC_PROG_CC
 AC_PROG_CPP
+AM_PROG_LEX
+AC_PROG_AWK
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 AC_PROG_LIBTOOL
 
 # plateforms idioms
@@ -69,7 +72,7 @@ AM_CONDITIONAL(TEST, test x$enable_test = xyes)
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([errno.h fcntl.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h inttypes.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -82,9 +85,10 @@ AC_STRUCT_TM
 AC_FUNC_ALLOCA
 AC_FUNC_MALLOC
 AC_FUNC_MMAP
+AC_FUNC_REALLOC
 AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp utime])
+AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime])
 
 AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 # Checks for doxygen
