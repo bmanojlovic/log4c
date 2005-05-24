@@ -140,8 +140,6 @@ extern sd_list_iter_t* sd_list_sortadd(sd_list_t* a_this,
 	return sd_list_iter_insert(i, a_data);
     else
 	return sd_list_append(a_this, a_data);
-    
-    return i;
 }
 
 /******************************************************************************/
