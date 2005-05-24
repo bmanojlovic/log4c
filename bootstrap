@@ -8,17 +8,10 @@ else
     libtoolize --automake --copy
 fi
 
-if egrep '7.2|7.3' /etc/redhat-release >/dev/null 2>&1; then 
-    aclocal-1.5 -I config $ACLOCAL_FLAGS
-    autoheader-2.53
-    automake-1.5 --add-missing --copy
-    autoconf-2.53
-else
-    aclocal -I config $ACLOCAL_FLAGS
-    autoheader
-    automake --add-missing --copy
-    autoconf
-fi
+aclocal -I config $ACLOCAL_FLAGS
+autoheader
+automake --add-missing --copy
+autoconf
 
 if uname -a | egrep -i 'darwin'; then
 	echo "darwin contains no libtoolize\n"
