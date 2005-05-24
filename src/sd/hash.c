@@ -329,21 +329,3 @@ extern unsigned int sd_hash_hash_string(const char* a_string)
     
     return h;
 }
-
-/******************************************************************************/
-extern unsigned int sd_hash_hash_pointer(const void* a_pointer)
-{
-    unsigned long	h;
-    
-    h =
-	((unsigned long) a_pointer >> (1 << sizeof(void*))) ^
-	((unsigned long) a_pointer & ((1<<(1<<sizeof(void*))) - 1));
-    
-    return (unsigned int) h;
-}
-
-/******************************************************************************/
-extern int sd_hash_cmp_pointer(const void* a_pointer1, const void* a_pointer2)
-{
-    return ! (a_pointer1 == a_pointer2);
-}

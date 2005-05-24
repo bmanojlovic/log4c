@@ -161,16 +161,6 @@ extern void sd_hash_iter_del(sd_hash_iter_t* a_this);
  */
 extern unsigned int sd_hash_hash_string(const char* a_string);
 
-/**
- * Hashes pointers.
- */
-extern unsigned int sd_hash_hash_pointer(const void* a_ptr);
-
-/**
- * Compares pointers.
- */
-extern int sd_hash_cmp_pointer(const void* a_ptr1, const void* a_ptr2);
-
 __SD_END_DECLS
 
 #endif
