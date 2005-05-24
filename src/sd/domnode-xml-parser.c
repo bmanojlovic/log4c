@@ -1,4 +1,4 @@
-/* A Bison parser, made from ../../../../../src/sd/src/sd/domnode-xml-parser.y
+/* A Bison parser, made from ../../../src/sd/domnode-xml-parser.y
    by GNU bison 1.35.  */
 
 #define YYBISON 1  /* Identify Bison output.  */
@@ -21,7 +21,7 @@
 # define	COMMENT	265
 # define	START	266
 
-#line 1 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 1 "../../../src/sd/domnode-xml-parser.y"
 
 #include <assert.h>
 #include <stdio.h>
@@ -66,7 +66,7 @@
 static void domnode_attribute(struct __sd_domnode_xml_maker*, const char*,
 			       const char*);
 
-#line 52 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 52 "../../../src/sd/domnode-xml-parser.y"
 #ifndef YYSTYPE
 typedef union { char *s; } yystype;
 # define YYSTYPE yystype
@@ -78,7 +78,7 @@ typedef union { char *s; } yystype;
 
 
 
-#define	YYFINAL		28
+#define	YYFINAL		27
 #define	YYFLAG		-32768
 #define	YYNTBASE	13
 
@@ -120,16 +120,16 @@ static const char yytranslate[] =
 #if YYDEBUG
 static const short yyprhs[] =
 {
-       0,     0,     4,     7,     8,    10,    11,    16,    19,    27,
-      30,    33,    34,    36,    39,    40,    42
+       0,     0,     4,     7,     8,    10,    11,    16,    19,    25,
+      28,    31,    34,    35,    37,    40,    41,    43
 };
 static const short yyrhs[] =
 {
       14,    16,    14,     0,    14,    15,     0,     0,    11,     0,
        0,    12,    17,    21,    18,     0,     5,     6,     0,     6,
-      14,    19,    14,     7,    20,     6,     0,    19,    10,     0,
-      19,    16,     0,     0,     8,     0,    21,    22,     0,     0,
-       8,     0,     8,     4,     9,     0
+      19,     7,    20,     6,     0,    19,    10,     0,    19,    16,
+       0,    19,    15,     0,     0,     8,     0,    21,    22,     0,
+       0,     8,     0,     8,     4,     9,     0
 };
 
 #endif
@@ -139,7 +139,7 @@ static const short yyrhs[] =
 static const short yyrline[] =
 {
        0,    61,    65,    66,    70,    84,    84,   118,   126,   146,
-     156,   157,   161,   168,   169,   173,   179
+     156,   157,   158,   162,   169,   170,   174,   180
 };
 #endif
 
@@ -160,14 +160,14 @@ static const char *const yytname[] =
 static const short yyr1[] =
 {
        0,    13,    14,    14,    15,    17,    16,    18,    18,    19,
-      19,    19,    20,    21,    21,    22,    22
+      19,    19,    19,    20,    21,    21,    22,    22
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN. */
 static const short yyr2[] =
 {
-       0,     3,     2,     0,     1,     0,     4,     2,     7,     2,
-       2,     0,     1,     2,     0,     1,     3
+       0,     3,     2,     0,     1,     0,     4,     2,     5,     2,
+       2,     2,     0,     1,     2,     0,     1,     3
 };
 
 /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
@@ -175,44 +175,44 @@ static const short yyr2[] =
    error. */
 static const short yydefact[] =
 {
-       3,     0,     4,     5,     2,     3,    14,     1,     0,     0,
-       3,    15,     6,    13,     7,    11,     0,     3,    16,     9,
-       0,    10,     0,    12,     0,     8,     0,     0,     0
+       3,     0,     4,     5,     2,     3,    15,     1,     0,     0,
+      12,    16,     6,    14,     7,     0,     0,     0,     9,    11,
+      10,    17,    13,     0,     8,     0,     0,     0
 };
 
 static const short yydefgoto[] =
 {
-      26,     1,     4,     5,     6,    12,    17,    24,     8,    13
+      25,     1,     4,     5,     6,    12,    15,    23,     8,    13
 };
 
 static const short yypact[] =
 {
-  -32768,     2,-32768,-32768,-32768,-32768,-32768,   -10,     3,     0,
-  -32768,     6,-32768,-32768,-32768,   -10,     7,    -8,-32768,-32768,
-      -4,-32768,     9,-32768,    12,-32768,    15,    19,-32768
+  -32768,   -10,-32768,-32768,-32768,-32768,-32768,    -3,     1,     4,
+  -32768,     7,-32768,-32768,-32768,    -7,     3,     5,-32768,-32768,
+  -32768,-32768,-32768,     8,-32768,    15,    16,-32768
 };
 
 static const short yypgoto[] =
 {
-  -32768,    -5,-32768,     4,-32768,-32768,-32768,-32768,-32768,-32768
+  -32768,    12,     6,     9,-32768,-32768,-32768,-32768,-32768,-32768
 };
 
 
-#define	YYLAST		21
+#define	YYLAST		24
 
 
 static const short yytable[] =
 {
-       7,     2,    19,    22,     3,    15,    14,     2,     9,    10,
-      16,    11,    20,     2,     3,    27,    18,    23,    25,    28,
-       0,    21
+      17,     2,     3,    18,     2,     3,     9,    10,     2,    11,
+      14,    16,    21,    22,    24,    26,    27,     7,     0,     0,
+       0,    19,     0,     0,    20
 };
 
 static const short yycheck[] =
 {
-       5,    11,    10,     7,    12,    10,     6,    11,     5,     6,
-       4,     8,    17,    11,    12,     0,     9,     8,     6,     0,
-      -1,    17
+       7,    11,    12,    10,    11,    12,     5,     6,    11,     8,
+       6,     4,     9,     8,     6,     0,     0,     5,    -1,    -1,
+      -1,    15,    -1,    -1,    15
 };
 #define YYPURE 1
 
@@ -924,7 +924,7 @@ yyreduce:
   switch (yyn) {
 
 case 4:
-#line 71 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 71 "../../../src/sd/domnode-xml-parser.y"
 {
     sd_domnode_t* node = sd_stack_peek(a_maker->elements);
     
@@ -937,7 +937,7 @@ case 4:
 ;
     break;}
 case 5:
-#line 85 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 85 "../../../src/sd/domnode-xml-parser.y"
 {
     sd_domnode_t* parent = sd_stack_peek(a_maker->elements);
     sd_domnode_t* node = __sd_domnode_new(yyvsp[0].s, 0, 1);
@@ -968,7 +968,7 @@ case 5:
 ;
     break;}
 case 7:
-#line 119 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 119 "../../../src/sd/domnode-xml-parser.y"
 {
     sd_domnode_t* node = sd_stack_peek(a_maker->elements);
     assert(node != 0);
@@ -978,7 +978,7 @@ case 7:
 ;
     break;}
 case 8:
-#line 127 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 127 "../../../src/sd/domnode-xml-parser.y"
 {
     sd_domnode_t* node = sd_stack_peek(a_maker->elements);
     assert(node != 0);
@@ -990,14 +990,14 @@ case 8:
 	YYERROR;
     }
     
-    /* $6 was obtain with strdup() */
+    /* $4 was obtain with strdup() */
     free(yyvsp[-1].s);
     
     sd_stack_pop(a_maker->elements);
 ;
     break;}
 case 9:
-#line 147 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 147 "../../../src/sd/domnode-xml-parser.y"
 {
     sd_domnode_t* node = sd_stack_peek(a_maker->elements);
     assert(node != 0);
@@ -1008,22 +1008,22 @@ case 9:
     node->value = yyvsp[0].s;
 ;
     break;}
-case 12:
-#line 162 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+case 13:
+#line 163 "../../../src/sd/domnode-xml-parser.y"
 {
     yyval.s = yyvsp[0].s;
 ;
     break;}
-case 15:
-#line 174 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+case 16:
+#line 175 "../../../src/sd/domnode-xml-parser.y"
 {
     domnode_attribute(a_maker, yyvsp[0].s, "");
     /* $1 was obtain with strdup() */
     free(yyvsp[0].s);
 ;
     break;}
-case 16:
-#line 180 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+case 17:
+#line 181 "../../../src/sd/domnode-xml-parser.y"
 {
     domnode_attribute(a_maker, yyvsp[-2].s, yyvsp[0].s);
     /* $1 was obtain with strdup() */
@@ -1265,7 +1265,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 189 "../../../../../src/sd/src/sd/domnode-xml-parser.y"
+#line 190 "../../../src/sd/domnode-xml-parser.y"
 
 #undef a_maker
 

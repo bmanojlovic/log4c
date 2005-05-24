@@ -714,7 +714,7 @@ extern int yylex YY_LEX_PROTO;
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
 
-#line 135 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 135 "../../../src/sd/domnode-xml-scanner.l"
 #line 719 "domnode-xml-scanner.h"
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 /* Beware! Start conditions are not prefixed. */

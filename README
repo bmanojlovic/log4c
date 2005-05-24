@@ -18,15 +18,21 @@ This is the distribution of Log4C
 
    gcc3
 
+   you will also need the bison-1.35 and flex-2.5.27 to re generate
+   the xml parser. These are obsolete versions of bison and
+   flex. Therefore, pre-generated files are distributed in the tarball. 
+
 * Where to find ...
 
    gcc3		http://gcc.gnu.org
 
    log4c	http://log4c.sf.net/
 		
+   bison	ftp://ftp.gnu.org/gnu/bison
 
-   The SourceForge site is only used as a package repository. It should
-   become the main log4c site, one day.
+   flex		http://sourceforge.net/projects/lex/
+
+   The SourceForge site is now the main log4c site.
 
 * How to ...
 

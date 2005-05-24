@@ -2176,11 +2176,11 @@ static yyconst struct yy_trans_info *yy_start_state_list[5] =
 #ifndef YY_REENTRANT
 char *yytext;
 #endif
-#line 1 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 1 "../../../src/sd/domnode-xml-scanner.l"
 #define INITIAL 0
 #define YY_NEVER_INTERACTIVE 1
 #define YY_NO_UNPUT 1
-#line 15 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 15 "../../../src/sd/domnode-xml-scanner.l"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -2577,7 +2577,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 112 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 112 "../../../src/sd/domnode-xml-scanner.l"
 #define YY_TABLES_VERIFY 0
 
 
@@ -2681,46 +2681,46 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 114 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 114 "../../../src/sd/domnode-xml-scanner.l"
 {/* skip */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 115 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 115 "../../../src/sd/domnode-xml-scanner.l"
 { return SLASH; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 116 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 116 "../../../src/sd/domnode-xml-scanner.l"
 { return EQ; }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 117 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 117 "../../../src/sd/domnode-xml-scanner.l"
 { BEGIN(CONTENT); return CLOSE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 118 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 118 "../../../src/sd/domnode-xml-scanner.l"
 { yylvalp->s = strdup(yytext); return NAME; }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 119 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 119 "../../../src/sd/domnode-xml-scanner.l"
 { yylvalp->s = string(yytext); return VALUE; }
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 120 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 120 "../../../src/sd/domnode-xml-scanner.l"
 { return ENDDEF; }
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 122 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 122 "../../../src/sd/domnode-xml-scanner.l"
 {
                           BEGIN(INITIAL);
                           yylvalp->s = word(yytext);
@@ -2730,40 +2730,40 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 127 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 127 "../../../src/sd/domnode-xml-scanner.l"
 {BEGIN(INITIAL); return END;}
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 128 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 128 "../../../src/sd/domnode-xml-scanner.l"
 {yylvalp->s = comment(yytext); return COMMENT;}
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 129 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 129 "../../../src/sd/domnode-xml-scanner.l"
 {/* skip */}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 131 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 131 "../../../src/sd/domnode-xml-scanner.l"
 {yylvalp->s = strdup(yytext); return DATA;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 133 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 133 "../../../src/sd/domnode-xml-scanner.l"
 { yyerror("wrong XML input '%c'", *yytext); }
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 134 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 134 "../../../src/sd/domnode-xml-scanner.l"
 {/* skip, must be an extra one at EOF */}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 135 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 135 "../../../src/sd/domnode-xml-scanner.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
 #line 2770 "domnode-xml-scanner.c"
@@ -3800,4 +3800,4 @@ int main ()
 	}
 #endif
 #endif /* !__sd_domnode_xml_IN_HEADER YY-END-DISCARD-FROM-HEADER */
-#line 135 "../../../../../src/sd/src/sd/domnode-xml-scanner.l"
+#line 135 "../../../src/sd/domnode-xml-scanner.l"
