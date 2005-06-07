@@ -106,7 +106,7 @@ $ sudo rpm -Uvh log4c-@VERSION@.i386.rpm log4c-devel-@VERSION@.i386.rpm
 
 log4c searches the folloging files to load its configuration:
 
-@li @c ${LOG4C_RCPATH}/log4rc
+@li @c ${LOG4C_RCPATH}/log4crc
 @li @c ${HOME}/.log4crc
 @li @c ./log4crc
 
