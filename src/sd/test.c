@@ -75,10 +75,17 @@ extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
 {
     sd_test_t* this;
     int c;
+    char* ptr;
 
     this        = sd_calloc(1, sizeof(sd_test_t));
     this->funcs = sd_calloc(MAX_NFUNC, sizeof(sd_test_func_t));
-    this->name  = strstr(a_argv[0], "lt-") ? a_argv[0] + 3 : a_argv[0];
+
+    /*
+     * get rid of libtool frontend script
+     */
+    ptr = strstr(a_argv[0], "lt-");
+    if (ptr)
+	this->name = ptr + 3;
 
     snprintf(this->ref_filename, sizeof(this->ref_filename), "%s.ref",
 	     this->name);
