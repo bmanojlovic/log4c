@@ -1,3 +1,16 @@
+2005-09-14  Cedric Le Goater  <legoater@meiosys.com>
+
+        * src/sd/test.c, tests/log4c/appender_test.c, tests/log4c/bench.c, tests/log4c/layout_test.c, tests/log4c/test_category.c:
+        fixes from Robert.Byrne@Sun.COM
+
+2005-07-11  Cedric Le Goater  <legoater@meiosys.com>
+
+        * src/sd/test.c: fixed libtool naming issue
+
+2005-06-07  Cedric Le Goater  <legoater@meiosys.com>
+
+        * doc/main.doc.in: fixed typo
+
 2005-05-24  Cedric Le Goater  <legoater@meiosys.com>
 
         * bootstrap: removed redhat 7.x support
