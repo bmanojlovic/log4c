@@ -25,9 +25,24 @@ static const char* test_format(
 }
 
 /*******************************************************************************/
+
+
+#ifdef __GNUC__
 const log4c_layout_type_t log4c_layout_type_test = {
     name:	"test",
     format:	test_format,
 };
-
 log4c_layout_type_define(log4c_layout_type_test);
+#else
+#ifdef __sun
+const log4c_layout_type_t log4c_layout_type_test = {
+  "test",
+  test_format,
+};
+#pragma init (__log4c_init_layout_type_log4c_layout_type_test)
+static void __log4c_init_layout_type_log4c_layout_type_test(void)
+{ log4c_layout_type_set(&log4c_layout_type_test); }
+#endif
+#endif
+
+

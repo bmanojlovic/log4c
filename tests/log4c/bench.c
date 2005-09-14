@@ -26,8 +26,13 @@ static inline usec_t utime(void)
     fprintf(stderr, name ": elapsed %lld us - average %lld us\n", -u, - u / count); \
 } 
 
+#ifdef __GNUC__
 log4c_category_define(mmap, "mmap");
 log4c_category_define(stream, "stream");
+#else
+static log4c_category_t* mmap = NULL;
+static log4c_category_t* stream = NULL;
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -36,6 +41,10 @@ int main(int argc, char* argv[])
     char* buffer  = NULL;
     log4c_appender_t* mmap_appender = log4c_appender_get("bench.mmap");
     log4c_appender_t* stream_appender = log4c_appender_get("stdout");
+#ifndef __GNUC__
+    mmap = log4c_category_get("mmap");
+    stream = log4c_category_get("stream");
+#endif
  
     log4c_appender_set_type(mmap_appender, log4c_appender_type_get("mmap"));
     log4c_category_set_appender(mmap, mmap_appender);

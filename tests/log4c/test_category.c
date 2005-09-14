@@ -15,9 +15,15 @@ static const char version[] = "$Id$";
 #include <sd/factory.h>
 #include <stdio.h>
 
+#ifdef __GNUC__
 log4c_category_define(root, "root");
 log4c_category_define(sub1, "sub1");
-log4c_category_define(sun1sub2, "sub1.sub2");
+log4c_category_define(sun1sub2, "sub1.sub2")
+#else
+static log4c_category_t* root = NULL;
+static log4c_category_t* sub1 = NULL;
+static log4c_category_t* sun1sub2 = NULL;
+#endif
 
 /******************************************************************************/
 static void log4c_print(FILE* a_fp)
@@ -134,9 +140,19 @@ static int test4(sd_test_t* a_test, int argc, char* argv[])
 /******************************************************************************/
 int main(int argc, char* argv[])
 {    
-    int ret;
-    sd_test_t* t = sd_test_new(argc, argv);
+  int ret;
+  sd_test_t* t = sd_test_new(argc, argv);
 
+  /* If we're not using GNU C then initialize our test categories
+     explicitly
+  */
+
+#ifndef __GNUC__
+  root = log4c_category_get("root");
+  sub1 = log4c_category_get("sub1");
+  sun1sub2 = log4c_category_get("sub1.sub2"); 
+#endif
+  
     sd_test_add(t, test0);
     sd_test_add(t, test00);
     sd_test_add(t, test1);
