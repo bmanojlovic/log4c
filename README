@@ -2,7 +2,7 @@ This is the distribution of Log4C
 
 * What is Log4C
 
-   Log4C is a library of C for flexible logging to files, syslog and other
+   Log4C is a C library for flexible logging to files, syslog and other
    destinations. It is modeled after the Log for Java library
    (http://jakarta.apache.org/log4j/), staying as close to their API as is
    reasonable.
@@ -16,7 +16,13 @@ This is the distribution of Log4C
 
 * What you will need
 
-   gcc3
+   perl (used by the automake tools)
+
+   GNU make tools: automake, autoconf, m4 and libtool
+
+   A Compiler, among those tested are:
+   . gcc3
+   . Sun cc (versions 5.3 and 5.7 on Solaris 8 and higher, sparc and i386)
 
    you will also need the bison-1.35 and flex-2.5.27 to re generate
    the xml parser. These are obsolete versions of bison and
@@ -24,7 +30,12 @@ This is the distribution of Log4C
 
 * Where to find ...
 
+   GNU automake tools:
+	     	http://gcc.gnu.org
+              	http://www.sunfreeware.com for pre-built Solaris packages
+
    gcc3		http://gcc.gnu.org
+              	http://www.sunfreeware.com for pre-built Solaris packages
 
    log4c	http://log4c.sf.net/
 		
@@ -34,7 +45,7 @@ This is the distribution of Log4C
 
    The SourceForge site is now the main log4c site.
 
-* How to ...
+* How to for library users ...
 
    The log4c package uses the GNU autotools compilation and installation
    framework. The following commands should build log4c on the supported
@@ -44,7 +55,20 @@ This is the distribution of Log4C
 	$ make
 	$ make install
 
-   Have Fun !!
+   To enable compilation of the test programs for the library you would do this:
+        $ ./configure --prefix=/path/of/installation --enable-test
+   
+   To specify a compiler other than gcc you would do something like this:
+       $ ./configure --prefix=/path/of/installation --enable-test CC=/usr/SUNWspro/bin/cc
 
-   Cédric Le Goater <legoater@free.fr>
+* How to for library developers ...
+
+   To compile in extra tracing and messages you would do this:
+        $ ./configure --prefix=/path/of/installation --enable-test --enable-debug=yes 
+
+   See './configure --help' for a list of all the configure options
+
+Have Fun !!
+   
+ Cédric Le Goater <legoater@free.fr>
 
