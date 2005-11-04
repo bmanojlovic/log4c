@@ -2,7 +2,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src \
 	-DSRCDIR="\"$(srcdir)\""
 
-noinst_PROGRAMS = test_category test_rc bench
+noinst_PROGRAMS = test_category test_rc bench bench_fwrite
 
 test_category_SOURCES = \
 	layout_test.c \
@@ -15,6 +15,9 @@ test_rc_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 
 bench_SOURCES = bench.c
 bench_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
+
+bench_fwrite_SOURCES = bench_fwrite.c
+bench_fwrite_LDADD = $(top_builddir)/src/log4c/liblog4c.la -lpthread
 
 EXTRA_DIST = \
         test_category.ref \

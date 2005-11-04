@@ -29,6 +29,9 @@ AM_INIT_AUTOMAKE("log4c", $VERSION)
 
 AC_CANONICAL_HOST
 
+# Need this to get pthread etc.
+AC_DEFINE(_GNU_SOURCE,1,"POSIXandGNU extensions")
+
 # Checks for programs.
 AC_PROG_YACC
 AC_PROG_CC
