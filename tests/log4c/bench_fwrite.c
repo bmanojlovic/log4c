@@ -4,6 +4,10 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+#ifdef __GNUC__
+#include <getopt.h>
+#endif
+
 extern char *optarg;
 extern int optind, opterr, optopt;
 
@@ -41,6 +45,7 @@ char *g_msgbuf = NULL;
 const char *g_outfilename = FILENAME;
 long g_num_msgs = NUM_MSGS;
 int g_usefile = 0;
+
 int g_usefwrite = 0;
 FILE *g_fp = NULL;
 int g_usebuffer = 1;
@@ -218,7 +223,7 @@ void getopts(int argc, char **argv){
 }
 
 static void *thread_work(void *arg){
-  int tid= *((int *)arg);
+    /* int tid= *((int *)arg); */
   int msgnum = 0;
 
   /* bench_log("In thread %d\n", tid); */
