@@ -6,6 +6,17 @@ static const char version[] = "$Id$";
  * Copyright 2001-2003, Meiosys (www.meiosys.com). All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
+ *
+ *
+ * Note: there's a known issue with this program double closing the
+ * test file pointer.  This is because the test shares the file with
+ * the log4c stream appender and they both close it on exiting.  In
+ * the context here this error is benign. The stream2 appender
+ * does not have this issue as it will not close a passed-in
+ * file pointer on exit.  In general you would not share a file pointer like
+ * this with an appender so that behaviour of the stream appender is not a
+ * serious issue.
+ *
  */
 
 #include <log4c/appender.h>
@@ -152,6 +163,14 @@ int main(int argc, char* argv[])
   sub1 = log4c_category_get("sub1");
   sun1sub2 = log4c_category_get("sub1.sub2"); 
 #endif
+
+  fprintf(stderr, 
+	  "\nNote: there's a known issue with this program double closing \n"\
+	  "the test file pointer.  This is because the test shares the \n" \
+	  "file with the log4c stream appender and they both close it on \n"\
+	  "exiting.  In the context here this error is benign. \n" \
+	  "The stream2 appender does not have this issue as it will not \n" \
+	  "close a passed-in file pointer on exit.\n\n");
   
     sd_test_add(t, test0);
     sd_test_add(t, test00);
