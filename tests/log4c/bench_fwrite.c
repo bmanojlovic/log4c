@@ -81,16 +81,16 @@ static void bench_init(int start) {
       }
       if ( g_usebuffer) {
 	if ( g_usemybuffer) {
-	  bench_log("  Using my buffer of adjusted size %ld, mode '%s'\n", 
+	  bench_log("  Using my buffer of adjusted size %d, mode '%s'\n", 
 		    g_mybufadjustedsize, (g_bufmode == 1 ? "_IOFBF":"_IOLBF") );
 	  g_myfilebuffer = (char *)malloc(g_mybufadjustedsize);
 	  setvbuf(g_fp, g_myfilebuffer, (g_bufmode == 1 ? _IOFBF:_IOLBF),
 		  g_mybufadjustedsize ); 
 	} else {
-	  bench_log("  Using system buffer of size %ld\n", BUFSIZ);
+	  bench_log("  Using system buffer of size %d\n", BUFSIZ);
 	}
       } else {
-	bench_log("  Unbuffered output\n", BUFSIZ);
+	bench_log("  Unbuffered output\n");
 	setbuf(g_fp, NULL); /* unbuffered */
       }
     } else {
@@ -216,7 +216,7 @@ void getopts(int argc, char **argv){
       break;
     }
    }  
-   
+    
    bench_log("  Writing %ld message(s) of length %ld\n",
 	  g_num_msgs,g_msgsize);
 
@@ -234,7 +234,7 @@ static void *thread_work(void *arg){
    
     msgnum++;
   }
-
+  return(NULL);
 }
 
 unsigned long long gettimestamp_milis(){
@@ -262,7 +262,7 @@ int main(int argc, char **argv){
   g_msgbuf = make_msgbuf(g_msgsize);
 
   if ( g_msgsize < 5 ) {
-    bench_log("  Ridiculously short message %d--exiting\n", 
+    bench_log("  Ridiculously short message %ld--exiting\n", 
 	   g_msgsize);
     exit(1);
   }
