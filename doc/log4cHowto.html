@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head>
+ <title> Log4C HowTo</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />  
+</head>
+<body bgcolor="#ffffff">
+
+
+<h4><a name ="Usage"> Usage </a></h4>
+<p />
+You sprinkle log statements throughout your C code, and can turn them on/off via the config file.
+<p />
+Finer control of the log statements is achieved by logging to categories, like <span style='background : #FFFFCE;'><font color="#0000FF">URLDecodeStep</font></span><a href="/twiki/bin/edit/Knowman/URLDecodeStep?topicparent=Knowman.IntelTargetAsMediaChanger">?</a>, or <span style='background : #FFFFCE;'><font color="#0000FF">MyBug67Fix</font></span><a href="/twiki/bin/edit/Knowman/MyBug67Fix?topicparent=Knowman.IntelTargetAsMediaChanger">?</a>. Each category can be turned on/off via the config file. So, you could turn off all the log messages except for those concerning URL-decoding, without recompiling.
+<p />
+Categories are hierachical. If you have a category whose name is "root", then a category whose name is "root.dhcp" is a child of root. In the config file, all the properties of a category are inherited by its children unless they override it.
+<p />
+Yet finer control is achieved by assigning a priority to each message (each call of log()). If the config file specifies a priority for a category, then a message won't be logged unless the log() call gives an equal/higher priority. Some constants are predefined for you. So, for example, you could limit logging to FATAL for some category, and TRACE for some other category. You can think of priority as "severity".
+<p />
+<strong>NB</strong> There seem to be bugs in log4c's XML parser: comments terminate the parsing, thus ignoring further definitions.
+<p />
+The output looks like this (depending on the appender you choose):<pre>
+[stdout] WARN     root.bob - bob
+[stderr] 20040209 17:17:58.013 ERROR    root.jane - jane
+</pre>
+<p />
+<strong>Steps</strong>
+<p />
+<ol>
+<li> Edit your code
+<ol>
+<li> Add a log() call to your code.
+<ul>
+<li> <code>log4c_category_xxx(catxx,"message you want, as a sprintf string %d",99)</code>
+</li>
+</ul>
+</li>
+<li> Decide on the category (e.g. what feature, function, purpose), and priority/severity.
+</li>
+</ol>
+</li>
+</ol>
+<blockquote>One of:<pre>
+  LOG4C_PRIORITY_FATAL = 000,
+  LOG4C_PRIORITY_ALERT = 100,
+  LOG4C_PRIORITY_CRIT = 200,
+  LOG4C_PRIORITY_ERROR = 300,
+  LOG4C_PRIORITY_WARN = 400,
+  LOG4C_PRIORITY_NOTICE = 500,
+  LOG4C_PRIORITY_INFO = 600,
+  LOG4C_PRIORITY_DEBUG = 700,
+  LOG4C_PRIORITY_TRACE = 800,
+  LOG4C_PRIORITY_NOTSET = 900,
+  LOG4C_PRIORITY_UNKNOWN = 1000</pre>
+</blockquote>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li> <code>log4c_category_trace(cat_urlDecodeStep,"message you want, as a sprintf string %d",99)</code>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li> Setup the category variable as a global or local
+<ul>
+<li> <code>log4c_category_t*   cat_urlDecodeStep = log4c_category_get("NameFromConfigFile");</code>
+</li>
+</ul>
+</li>
+<li> <code>#include &lt;log4c/category.h&gt;</code>
+</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li> Edit the config file   
+<ol>
+<li> Create your config file (./log4crc, or ~/.log4crc, or ${LOG4C_RCPATH}/log4rc)
+</li>
+<li> Setup the skeleton log4crc file...
+       6 Add your category, the priority is the cutoff point for messages (log() calls of lower priority won't print).
+<ul>
+<li> <code>&lt;category name="TheCategoryNameToUseIn_category_get" priority="notice" appender="stdout"/&gt;</code>
+</li>
+</ul>
+</li>
+<li> Decide on the "appender", it controls where the message goes, and it's format. Apparently "stdout", "stderr", and "syslog" are provided. Each formats the message a little differently.
+</li>
+</ol>
+</li>
+<li> Make your code: don't forget to add the <code>-l log4c</code> switch to gcc to link in log4c.
+</li>
+<li> Edit the config file to turn on/off messages.
+</li>
+</ol>
+<p />
+<pre>
+In log4crc
+define a category
+   &lt;category name="SCSIOp" priority="trace" appender="stdout"&gt;
+   where:
+     Your C program will log messages in the category NAME,
+     If the attempt to log has a lower priority, the message is ignored,
+     The message will be output in a format and to a location defined by the APPENDER.
+
+someRoutine
+{
+    // get the "category" 
+    log4c_category_t*   cat = log4c_category_get("a category");
+
+    ...
+
+    // "print" to it
+    log4c_category_log(cat,priority,sprintfFmt,args...)
+// where priority is equiv to routine _error, _warn, _trace, etc:
+  LOG4C_PRIORITY_FATAL = 000,
+  LOG4C_PRIORITY_ALERT = 100,
+  LOG4C_PRIORITY_CRIT = 200,
+  LOG4C_PRIORITY_ERROR = 300,
+  LOG4C_PRIORITY_WARN = 400,
+  LOG4C_PRIORITY_NOTICE = 500,
+  LOG4C_PRIORITY_INFO = 600,
+  LOG4C_PRIORITY_DEBUG = 700,
+  LOG4C_PRIORITY_TRACE = 800,
+  LOG4C_PRIORITY_NOTSET = 900,
+  LOG4C_PRIORITY_UNKNOWN = 1000 
+
+}
+</pre>
+
+</body>
+</html>

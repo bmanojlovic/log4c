@@ -9,7 +9,7 @@ Version: 	@VERSION@
 Release: 	%rel
 
 Summary: 	Log for C
-Copyright:	LGPL
+License:	LGPL
 Group:		Development/Libraries
 Vendor:		Meiosys, Inc. (www.meiosys.com)
 Packager:	Cedric Le Goater <legoater@meiosys.com>

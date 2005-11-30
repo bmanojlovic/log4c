@@ -1,3 +1,5 @@
+EXTRA_DIST = log4cHowto.html
+
 man3dir  = $(mandir)/man3
 docdir   = $(datadir)/doc/$(PACKAGE)-$(VERSION)
 docfiles = \
@@ -6,7 +8,8 @@ docfiles = \
 	$(top_srcdir)/NEWS \
 	$(top_srcdir)/COPYING \
 	$(top_srcdir)/ChangeLog \
-	$(PACKAGE).pdf
+	$(PACKAGE).pdf \
+	log4cHowto.html
 
 
 all-local: $(PACKAGE).pdf
