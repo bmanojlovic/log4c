@@ -12,9 +12,3 @@ aclocal -I config $ACLOCAL_FLAGS
 autoheader
 automake --add-missing --copy
 autoconf
-
-if uname -a | egrep -i 'darwin'; then
-	echo "darwin contains no libtoolize\n"
-else
-	patch -p0 < config/configure-solaris.patch
-fi
