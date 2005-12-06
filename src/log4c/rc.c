@@ -71,6 +71,7 @@ static int category_load(log4c_rc_t* this, sd_domnode_t* anode)
 {
     sd_domnode_t*     name     = sd_domnode_attrs_get(anode, "name");
     sd_domnode_t*     priority = sd_domnode_attrs_get(anode, "priority");
+    sd_domnode_t*     additivity = sd_domnode_attrs_get(anode, "additivity");
     sd_domnode_t*     appender = sd_domnode_attrs_get(anode, "appender");
     log4c_category_t* cat      = NULL;
     
@@ -85,6 +86,16 @@ static int category_load(log4c_rc_t* this, sd_domnode_t* anode)
 	log4c_category_set_priority(
 	    cat, log4c_priority_to_int(priority->value));
     
+    if (additivity) {
+	if (!strcasecmp(additivity->value, "false")) {
+	    log4c_category_set_additivity(cat, 0);
+	} else if (!strcasecmp(additivity->value, "true")) {
+	    log4c_category_set_additivity(cat, 1);
+	} else {
+	    sd_error("additivity value is invalid : %s", additivity->value);
+	}
+    }
+
     if (appender)
 	log4c_category_set_appender(
 	    cat, log4c_appender_get(appender->value));
