@@ -22,43 +22,10 @@ static const char version[] = "$Id$";
 #include <stdlib.h>
 #include <string.h>
 
-/**
- * @todo If the configuration files were loaded in this routine, we could
- * to get rid of the __log4c_init() constructor.
- */
-
-/******************************************************************************/
-extern log4c_rc_t* __log4c_rc(void)
-{
-    static log4c_rc_t* __rc = 0;
-
-    if (!__rc)
-        __rc = log4c_rc_new();
     
-    return __rc;
-}
+static log4c_rc_t __log4c_rc = { { 0, 0, 0 } };
 
-/******************************************************************************/
-extern log4c_rc_t* log4c_rc_new(void)
-{
-    log4c_rc_t* this;
-    
-    this = sd_calloc(1, sizeof(*this));
-
-    this->config.nocleanup = 0;
-    this->config.bufsize   = 0;
-    this->config.debug     = 0;
-    return this;
-}
-
-/******************************************************************************/
-extern void log4c_rc_delete(log4c_rc_t* this)
-{
-    if (!this)
-	return;
-
-    free(this);
-}
+const log4c_rc_t* const log4c_rc = &__log4c_rc;
 
 /******************************************************************************/
 static int config_load(log4c_rc_t* this, sd_domnode_t* anode)
@@ -222,4 +189,10 @@ extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
 	
     sd_domnode_delete(root_node);
     return 0;
+}
+
+/******************************************************************************/
+extern int log4c_load(const char* a_filename)
+{
+    return log4c_rc_load(&__log4c_rc, a_filename);
 }

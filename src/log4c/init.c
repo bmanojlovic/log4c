@@ -60,7 +60,7 @@ extern int log4c_init(void)
 		 getenv("HOME") ? getenv("HOME") : "");
         
 	for (i = 0; i < nrcfiles; i++) {
-	    if (log4c_rc_load(log4c_rc, rcfiles[i]) == -1) {
+	    if (log4c_load(rcfiles[i]) == -1) {
 		sd_error("loading %s failed", rcfiles[i]);
 		ret = -1;
 	    }
@@ -97,8 +97,6 @@ extern int log4c_fini(void)
     sd_factory_delete(log4c_category_factory);
     sd_factory_delete(log4c_appender_factory);
     sd_factory_delete(log4c_layout_factory);
-
-    log4c_rc_delete(log4c_rc);
 
 #if defined(__LOG4C_DEBUG__) && defined(__GLIBC__)
     muntrace();

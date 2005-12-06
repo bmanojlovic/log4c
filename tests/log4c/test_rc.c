@@ -36,12 +36,25 @@ static int test0(sd_test_t* a_test, int argc, char* argv[])
 /******************************************************************************/
 static int test1(sd_test_t* a_test, int argc, char* argv[])
 {    
-    log4c_rc_t* rc = log4c_rc_new();
+    log4c_rc_t rc;
 
-    if (log4c_rc_load(rc, SRCDIR "/test_rc.in") == -1)
+    if (log4c_rc_load(&rc, SRCDIR "/test_rc.in") == -1)
 	return 0;
 
-    log4c_rc_delete(rc);
+    log4c_print(sd_test_out(a_test));
+    return 1;
+}
+
+/******************************************************************************/
+static int test2(sd_test_t* a_test, int argc, char* argv[])
+{
+    log4c_rc_t rc;
+
+    if (log4c_rc_load(&rc, SRCDIR "/test_rc.in") == -1)
+	return 0;
+
+    if (log4c_rc_load(&rc, SRCDIR "/test_rc.in") == -1)
+	return 0;
 
     log4c_print(sd_test_out(a_test));
     return 1;
@@ -54,6 +67,7 @@ int main(int argc, char* argv[])
 
     sd_test_add(t, test0);
     sd_test_add(t, test1);
+    sd_test_add(t, test2);
 
     return ! sd_test_run(t, argc, argv);
 }

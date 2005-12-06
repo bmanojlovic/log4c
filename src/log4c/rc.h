@@ -10,10 +10,20 @@
 #ifndef __log4c_rc_h
 #define __log4c_rc_h
 
+/**
+ * @file rc.h
+ *
+ * @brief log4c resource configuration
+ *
+ **/
+
 #include <log4c/defs.h>
 
 __LOG4C_BEGIN_DECLS
 
+/**
+ * log4c resource configuration class
+ **/
 typedef struct 
 {
     struct 
@@ -25,11 +35,21 @@ typedef struct
 
 } log4c_rc_t;
 
-#define log4c_rc	__log4c_rc()
+/**
+ * default log4c resource configuration object
+ **/
+extern const log4c_rc_t * const	log4c_rc;
 
-extern log4c_rc_t*	__log4c_rc(void);
-extern log4c_rc_t*	log4c_rc_new(void);
-extern void		log4c_rc_delete(log4c_rc_t* a_rc);
+/**
+ * load log4c resource configuration file
+ *
+ * @param a_filename name of file to load
+ **/
+extern int		log4c_load(const char* a_filename);
+
+/**
+ * @internal
+ **/
 extern int		log4c_rc_load(log4c_rc_t* a_rc, const char* a_filename);
 
 __LOG4C_END_DECLS
