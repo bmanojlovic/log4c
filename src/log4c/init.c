@@ -94,9 +94,20 @@ extern int log4c_fini(void)
 
     sd_debug("cleaning up");
 
-    sd_factory_delete(log4c_category_factory);
-    sd_factory_delete(log4c_appender_factory);
-    sd_factory_delete(log4c_layout_factory);
+    if (log4c_category_factory) {
+	sd_factory_delete(log4c_category_factory);
+	log4c_category_factory = NULL;
+    }
+
+    if (log4c_appender_factory) {
+	sd_factory_delete(log4c_appender_factory);
+	log4c_appender_factory = NULL;
+    }
+
+    if (log4c_layout_factory) {
+	sd_factory_delete(log4c_layout_factory);
+	log4c_layout_factory = NULL;
+    }
 
 #if defined(__LOG4C_DEBUG__) && defined(__GLIBC__)
     muntrace();
