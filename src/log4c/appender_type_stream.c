@@ -45,7 +45,11 @@ static int stream_close(log4c_appender_t* this)
 {
     FILE* fp = log4c_appender_get_udata(this);
     
-    return (fp ? fclose(fp) : 0);
+
+    if (!fp || fp == stdout || fp == stderr)
+	return 0;
+
+    return fclose(fp);
 }
 
 /*******************************************************************************/
