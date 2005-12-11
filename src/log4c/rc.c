@@ -25,7 +25,7 @@ static const char version[] = "$Id$";
     
 static log4c_rc_t __log4c_rc = { { 0, 0, 0 } };
 
-const log4c_rc_t* const log4c_rc = &__log4c_rc;
+log4c_rc_t* const log4c_rc = &__log4c_rc;
 
 /******************************************************************************/
 static int config_load(log4c_rc_t* this, sd_domnode_t* anode)

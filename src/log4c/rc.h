@@ -22,7 +22,14 @@
 __LOG4C_BEGIN_DECLS
 
 /**
- * log4c resource configuration class
+ * @brief resource configuration object
+ *
+ * Attributes description:
+ * 
+ * @li @c nocleanup don't perform memory cleanup in log4c library 
+ *        destructor or in log4c_fini()
+ * @li @c bufsize maximum logging buffer size. 0 for no limits
+ * @li @c debug activate log4c debugging
  **/
 typedef struct 
 {
@@ -38,7 +45,7 @@ typedef struct
 /**
  * default log4c resource configuration object
  **/
-extern const log4c_rc_t * const	log4c_rc;
+extern log4c_rc_t * const	log4c_rc;
 
 /**
  * load log4c resource configuration file

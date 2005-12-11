@@ -57,8 +57,7 @@ RECURSIVE              = NO
 EXCLUDE                = \
 	/usr/include/stdio.h \
 	/usr/include/sys/time.h \
-	@top_srcdir@/src/@PACKAGE@/defs.h \
-	@top_srcdir@/src/@PACKAGE@/rc.h
+	@top_srcdir@/src/@PACKAGE@/defs.h
 EXCLUDE_PATTERNS       = 
 EXAMPLE_PATH           = ..
 EXAMPLE_PATTERNS       = 
