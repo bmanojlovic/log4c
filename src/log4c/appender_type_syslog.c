@@ -8,8 +8,14 @@ static const char version[] = "$Id$";
  * See the COPYING file for the terms of usage and distribution.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <log4c/appender.h>
 #include <log4c/priority.h>
+
+#ifdef HAVE_SYSLOG_H
 #include <syslog.h>
 
 /*******************************************************************************/
@@ -64,6 +70,29 @@ static int syslog_close(log4c_appender_t*	this)
     closelog();
     return 0;
 }
+
+#else
+
+/*******************************************************************************/
+static int syslog_open(log4c_appender_t* this)
+{
+    return 0;
+}
+
+/*******************************************************************************/
+static int syslog_append(log4c_appender_t*	this, 
+			 const log4c_logging_event_t* a_event)
+{
+    return 0;
+}
+
+/*******************************************************************************/
+static int syslog_close(log4c_appender_t*	this)
+{
+    return 0;
+}
+#endif
+
 
 /*******************************************************************************/
 const log4c_appender_type_t log4c_appender_type_syslog = {
