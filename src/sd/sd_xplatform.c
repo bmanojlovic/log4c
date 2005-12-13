@@ -93,7 +93,6 @@ struct timeval {
     long tv_usec;
 };
 #endif /* _TIMEVAL_DEFINED */
-#endif /* _WIN32 */
 int sd_gettimeofday(struct timeval* tp, void* tzp) {
     DWORD t;
     t = timeGetTime();
@@ -102,3 +101,4 @@ int sd_gettimeofday(struct timeval* tp, void* tzp) {
     /* 0 indicates that the call succeeded. */
     return 0;
 }
+#endif /* _WIN32 */

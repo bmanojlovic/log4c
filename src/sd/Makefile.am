@@ -27,7 +27,10 @@ liblog4c_sd_la_SOURCES = \
         sprintf.h \
         sprintf.c \
         test.h \
-        test.c
+        test.c \
+        sd_xplatform.h \
+        sd_xplatform.c
+
 liblog4c_sd_la_LDFLAGS =
 
 EXTRA_liblog4c_sd_la_SOURCES = \
