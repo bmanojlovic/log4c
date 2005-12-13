@@ -23,7 +23,19 @@ static const char* dated_r_format(
     int n, i;
     struct tm	tm;
 
+#warning gmtime() routine should be defined in sd_xplatform
+#ifndef _WIN32
     gmtime_r(&a_event->evt_timestamp.tv_sec, &tm);
+#else
+    /* xxx Need a CreateMutex/ReleaseMutex or something here
+     */
+    { 
+	struct tm *tmp = NULL;
+	tmp = gmtime(&a_event->evt_timestamp.tv_sec);
+	tm = *tmp; /* struct copy */
+    }
+#endif
+
     n = snprintf(a_event->evt_buffer.buf_data, a_event->evt_buffer.buf_size,
 		 "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s - %s\n",
 		 tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,

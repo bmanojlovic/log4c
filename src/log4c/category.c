@@ -16,7 +16,7 @@ static const char version[] = "$Id$";
 #ifdef  HAVE_ALLOCA_H
 #include <alloca.h>
 #endif
-#include <sys/time.h>
+
 #include <sd/sprintf.h>
 #include <sd/malloc.h>
 #include <sd/factory.h>
@@ -26,6 +26,7 @@ static const char version[] = "$Id$";
 #include <log4c/category.h>
 #include <log4c/rc.h>
 #include <sd/error.h>
+#include <sd/sd_xplatform.h>
 
 struct __log4c_category {
     char*			cat_name;
@@ -250,7 +251,7 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
     evt.evt_priority	= a_priority;
     evt.evt_msg	        = message;
     evt.evt_loc	        = a_locinfo;
-    gettimeofday(&evt.evt_timestamp, NULL);
+    SD_GETTIMEOFDAY(&evt.evt_timestamp, NULL);
 
     for (cat = this; cat; cat = cat->cat_parent) {
 	if (cat->cat_appender)

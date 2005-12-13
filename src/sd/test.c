@@ -9,24 +9,16 @@ static const char version[] = "$Id$";
 #ifdef HAVE_CONFIG_H
 #       include "config.h"
 #endif
-
 #include <sd/test.h>
 #include <sd/malloc.h>
 #include <sd/sprintf.h>
-
+#include <sd/sd_xplatform.h>
+ 
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/time.h>
 
-#ifdef HAVE_STDINT_H
-#       include <stdint.h>
-        typedef uint64_t usec_t;
-#else
-        typedef unsigned long long usec_t;
-#endif
+typedef XP_UINT64 usec_t;
 
-#define DIFF_CMD  "/usr/bin/diff -q"
 #define MAX_NFUNC 100
 
 struct __sd_test
@@ -46,13 +38,13 @@ struct __sd_test
     char**		argv;
 };
 
+
 /******************************************************************************/
 static usec_t now(void)
 {
     struct timeval tv;
-    
-    gettimeofday(&tv, NULL);
-    
+
+    SD_GETTIMEOFDAY(&tv, NULL);
     return (usec_t) (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
@@ -61,12 +53,22 @@ static int test_compare(sd_test_t* this, int a_argc, char* a_argv[])
 {
     char cmd[1024];
 
+#warning access() routine should be defined in sd_xplatform
+#ifndef _WIN32
     if (access(this->ref_filename, R_OK) || access(this->out_filename, R_OK))
+      return 1;
+    
+#else
+    /*
+      cf. http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt__access.2c_._waccess.asp
+    */
+     if (_access(this->ref_filename, 04) == -1 ||
+         _access(this->out_filename, 04) == -1)
         return 1;
-
-    snprintf(cmd, sizeof(cmd), "%s %s %s 1>/dev/null 2>&1", DIFF_CMD,
+#endif
+     snprintf(cmd, sizeof(cmd), "%s %s %s 1>/dev/null 2>&1", DIFF_CMD,
              this->ref_filename, this->out_filename);
-
+   
     return ! system(cmd);
 }
 
@@ -102,7 +104,7 @@ extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
     this->verbose= 0;
     this->size  = 0;
 
-    while ((c = getopt(a_argc, a_argv, "vt")) != EOF) {
+    while ((c = SD_GETOPT(a_argc, a_argv, "vt")) != EOF) {
         switch(c) {
         case 'v': this->verbose = 1; break;
         case 't': this->timed   = 1; break;
@@ -110,8 +112,8 @@ extern sd_test_t* sd_test_new(int a_argc, char* a_argv[])
         }
     }
 
-    this->argc = a_argc - (optind - 1);
-    this->argv = a_argv + (optind - 1);
+    this->argc = a_argc - (SD_OPTIND - 1);
+    this->argv = a_argv + (SD_OPTIND - 1);
     return this;
 }
 

@@ -12,6 +12,7 @@ static const char version[] = "$Id$";
 #include <log4c/category.h>
 #include <stdlib.h>
 #include <sd/malloc.h>
+#include <sd/sd_xplatform.h>
 
 /*******************************************************************************/
 extern log4c_logging_event_t* log4c_logging_event_new(
@@ -26,7 +27,7 @@ extern log4c_logging_event_t* log4c_logging_event_new(
     evt->evt_priority	= a_priority;
     evt->evt_msg	= a_message;
 
-    gettimeofday(&evt->evt_timestamp, NULL);
+    SD_GETTIMEOFDAY(&evt->evt_timestamp, NULL);
 
     return evt;
 }
