@@ -13,6 +13,8 @@ liblog4c_la_SOURCES = \
 	appender_type_mmap.c \
 	layout_type_basic.c \
 	layout_type_dated.c \
+	layout_type_basic_r.c \
+	layout_type_dated_r.c \
 	version.c \
 	logging_event.c \
 	priority.c \
@@ -34,6 +36,8 @@ pkginclude_HEADERS = \
 	priority.h \
 	layout_type_basic.h \
 	layout_type_dated.h \
+	layout_type_basic_r.h \
+	layout_type_dated_r.h \
 	layout.h \
 	appender_type_stream.h \
 	appender_type_stream2.h \

@@ -3,7 +3,7 @@ INCLUDES = \
 	-DSRCDIR="\"$(srcdir)\""
 
 noinst_PROGRAMS = test_category test_rc bench bench_fwrite \
-	test_stream2
+	test_stream2 test_layout_r
 
 test_category_SOURCES = \
 	layout_test.c \
@@ -23,6 +23,10 @@ bench_fwrite_LDADD = $(top_builddir)/src/log4c/liblog4c.la -lpthread
 test_stream2_SOURCES = \
 	test_stream2.c
 test_stream2_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
+
+test_layout_r_SOURCES = \
+	test_layout_r.c
+test_layout_r_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 
 EXTRA_DIST = \
         test_category.ref \
