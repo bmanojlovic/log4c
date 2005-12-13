@@ -26,6 +26,7 @@ liblog4c_la_LDFLAGS = -version-info @LT_VERSION@
 liblog4c_la_LIBADD  = ../sd/liblog4c_sd.la
 
 pkginclude_HEADERS = \
+	config-win32.h \
 	buffer.h \
 	rc.h \
 	init.h \

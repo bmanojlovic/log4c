@@ -23,4 +23,11 @@
 # define __LOG4C_END_DECLS
 #endif
 
+#define LOG4C_INLINE inline
+#define LOG4C_API    extern
+
+#ifdef _WIN32
+# include <log4c/config-win32.h>
 #endif
+
+#endif /* __log4c_defs_h */
