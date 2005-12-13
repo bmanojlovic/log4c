@@ -21,7 +21,11 @@
 #include "config.h"
 #endif
 #include <stdio.h>
+
+#ifdef HAVE_CONFIG_H
 #include <unistd.h>
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <sd/error.h>
@@ -43,6 +47,7 @@ fixup_null_alloc (n)
 {
     void* p = 0;
 
+#ifndef HAVE_SBRK
     if (n == 0)
 	p = malloc ((size_t) 1);
 
@@ -64,6 +69,7 @@ fixup_null_alloc (n)
 	    abort();
 	}
     }
+#endif
     return p;
 }
 
