@@ -8,6 +8,8 @@
 #ifndef __log4c_init_h
 #define __log4c_init_h
 
+#include <log4c/defs.h>
+
 /**
  * @file init.h
  *
@@ -20,13 +22,13 @@
  * 
  * @returns 0 for success 
  **/
-extern int log4c_init(void);
+LOG4C_API int log4c_init(void);
 
 /**
  * destructor
  *
  * @returns 0 for success 
  **/
-extern int log4c_fini(void);
+LOG4C_API int log4c_fini(void);
 
 #endif

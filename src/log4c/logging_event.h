@@ -65,7 +65,7 @@ typedef struct
  *
  * @todo need to handle multi-threading (NDC)
  **/
-extern log4c_logging_event_t* log4c_logging_event_new(
+LOG4C_API log4c_logging_event_t* log4c_logging_event_new(
     const char* a_category,
     int		a_priority,
     const char*	a_message);
@@ -73,7 +73,7 @@ extern log4c_logging_event_t* log4c_logging_event_new(
  * Destructor for a logging event.
  * @param a_event the logging event object
  **/
-extern void log4c_logging_event_delete(log4c_logging_event_t* a_event);
+LOG4C_API void log4c_logging_event_delete(log4c_logging_event_t* a_event);
 
 __LOG4C_END_DECLS
 

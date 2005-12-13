@@ -55,7 +55,7 @@ typedef struct log4c_layout_type {
  * @returns a pointer to an existing layout type, or NULL if no layout
  * type with the specified name exists.
  **/
-extern const log4c_layout_type_t* log4c_layout_type_get(const char* a_name);
+LOG4C_API const log4c_layout_type_t* log4c_layout_type_get(const char* a_name);
 
 /**
  * Set an layout type.
@@ -63,7 +63,7 @@ extern const log4c_layout_type_t* log4c_layout_type_get(const char* a_name);
  * @param a_type a pointer to the new layout type to set.
  * @returns a pointer to the previous layout type of same name.
  **/
-extern const log4c_layout_type_t* log4c_layout_type_set(
+LOG4C_API const log4c_layout_type_t* log4c_layout_type_set(
     const log4c_layout_type_t* a_type);
 
 /**
@@ -73,29 +73,29 @@ extern const log4c_layout_type_t* log4c_layout_type_set(
  * @returns a pointer to an existing layout, or NULL if no layout
  * with the specfied name exists.
  **/
-extern log4c_layout_t* log4c_layout_get(const char* a_name);
+LOG4C_API log4c_layout_t* log4c_layout_get(const char* a_name);
 
 /**
  * Constructor for layout. 
  **/
-extern log4c_layout_t* log4c_layout_new(const char* a_name);
+LOG4C_API log4c_layout_t* log4c_layout_new(const char* a_name);
 
 /**
  * Destructor for layout.
  **/
-extern void log4c_layout_delete(log4c_layout_t* a_layout);
+LOG4C_API void log4c_layout_delete(log4c_layout_t* a_layout);
 
 /**
  * @param a_layout the log4c_layout_t object
  * @return the layout name
  **/
-extern const char* log4c_layout_get_name(const log4c_layout_t* a_layout);
+LOG4C_API const char* log4c_layout_get_name(const log4c_layout_t* a_layout);
 
 /**
  * @param a_layout the log4c_layout_t object
  * @return a log4c_layout_type_t object
  **/
-extern const log4c_layout_type_t* log4c_layout_get_type(
+LOG4C_API const log4c_layout_type_t* log4c_layout_get_type(
     const log4c_layout_t* a_layout);
 
 /**
@@ -105,7 +105,7 @@ extern const log4c_layout_type_t* log4c_layout_get_type(
  * @param a_type the new layout type
  * @return the previous layout type
  **/
-extern const log4c_layout_type_t* log4c_layout_set_type(
+LOG4C_API const log4c_layout_type_t* log4c_layout_set_type(
     log4c_layout_t* a_layout,
     const log4c_layout_type_t* a_type);
 
@@ -113,7 +113,7 @@ extern const log4c_layout_type_t* log4c_layout_set_type(
  * @param a_layout the log4c_layout_t object
  * @return the layout user data
  **/
-extern void* log4c_layout_get_udata(const log4c_layout_t* a_layout);
+LOG4C_API void* log4c_layout_get_udata(const log4c_layout_t* a_layout);
 
 /**
  * sets the layout user data
@@ -122,7 +122,7 @@ extern void* log4c_layout_get_udata(const log4c_layout_t* a_layout);
  * @param a_udata the new layout user data
  * @return the previous layout user data
  **/
-extern void* log4c_layout_set_udata(log4c_layout_t*	a_layout, 
+LOG4C_API void* log4c_layout_set_udata(log4c_layout_t*	a_layout, 
 				    void*		a_udata);
 /**
  * format a log4c_logging_event events to a string.
@@ -131,7 +131,7 @@ extern void* log4c_layout_set_udata(log4c_layout_t*	a_layout,
  * @param a_event a logging_event_t object
  * @returns an appendable string.
  **/
-extern const char* log4c_layout_format(
+LOG4C_API const char* log4c_layout_format(
     const log4c_layout_t*		a_layout,
     const log4c_logging_event_t*	a_event);
 
@@ -140,7 +140,7 @@ extern const char* log4c_layout_format(
  * @param a_layout the log4c_layout_t object
  * @param a_stream the stream
  **/
-extern void log4c_layout_print(
+LOG4C_API void log4c_layout_print(
     const log4c_layout_t* a_layout, FILE* a_stream);
 
 /**
@@ -161,7 +161,7 @@ static void __attribute__ ((constructor)) __log4c_init_layout_type_##a_type(void
  * @internal
  **/
 struct __sd_factory;
-extern struct __sd_factory* log4c_layout_factory;
+LOG4C_API struct __sd_factory* log4c_layout_factory;
 
 __LOG4C_END_DECLS
 

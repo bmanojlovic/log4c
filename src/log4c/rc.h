@@ -45,19 +45,19 @@ typedef struct
 /**
  * default log4c resource configuration object
  **/
-extern log4c_rc_t * const	log4c_rc;
+LOG4C_API log4c_rc_t * const	log4c_rc;
 
 /**
  * load log4c resource configuration file
  *
  * @param a_filename name of file to load
  **/
-extern int		log4c_load(const char* a_filename);
+LOG4C_API int		log4c_load(const char* a_filename);
 
 /**
  * @internal
  **/
-extern int		log4c_rc_load(log4c_rc_t* a_rc, const char* a_filename);
+LOG4C_API int		log4c_rc_load(log4c_rc_t* a_rc, const char* a_filename);
 
 __LOG4C_END_DECLS
 
