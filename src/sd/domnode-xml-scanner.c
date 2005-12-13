@@ -2216,7 +2216,7 @@ char *yytext;
 
 /******************************************************************************/
 /* Extract a single word */
-static inline char* word(const char *s)
+static char* word(const char *s)
 {
     char *buf;
     int i, k;
@@ -2233,7 +2233,7 @@ static inline char* word(const char *s)
 
 /******************************************************************************/
 /* Extract text between " " */
-static inline char* string(const char* s)
+static char* string(const char* s)
 {
     char* buf;
     int i;
@@ -2247,7 +2247,7 @@ static inline char* string(const char* s)
 
 /******************************************************************************/
 /* Extract text between <!-- --> */
-static inline char* comment(const char* s)
+static char* comment(const char* s)
 {
     char* buf;
     int i, k;
