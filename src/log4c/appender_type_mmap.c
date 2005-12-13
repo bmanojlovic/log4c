@@ -8,16 +8,22 @@ static const char version[] = "$Id$";
  * See the COPYING file for the terms of usage and distribution.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <log4c/appender.h>
 #include <sd/error.h>
 #include <sd/malloc.h>
-#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <string.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 /* This could be public */
 struct mmap_info {

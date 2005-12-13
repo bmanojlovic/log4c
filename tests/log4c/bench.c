@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <log4c/appender.h>
 #include <log4c/category.h>
 #include <log4c/appender_type_stream2.h>
@@ -6,7 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 extern char *optarg;
 extern int optind, opterr, optopt;
