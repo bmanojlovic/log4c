@@ -39,6 +39,7 @@ sd_factory_t* log4c_category_factory = NULL;
 
 static const char LOG4C_CATEGORY_DEFAULT[] = "root";
 
+
 /**
  * @bug the root category name should be "" not "root". *
  */
@@ -219,18 +220,32 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
     if (!yes)
 	return;
 
-    if (!log4c_rc->config.bufsize)
+
+    /* when there is no limit on the buffer size, we use malloc() to
+     * give the user the possiblity to reallocate if necessary. When
+     * the buffer is limited in size, we use alloca() for more
+     * efficiency.
+     */
+    evt.evt_buffer.buf_maxsize = log4c_rc->config.bufsize;
+
+    if (!evt.evt_buffer.buf_maxsize) {
+	evt.evt_buffer.buf_size = LOG4C_BUFFER_SIZE_DEFAULT;
+	evt.evt_buffer.buf_data = sd_malloc(evt.evt_buffer.buf_size);
 	message = sd_vsprintf(a_format, a_args);
+    }
     else {
 	int n;
 	
-	message = alloca(log4c_rc->config.bufsize);
-	if ( (n = vsnprintf(message, log4c_rc->config.bufsize, a_format, a_args))
-	     >= log4c_rc->config.bufsize)
+	evt.evt_buffer.buf_size = evt.evt_buffer.buf_maxsize;
+	evt.evt_buffer.buf_data = alloca(evt.evt_buffer.buf_size);
+	message = alloca(evt.evt_buffer.buf_size);
+
+	if ( (n = vsnprintf(message, evt.evt_buffer.buf_size, a_format, a_args))
+	     >= evt.evt_buffer.buf_size)
 	    sd_error("truncating message of %d bytes (bufsize = %d)", n, 
-		     log4c_rc->config.bufsize);
+		     evt.evt_buffer.buf_size);
     }
-	
+
     evt.evt_category	= this->cat_name;
     evt.evt_priority	= a_priority;
     evt.evt_msg	        = message;
@@ -244,8 +259,10 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
 	if (!cat->cat_additive) break;	
     }
 
-    if (!log4c_rc->config.bufsize) 
+    if (!evt.evt_buffer.buf_maxsize) {
 	free(message);
+	free(evt.evt_buffer.buf_data);
+    }
 }
 
 /*******************************************************************************/

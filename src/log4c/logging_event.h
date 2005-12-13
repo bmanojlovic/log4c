@@ -21,6 +21,7 @@
  **/
 
 #include <log4c/defs.h>
+#include <log4c/buffer.h>
 #include <log4c/location_info.h>
 #include <sys/time.h>
 
@@ -36,6 +37,8 @@ struct __log4c_category;
  * @li @c evt_category category name. 
  * @li @c evt_priority priority of logging event.
  * @li @c evt_msg The application supplied message of logging event.
+ * @li @c evt_buffer a pre allocated buffer to be used by layouts to
+ *        format in a multi-thread environment.
  * @li @c evt_rendered_msg The application supplied message after layout format.
  * @li @c evt_timestamp The number of seconds elapsed since the epoch
  * (1/1/1970 00:00:00 UTC) until logging event was created.
@@ -47,6 +50,7 @@ typedef struct
     int	evt_priority;
     const char* evt_msg;
     const char* evt_rendered_msg;
+    log4c_buffer_t evt_buffer;
     struct timeval evt_timestamp;
     const log4c_location_info_t* evt_loc;
 
