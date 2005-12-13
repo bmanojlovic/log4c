@@ -91,7 +91,7 @@ AC_FUNC_MMAP
 AC_FUNC_REALLOC
 AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime])
+AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime sbrk])
 
 AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 # Checks for doxygen
