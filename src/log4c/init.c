@@ -44,6 +44,14 @@ extern int log4c_init(void)
 	 */	
     }
 
+    /* Initialize default appenders and layouts if not GNU cc */
+#ifndef __GNUC__
+    log4c_appender_type_set(&log4c_appender_type_stream);
+    log4c_appender_type_set(&log4c_appender_type_stream2);
+    log4c_layout_type_set(&log4c_layout_type_basic);
+    log4c_layout_type_set(&log4c_layout_type_dated);
+#endif
+    
     /* load configuration files */
     {
 	static char rcfiles[][256] = {
