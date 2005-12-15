@@ -10,6 +10,10 @@
 #ifndef __log4c_config_win32_h
 #define __log4c_config_win32_h
 
+#include <time.h>
+#include <windows.h>
+#include <winsock.h>
+
 #undef LOG4C_API
 #ifdef LOG4C_EXPORTS
 #    define LOG4C_API         __declspec(dllexport)
