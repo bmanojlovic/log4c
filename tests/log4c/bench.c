@@ -9,31 +9,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-extern char *optarg;
-extern int optind, opterr, optopt;
+#include <sd/sd_xplatform.h>
 
 /******************************************************************************/
-typedef long long int usec_t;
 
-static inline usec_t utime(void)
+typedef XP_UINT64 usec_t;
+static usec_t utime(void)
 {
     struct timeval tv;
     
-    gettimeofday(&tv, NULL);
-    
+    SD_GETTIMEOFDAY(&tv, NULL);
     return (usec_t) (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
 /******************************************************************************/
- #define MSG_SIZE 128
+#define MSG_SIZE 128
 #define NUM_MSGS 16
-#define bench_log(...) fprintf(stderr, __VA_ARGS__)
 
 #define timed_loop(name, confstr, count, expr) \
 { \
@@ -82,34 +82,34 @@ void getopts(int argc, char **argv){
   char c;
 
   if ( argc == 1) {
-      bench_log(USAGE);
+      fprintf(stderr,USAGE);
       exit(1);
   }  
 
-   while ((c = getopt(argc, argv, "nh")) != -1) {
+   while ((c = SD_GETOPT(argc, argv, "nh")) != -1) {
     switch(c) {   
     case 'n':
       g_noscreen_appenders = 1;
       break;
     case 'h': 
-      bench_log(USAGE);
+      fprintf(stderr, USAGE);
       exit(1);
       break;
     }
    }    
    
    /* Pick up the number of msgs and the size */
-   if ( optind < argc ){
-       g_num_msgs = atol(argv[optind]);
-       if ( optind+1 < argc ){
-	    g_msgsize =  atol(argv[optind+1]);
+   if ( SD_OPTIND < argc ){
+       g_num_msgs = atol(argv[SD_OPTIND]);
+       if ( SD_OPTIND+1 < argc ){
+	    g_msgsize =  atol(argv[SD_OPTIND+1]);
        }
    }
 
-   bench_log("  Writing %ld message(s) of length %ld\n",
+   fprintf(stderr, "  Writing %ld message(s) of length %ld\n",
 	  g_num_msgs,g_msgsize);
    if ( g_noscreen_appenders){
-       bench_log("  Not running tests that log to the screen\n\n");
+     fprintf(stderr, "  Not running tests that log to the screen\n\n");
    }
 
 }
@@ -144,7 +144,7 @@ int main(int argc, char* argv[]){
     log4c_category_set_priority(log4c_category_get("root"),
 				LOG4C_PRIORITY_ERROR);
 
-    buffer = (char*) sd_malloc(g_msgsize * sizeof(char));    
+    buffer = (char*) malloc(g_msgsize * sizeof(char));    
     memset(buffer, 'X', g_msgsize);
     buffer[g_msgsize - 1] = '\0';       
    
