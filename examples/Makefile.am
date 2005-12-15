@@ -1,7 +1,7 @@
 
 AM_CPPFLAGS = -I${top_srcdir}/src -I${top_srcdir}/src/log4c
 
-EXTRA_DIST=log4crc readme
+EXTRA_DIST=log4crc README
 
 lib_LTLIBRARIES = liblog4c_examples.la
 bin_PROGRAMS = application_1 application_2 
