@@ -12,6 +12,7 @@ static const char version[] = "$Id$";
 #include <string.h>
 #include <sd/sprintf.h>
 #include <sd/malloc.h>
+#include <sd/sd_xplatform.h>
 
 /******************************************************************************/
 extern char* sd_sprintf(const char* a_fmt, ...)

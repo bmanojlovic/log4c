@@ -26,7 +26,7 @@ SOURCE_SD_FILES := stack.c malloc.c \
 			domnode-xml.c domnode-xml-parser.c domnode-xml-scanner.c \
 			domnode.c \
             factory.c hash.c list.c \
-            sprintf.c test.c sd_xplatform.c
+            sprintf.c test.c sd_xplatform.c error.c
 
 SD_OBJS :=  $(patsubst %.c,%.obj,$(SOURCE_SD_FILES))
 SD_TARGET_OBJS := $(addprefix $(OUT_DIR)/sd/, $(SD_OBJS))
@@ -72,7 +72,7 @@ $(OUT_DIR)/log4c/liblog4c.dll: $(LOG4C_TARGET_OBJS) \
 		/EXPORT:sd_optind /EXPORT:sd_getopt /EXPORT:sd_gettimeofday \
 		/EXPORT:sd_test_delete /EXPORT:sd_test_run /EXPORT:sd_test_add \
 		/EXPORT:sd_test_new /EXPORT:sd_test_out /EXPORT:sd_test_get_name \
-		/EXPORT:sd_factory_print \
+		/EXPORT:sd_factory_print /EXPORT:sd_debug_fn /EXPORT:sd_error_fn \
 		/LIBPATH:sd $^ MSVCRT.LIB WINMM.LIB
 
 #	

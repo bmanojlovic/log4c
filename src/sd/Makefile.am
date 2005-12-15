@@ -29,7 +29,8 @@ liblog4c_sd_la_SOURCES = \
         test.h \
         test.c \
         sd_xplatform.h \
-        sd_xplatform.c
+        sd_xplatform.c \
+	error.c
 
 liblog4c_sd_la_LDFLAGS =
 

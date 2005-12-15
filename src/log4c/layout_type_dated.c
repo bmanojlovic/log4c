@@ -11,6 +11,7 @@ static const char version[] = "$Id$";
 #include <log4c/layout.h>
 #include <log4c/priority.h>
 #include <sd/sprintf.h>
+#include <sd/sd_xplatform.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -24,8 +25,9 @@ static const char* dated_format(
 
     struct tm	tm;
 
-#warning gmtime() routine should be defined in sd_xplatform
+
 #ifndef _WIN32
+#warning gmtime() routine should be defined in sd_xplatform
     gmtime_r(&a_event->evt_timestamp.tv_sec, &tm);
 #else
     /* xxx Need a CreateMutex/ReleaseMutex or something here

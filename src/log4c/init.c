@@ -16,7 +16,15 @@ static const char version[] = "$Id$";
 #include <sd/error.h>
 #include <sd/sprintf.h>
 #include <sd/factory.h>
+#include <sd/sd_xplatform.h>
 #include <stdlib.h>
+
+#ifndef __GNUC__
+#include <appender_type_stream.h>
+#include <appender_type_stream2.h>
+#include <layout_type_basic.h>
+#include <layout_type_dated.h>
+#endif
 
 #if defined(__LOG4C_DEBUG__) && defined(__GLIBC__)
 #include <mcheck.h>

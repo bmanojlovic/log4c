@@ -10,6 +10,7 @@ static const char version[] = "$Id$";
 
 #include <string.h>
 #include <log4c/priority.h>
+#include <sd/sd_xplatform.h>
 
 static const char* const priorities[] = {
     "FATAL", 

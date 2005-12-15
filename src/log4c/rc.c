@@ -19,6 +19,7 @@ static const char version[] = "$Id$";
 #include <sd/error.h>
 #include <sd/domnode.h>
 #include <sd/malloc.h>
+#include <sd/sd_xplatform.h>
 #include <stdlib.h>
 #include <string.h>
 
