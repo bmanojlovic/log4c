@@ -147,6 +147,21 @@ static int test4(sd_test_t* a_test, int argc, char* argv[])
     foo(sun1sub2, warn);
     return 1;
 }
+/******************************************************************************/
+static int test5(sd_test_t* a_test, int argc, char* argv[])
+{   
+    int i, n;
+    log4c_category_t* tab[10];
+
+    n = log4c_category_list(tab, 10);
+    if (n < 0)
+	return 0;
+
+    for (i = 0; i < n; i++)
+	fprintf(sd_test_out(a_test), "cat[%d] = %s\n", i, 
+		log4c_category_get_name(tab[i]));
+    return 1;
+}
 
 /******************************************************************************/
 int main(int argc, char* argv[])
@@ -178,6 +193,7 @@ int main(int argc, char* argv[])
     sd_test_add(t, test2);
     sd_test_add(t, test3);
     sd_test_add(t, test4);
+    sd_test_add(t, test5);
 
     ret = sd_test_run(t, argc, argv);
 

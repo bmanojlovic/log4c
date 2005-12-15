@@ -108,3 +108,24 @@ extern void sd_factory_print(const sd_factory_t* this, FILE* a_stream)
 	fprintf(a_stream, "\n");
     }
 }
+
+/******************************************************************************/
+extern int sd_factory_list(const sd_factory_t* this, void** a_items,
+			   int a_nitems)
+{
+    sd_hash_iter_t* i;
+    int j;
+
+    if (!this || !a_items || a_items <= 0)
+	return -1;
+
+    for (i = sd_hash_begin(this->fac_hash), j = 0;
+	 i != sd_hash_end(this->fac_hash);
+	 i = sd_hash_iter_next(i), j++)
+    {
+	if (j < a_nitems)
+	    a_items[j] = i->data;
+    }
+
+    return j;
+}

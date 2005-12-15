@@ -63,6 +63,12 @@ extern log4c_category_t* log4c_category_get(const char* a_name)
 }
 
 /*******************************************************************************/
+extern int log4c_category_list(log4c_category_t** a_cats, int a_ncats)
+{
+    return sd_factory_list(log4c_category_factory, (void**) a_cats, a_ncats);
+}
+
+/*******************************************************************************/
 static const char* dot_dirname(char* a_string);
 
 extern log4c_category_t* log4c_category_new(const char* a_name)
