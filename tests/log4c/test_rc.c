@@ -11,6 +11,8 @@ static const char version[] = "$Id$";
 #include <log4c/rc.h>
 #include <log4c/category.h>
 #include <sd/test.h>
+#include <log4c/layout.h>
+#include <log4c/appender.h>
 #include <sd/factory.h>
 #include <stdio.h>
 

@@ -20,11 +20,11 @@ static const char version[] = "$Id$";
 #ifdef __GNUC__
 log4c_category_define(root, "root");
 log4c_category_define(sub1, "sub1");
-log4c_category_define(sun1sub2, "sub1.sub2")
+log4c_category_define(sub1sub2, "sub1.sub2")
 #else
 static log4c_category_t* root = NULL;
 static log4c_category_t* sub1 = NULL;
-static log4c_category_t* sun1sub2 = NULL;
+static log4c_category_t* sub1sub2 = NULL;
 #endif
 
 /******************************************************************************
@@ -231,11 +231,17 @@ int main(int argc, char* argv[])
   int ret;
   sd_test_t* t = sd_test_new(argc, argv);
 
-  /* If we're not using GNU C then initialize our test categories
-     explicitly
+  /* 
+     If we're not using GNU C then initialize log4c and our test categories
+     explicitly.
   */
-
 #ifndef __GNUC__
+
+  if ( log4c_init() > 0 ) {
+    fprintf(stderr, "Failed to init log4c...exiting\n");
+    exit(1);
+  }
+  
   root = log4c_category_get("root");
   sub1 = log4c_category_get("sub1");
   sub1sub2 = log4c_category_get("sub1.sub2"); 
