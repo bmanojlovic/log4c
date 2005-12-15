@@ -23,7 +23,9 @@
 #include <log4c/defs.h>
 #include <log4c/buffer.h>
 #include <log4c/location_info.h>
+#ifndef _WIN32
 #include <sys/time.h>
+#endif
 
 __LOG4C_BEGIN_DECLS
 
