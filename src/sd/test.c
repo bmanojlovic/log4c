@@ -53,8 +53,9 @@ static int test_compare(sd_test_t* this, int a_argc, char* a_argv[])
 {
     char cmd[1024];
 
-#warning access() routine should be defined in sd_xplatform
+
 #ifndef _WIN32
+#warning access() routine should be defined in sd_xplatform
     if (access(this->ref_filename, R_OK) || access(this->out_filename, R_OK))
       return 1;
     
