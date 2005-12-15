@@ -5,9 +5,9 @@ if TEST
 TEST_SUBDIR = tests
 endif
 
-SUBDIRS = config src ${DOC_SUBDIR} ${TEST_SUBDIR}
+SUBDIRS = config src ${DOC_SUBDIR} ${TEST_SUBDIR} examples
 
-DIST_SUBDIRS = config src doc tests 
+DIST_SUBDIRS = config src doc tests examples
 
 EXTRA_DIST = \
 	log4c.m4 \

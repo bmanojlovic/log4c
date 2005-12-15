@@ -1,0 +1,21 @@
+Sample programs using log4c
+
+application_1 -- most basic example of using log4c.  Notice that you
+only have to setup the category.  Log4c is more powerful and flexible
+if you use the log4crc file to setup the relationship between
+category, appender, and formatter.
+
+application_2 -- example of using log4c with custom written appenders
+and formatters.  Notice in Makefile.am that the linking for
+application_2 includes an additional library.  This is an example of
+how you as a user of log4c would add in appenders and formatters.
+
+log4crc -- Notice the specifiers of how the catgories from the two
+example applications are wired up to appenders and formatters.  Notice
+how when specifying a layout and appender, the type= string must match
+the name of the appender/formatter given in the code, but that the
+name= can be any name you want.  Try and alter the priority= settings,
+the appender and layout settings in log4crc and rerunning the examples
+to see how the config affects which error messages will be printed.
+
+

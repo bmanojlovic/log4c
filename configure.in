@@ -115,6 +115,7 @@ AC_CONFIG_FILES([
     src/sd/Makefile
     tests/Makefile
     tests/log4c/Makefile
+    examples/Makefile
 ])
 AC_CONFIG_COMMANDS([default],[[
     chmod +x log4c-config
