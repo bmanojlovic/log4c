@@ -47,7 +47,7 @@ fixup_null_alloc (n)
 {
     void* p = 0;
 
-#ifndef HAVE_SBRK
+#ifdef HAVE_SBRK
     if (n == 0)
 	p = malloc ((size_t) 1);
 
