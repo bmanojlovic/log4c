@@ -1,7 +1,187 @@
+2005-12-16  Cedric Le Goater <legoater@free.fr>
+
+        * configure.in: log4c-1.1.0
+
+2005-12-16  Robert Byrne <robert.byrne@sun.com>
+
+	* msvc6/gotest.sh:
+	add some helper comments at the start of the hlper script
+
+2005-12-15  Robert Byrne <robert.byrne@sun.com>
+
+	* tests/log4c/bench.c: . include some sd_xplatform stuff...
+
+	* src/log4c/logging_event.h: . only include sys/time.h on non
+	windoows platforms.  Originally thought to use ifdef
+	HAVE_SYS_TIME_H but that would require applications knowing that
+	they needed to define that...whereas this way the right thing
+	happens naturally.
+
+	* src/sd/test.c: . #warning doesn't work with msvc6
+
+	* tests/log4c/test_rc.c, tests/log4c/test_stream2.c: . patch some
+	of the tests for msvc6: need explicit call to log4c_init() and use
+	the getopt from sd.
+
+	* msvc6/Makefile, src/log4c/init.c, src/log4c/layout_type_basic.c,
+	src/log4c/layout_type_dated.c, src/log4c/priority.c,
+	src/log4c/rc.c, src/sd/Makefile.am, src/sd/domnode-xml-scanner.c,
+	src/sd/domnode-xml-scanner.h, src/sd/error.c, src/sd/error.h,
+	src/sd/sprintf.c: . include the sd_xplatform.h file where needed
+	(it redefines things liek sprintf, strcasecmp etc. for use with
+	msvc6) . introduce an error.c to hold sd_debug functions used to
+	replace analogous macros with msvc6 (variable number of args
+	problem)
+
+	* src/log4c/logging_event.h:
+	back out this HAVE_SYS_TIME test for the moment....
+	means would have to include config.h.....need to think about that
+
+2005-12-15  Cedric Le Goater <legoater@free.fr>
+
+	* examples/Makefile.am: fixed make dist issue
+
+2005-12-15  Robert Byrne <robert.byrne@sun.com>
+
+	* src/log4c/logging_event.h: only use systime if you have it patch
+
+	* src/log4c/appender.c: only use syslog if you have it patch
+
+	* src/log4c/config-win32.h: Need to include these files to avoid
+	timeval undefined issues in logging_event.h
+
+	* src/sd/malloc.c: sense of the ifdef HAVA_SBRK was wrong
+
+2005-12-15  Cedric Le Goater <legoater@free.fr>
+
+	* Makefile.am, configure.in, examples/Makefile.am,
+	examples/README, examples/application_1.c,
+	examples/application_2.c, examples/example_appenders.c,
+	examples/example_formatters.c, examples/log4crc: example library
+	contributed by joel schaubert <foxyjoel@gmail.com>
+
+	* src/sd/factory.c, src/sd/factory.h, tests/log4c/test_category.c,
+	src/log4c/category.c, src/log4c/category.h: added
+	log4c_category_list()
+
+2005-12-13  Cedric Le Goater <legoater@free.fr>
+
+	* configure.in: added brk detection
+
+	* src/log4c/appender.h, src/log4c/appender_type_stream2.h,
+	src/log4c/category.h, src/log4c/init.h, src/log4c/layout.h,
+	src/log4c/logging_event.h, src/log4c/priority.h, src/log4c/rc.h:
+	added LOG4C_API macro and removed some inline for win32 support
+
+	* src/log4c/defs.h, msvc6/Makefile, msvc6/gotest.sh,
+	msvc6/log4c/version.h, src/log4c/Makefile.am,
+	src/log4c/config-win32.h: added win32 support from Rob Byrne
+
+	* src/log4c/init.c: added loading of layout and appender types
+	when log4c is not compiled with gcc
+
+	* src/sd/Makefile.am, src/sd/sd_xplatform.c:
+	minor fix in portabiliy layer
+
+	* src/log4c/appender_type_mmap.c, src/sd/malloc.c, tests/log4c/bench.c:
+	fixed unistd.h
+
+	* src/log4c/category.c, src/log4c/layout_type_dated.c,
+	src/log4c/layout_type_dated_r.c, src/log4c/logging_event.c,
+	src/sd/sd_xplatform.c, src/sd/sd_xplatform.h, src/sd/test.c: added
+	portability layer to support win32 platform
+
+	* src/sd/domnode-xml-scanner.c, src/sd/domnode-xml-scanner.l:
+	removed useless inlineCedric Le Goater
+
+	* src/sd/malloc.c:
+	added HAVE_CONFIG_H and HAVE_SBRK #ifdefs to ease portability
+
+	* src/sd/factory.c: removed useless unistd.h
+
+	* src/log4c/appender_type_syslog.c:
+	use HAVE_SYSLOG_H to protect generation
+
+	* src/log4c/Makefile.am, src/log4c/layout_type_basic_r.c,
+	src/log4c/layout_type_basic_r.h, src/log4c/layout_type_dated_r.c,
+	src/log4c/layout_type_dated_r.h, tests/log4c/Makefile.am,
+	tests/log4c/test_layout_r.c: added threadsafe layouts
+
+	* src/log4c/category.c, src/log4c/logging_event.h: added a
+	preallocated buffer to the logging event to be used by layouts in
+	a multithreaded environment
+
+	* src/log4c/Makefile.am, src/log4c/buffer.h:
+	added a new buffer object to implement threadsafe logging
+
+2005-12-11  Cedric Le Goater <legoater@free.fr>
+
+        * doc/Doxyfile.in, src/log4c/rc.c, src/log4c/rc.h: export log4_rc
+	object and add documentation (light) on log4c configuration
+
+2005-12-06  Cedric Le Goater <legoater@free.fr>
+
+        * src/log4c/rc.c, tests/log4c/test_rc.in:
+        add additivity to configuration file
+
+        * src/log4c/appender_type_stream.c: avoid closing stdio streams
+
+        * src/log4c/init.c: fixed possible double free() in log4_fini() 
+
+        * src/log4c/init.c, src/log4c/rc.c, src/log4c/rc.h,
+	tests/log4c/test_rc.c: modified the rc API to enable some fixes in
+	log4c cleanup. This breaks internal API.
+
+2005-12-05  Cedric Le Goater <legoater@free.fr>
+
+        * bootstrap, config/configure-solaris.patch:
+        removed old hack to replace native solaris linker with gcc
+
+2005-11-30  Cedric Le Goater <legoater@free.fr>
+
+        * doc/Makefile.am, doc/log4cHowto.html, log4c.spec.in:
+        added log4cHowto.html contribution in documentation
+
+2005-11-08  Robert Byrne  <Robert.Byrne@Sun.COM>
+
+        * tests/log4c/bench.c: . add bench for the stream2 appender.
+	. add some command line options to suppress appenders that write
+	to the screen
+
+        * tests/log4c/bench_fwrite.c: fix compile warnings
+
+        * tests/log4c/test_category.c: add a comment and print a note on
+	the known double free of the file pointer (causes that scary "***
+	glibc detected *** double free or corruption (!prev): 0x09cf16d8
+	*** Aborted" message.
+
+2005-11-07  Robert Byrne  <Robert.Byrne@Sun.COM>
+
+        * src/log4c/appender_type_stream2.c:
+        remove an extraneous initialializer from the stream2 type struct
+
+        * src/log4c/Makefile.am, src/log4c/appender_type_stream2.c,
+	src/log4c/appender_type_stream2.h, tests/log4c/Makefile.am,
+	tests/log4c/bench_fwrite.c, tests/log4c/test_stream2.c: . stream2
+	appender.  More configurable than the original stream appender.
+	. remove some compile warnings in bench_fwrite.c
+
+2005-11-04  Robert Byrne  <Robert.Byrne@Sun.COM>
+
+        * configure.in, tests/log4c/Makefile.am, tests/log4c/bench_fwrite.c:
+        . utility to compare fwrite() performance and fprintf() performance
+
+2005-11-03  Robert Byrne  <Robert.Byrne@Sun.COM>
+
+        * README:
+        . update README with some info on where to find Solaris automake tools
+        . include some examples of using ./configure options
+
 2005-09-14  Cedric Le Goater  <legoater@meiosys.com>
 
-        * src/sd/test.c, tests/log4c/appender_test.c, tests/log4c/bench.c, tests/log4c/layout_test.c, tests/log4c/test_category.c:
-        fixes from Robert.Byrne@Sun.COM
+        * src/sd/test.c, tests/log4c/appender_test.c, tests/log4c/bench.c,
+	tests/log4c/layout_test.c, tests/log4c/test_category.c: fixes from
+	Robert.Byrne@Sun.COM
 
 2005-07-11  Cedric Le Goater  <legoater@meiosys.com>
 
@@ -28,8 +208,10 @@
 
         * src/sd/list.c: fixed unreached statement
 
-        * README, src/sd/Makefile.am, src/sd/domnode-xml-parser.c, src/sd/domnode-xml-parser.y, src/sd/domnode-xml-scanner.c, src/sd/domnode-xml-scanner.h, src/sd/domnode-xml-scanner.l:
-        BugId: 1062842
+        * README, src/sd/Makefile.am, src/sd/domnode-xml-parser.c,
+	src/sd/domnode-xml-parser.y, src/sd/domnode-xml-scanner.c,
+	src/sd/domnode-xml-scanner.h, src/sd/domnode-xml-scanner.l: BugId:
+	1062842
 
         Added lex/yacc source code. It requires flex-2.5.27 and bison-1.35.
 
@@ -45,15 +227,17 @@
 
         * doc/Makefile.am: added missing DESTDIR
 
-2004-11-02  terranvs  <terranvs>
+2004-11-02   Olger Warnier  <terranvs>
 
-        * macosx/log4c.xcode/project.pbxproj, bootstrap:
-        changed the bootstrap to work on Mac OS X with xcode 1.5 adapted the xcode project to work with the bootstrap
+        * macosx/log4c.xcode/project.pbxproj, bootstrap: changed the
+	bootstrap to work on Mac OS X with xcode 1.5 adapted the xcode
+	project to work with the bootstrap
 
 2004-10-27  Cedric Le Goater  <legoater@meiosys.com>
 
-        * macosx/English.lproj/InfoPlist.strings, macosx/log4c.xcode/project.pbxproj, src/sd/malloc.c, macosx/Info.plis
-t, macosx/version.plist:
+        * macosx/English.lproj/InfoPlist.strings,
+	macosx/log4c.xcode/project.pbxproj, src/sd/malloc.c,
+	macosx/Info.plist, macosx/version.plist:
         Added mac osx support
 
 2004-08-18  Cedric Le Goater  <legoater@rmeiosys.com>
@@ -64,28 +248,12 @@ t, macosx/version.plist:
 
 	* doc/main.doc.in: updated supported plateform
 
-	* configure.in: increase current revision
+	* configure.in: increase current revision, log4c-1.0.12
 
 	* log4c.m4: added missing include
 
-	* tests/log4c/test_category.c: fixed compulation problems with gcc-3.4
-	Patch by Olaf Freyer <aaron@cs.tu-berlin.de>
-	(http://bugs.gentoo.org/show_bug.cgi?id=60061)
-
-	* doc/Makefile.am: use $(DESTDIR) when installing
-
-	* configure.in: fixed condition on documentation creation
-
-2004-08-16  Cedric Le Goater  <legoater@meiosys.com>
-
-	* doc/main.doc.in: updated supported plateform
-
-	* configure.in: increase current revision
-
-	* log4c.m4: added missing include
-
-	* tests/log4c/test_category.c: fixed compulation problems with gcc-3.4
-	Patch by Olaf Freyer <aaron@cs.tu-berlin.de>
+	* tests/log4c/test_category.c: fixed compulation problems with
+	gcc-3.4 Patch by Olaf Freyer <aaron@cs.tu-berlin.de>
 	(http://bugs.gentoo.org/show_bug.cgi?id=60061)
 
 	* doc/Makefile.am: use $(DESTDIR) when installing

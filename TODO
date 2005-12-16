@@ -1,2 +1,12 @@
 - new log4j naming conventions: category -> logger
 - multiple appenders per category
+- improve errors in configuration file parser
+- location_info is broken (need macro ?)
+- remove initialization of log4c when library is loaded (compatibility
+  issues)
+- add void* to location_info
+- thread safe ...
+- use expat ?
+- distribute msvc6 and macosx build files
+- improve sd/error.c
+- docs needs an update
