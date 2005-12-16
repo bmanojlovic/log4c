@@ -1,0 +1,132 @@
+
+Last updated:16 Dec 2005
+
+This is the directory you come to to compile log4c on windows.
+
+Versions of the Compiler and Windows we tested with
+===================================================
+
+This compile has been tested with Microsoft Visual Studio for C/C++ version 6
+on Windows XP Home Edition.
+
+Note that the compilation using the cygwin environment to generate the dll with gcc
+worked very smoothly on Windows (both with and without the --no-cygwin option).
+
+However our goal was to port log4c to the native Windows compiler--this mostly a commercial
+driver, common practice in industry being to 'go native' on any given platform.
+
+How to compile log4c on Windows
+===============================
+
+You will need an environment like the free cygwin or Windows Services for Unix from Microsoft.
+
+It would certainly be possible to adjust the Makefile so that one could use the
+Microsoft nmake program and run the compile in a DOS box....but log4c coming from
+the Unix world, it just seemed more natural to go this way.
+
+So, go to the unix emulation shell prompt.  You will need the Microsoft Visual Studio
+stuff on your path.  When you install it, it creates a batch file you 
+can run to set up your environment appropriately. and type 'make'.
+
+The .dll and .lib will be compiled into the ./log4c/log4c directory and the test
+programs into ./log4c/tests.
+
+To run a test program type './gotest.sh test_stream2', for example.  To
+see the outputs from the test program go down into the log4c/tests subdirectory.
+
+Overview of the porting effort of log4c to Windows
+==================================================
+
+It seems that the latest versions of the Microsoft comiler provide more 
+compatibility with Unix...but as version 6 is widely deployed we decided to 
+port with that as our reference.
+
+I think there are three main areas to look at: build environment, code changes and
+packaging.
+
+1. Build Environment
+--------------------
+
+cygwin works very well indded as a Unix shell emulator and the cygwin online installer is 
+amazing--it allows you to select what you need to download...and then go back later
+to uninstall or install more.  And it just works.
+
+I tried hard to integrate this compile on Windows into the automake tools
+but they just don't work at the time of writing (Dec 2005).  Please refer to the automake
+mail archive and search for 'microsoft' or 'msvc' to find information.  It seems
+there are patches available...but when they wil be integrated is not clear.
+
+So, we have a seperate Makefile :-( which will need to be synced seperately with changes or
+additions to the workspace.  In addition we have a hardcoded version.h file.  On Unix
+this is auto generated from version.in.  Apart from that nothing tricky here.
+
+Some useful build tools from cygwin:
+make, nm
+
+Some useful build tools from Microsoft:
+depends.exe (ldd alike), dumpbin.exe (nm alike),  msdev <program name> (start the debugger)
+
+2. Code Changes
+---------------
+
+You will see '#ifdef _WIN32' type lines in the code.  We tried to factor
+as much as we could into the ./src/sd/sd_xplatform.c and sd/sd_xplatform.h files.
+
+There are a few common functions like sprintf and strcasecmp that are slightly
+different on windows (the function name is prefixed with '_').  You can see the full
+list of such functions we needed to patch in the ./src/sd/sd_xplatform.h file.
+
+Another irritating point is that msvc6 does not support variable argument
+macros..we handle that by defining the sd_debug() macros to be functions
+on Windows, where variable numbers of arguments are supported.
+
+Similar issue for the 'inline' directive--where the function was not performance
+critical just drop the 'inline', where it is performance critical but 
+the function can be rewritten as a macro then do that, otherwise, too bad, just
+have to drop the inline and have a function call. 
+
+The getopt style function does not exist on Windows, so we implemented one ourselves.
+
+Fortunately log4c does not right now create threads of it's own...so we did
+not have to deal with that. However, in the future to get xplatform mutexes etc.
+we will need to think about that. 
+
+An important point for windows is that your dll must export it's symbols.
+There are three ways to do this: use /EXPORT on the command line of link.exe, use a .def file
+or use the 'declspec' directives.  We use the latter technique in order to have the 
+exported nature of the function defined at the same place as the function...logical, no ?
+This is the purpose of the LOG4C_API macro--when we compile log4c it is defined
+so that the functions are exported, but when an application links to the log4c dll,
+it is changed to import.  See the src/log4c/config-win32.h file for those
+definitions.
+
+3. Packaging
+------------- 
+
+To do: what would the native windows packaging for a dll look like ?
+
+In the interim, we will just bundle the windows deliverables into the tarball.
+
+References
+==========
+
+* Cygwin home, for oyur shell emulator and Unix like build tools:
+  http://www.cygwin.com/
+
+* Excellent debugging overview on Windows
+  http://developer.mozilla.org/en/docs/Debugging_Mozilla_on_Windows_FAQ -- Excellent Overview
+
+* This group is an excellent resource:
+  http://groups.google.com/group/comp.os.ms-windows.programmer.win32
+
+* The online msdn documents are also very good, for the compiler and linker reference for
+  example.  Start here:
+  http://msdn.microsoft.com/visualc/
+
+* Don't forget other Open Source projects have similar problems so constitute
+  a hugely valuable resource for ideas on solving issues like porting.  In particular
+  the Mozilla NSPR, LDAP SDK for example are similar to log4c in that they furnish a 
+  library.  Firfox for example is hugely x-platform...so one could learn from checking out
+  their make files.  Log4C++ come to that!
+
+--eof
