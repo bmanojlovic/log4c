@@ -1,14 +1,23 @@
 #!/bin/sh
 
+#
+# Run this bootstrap script to 
+# create the configure script and Makefile.in files etc.
+#
+# Once the configure script is there you 
+# can do something like "configure --enable-test=yes"
+# to create the Makefiles...then you can start work!
+#
+
 set -x
 
 if uname -a | egrep -i 'darwin'; then
 	echo "darwin contains no libtoolize\n"
 else
-    libtoolize --automake --copy
+    libtoolize --force --automake --copy
 fi
 
-aclocal -I config $ACLOCAL_FLAGS
-autoheader
+aclocal --force -I config $ACLOCAL_FLAGS
+autoheader --force
 automake --add-missing --copy
-autoconf
+autoconf --force
