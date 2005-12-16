@@ -12,7 +12,7 @@ on Windows XP Home Edition.
 Note that the compilation using the cygwin environment to generate the dll with gcc
 worked very smoothly on Windows (both with and without the --no-cygwin option).
 
-However our goal was to port log4c to the native Windows compiler--this mostly a commercial
+However our goal was to port log4c to the native Windows compiler--this is mostly a commercial
 driver, common practice in industry being to 'go native' on any given platform.
 
 How to compile log4c on Windows
@@ -26,7 +26,7 @@ the Unix world, it just seemed more natural to go this way.
 
 So, go to the unix emulation shell prompt.  You will need the Microsoft Visual Studio
 stuff on your path.  When you install it, it creates a batch file you 
-can run to set up your environment appropriately. and type 'make'.
+can run to set up your environment appropriately. Type 'make'.
 
 The .dll and .lib will be compiled into the ./log4c/log4c directory and the test
 programs into ./log4c/tests.
@@ -47,7 +47,7 @@ packaging.
 1. Build Environment
 --------------------
 
-cygwin works very well indded as a Unix shell emulator and the cygwin online installer is 
+cygwin works very well indeed as a Unix shell emulator and the cygwin online installer is 
 amazing--it allows you to select what you need to download...and then go back later
 to uninstall or install more.  And it just works.
 
@@ -64,7 +64,7 @@ Some useful build tools from cygwin:
 make, nm
 
 Some useful build tools from Microsoft:
-depends.exe (ldd alike), dumpbin.exe (nm alike),  msdev <program name> (start the debugger)
+depends.exe (ldd alike), dumpbin.exe (nm alike),  msdev.exe <program name> (to start the debugger)
 
 2. Code Changes
 ---------------
@@ -73,7 +73,7 @@ You will see '#ifdef _WIN32' type lines in the code.  We tried to factor
 as much as we could into the ./src/sd/sd_xplatform.c and sd/sd_xplatform.h files.
 
 There are a few common functions like sprintf and strcasecmp that are slightly
-different on windows (the function name is prefixed with '_').  You can see the full
+different on windows (the function name is prefixed with '_' on Windows).  You can see the full
 list of such functions we needed to patch in the ./src/sd/sd_xplatform.h file.
 
 Another irritating point is that msvc6 does not support variable argument
@@ -126,7 +126,7 @@ References
 * Don't forget other Open Source projects have similar problems so constitute
   a hugely valuable resource for ideas on solving issues like porting.  In particular
   the Mozilla NSPR, LDAP SDK for example are similar to log4c in that they furnish a 
-  library.  Firfox for example is hugely x-platform...so one could learn from checking out
+  library.  Firefox for example is hugely x-platform...so one could learn from checking out
   their make files.  Log4C++ come to that!
 
 --eof
