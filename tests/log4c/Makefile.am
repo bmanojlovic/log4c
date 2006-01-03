@@ -30,6 +30,7 @@ test_layout_r_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 
 EXTRA_DIST = \
         test_category.ref \
+	test_rc.in \
 	test_rc.ref
 
 bench.mmap:
