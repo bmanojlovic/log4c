@@ -54,6 +54,12 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #define SD_GETTIMEOFDAY(a,b) gettimeofday(a,b)
 #endif
 
+#ifdef _WIN32
+#define SD_ACCESS_READ(a) _access(a,04)
+#else
+#define SD_ACCESS_READ(a) access(a,R_OK)
+#endif
+
 #ifndef _WIN32
 #define DIFF_CMD  "/usr/bin/diff -q"
 #else

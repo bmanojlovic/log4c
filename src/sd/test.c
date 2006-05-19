@@ -53,21 +53,11 @@ static int test_compare(sd_test_t* this, int a_argc, char* a_argv[])
 {
     char cmd[1024];
 
-
-#ifndef _WIN32
-#warning access() routine should be defined in sd_xplatform
-    if (access(this->ref_filename, R_OK) || access(this->out_filename, R_OK))
-      return 1;
+    if (SD_ACCESS_READ(this->ref_filename) ||
+	SD_ACCESS_READ(this->out_filename))
+	return 1;
     
-#else
-    /*
-      cf. http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt__access.2c_._waccess.asp
-    */
-     if (_access(this->ref_filename, 04) == -1 ||
-         _access(this->out_filename, 04) == -1)
-        return 1;
-#endif
-     snprintf(cmd, sizeof(cmd), "%s %s %s 1>/dev/null 2>&1", DIFF_CMD,
+    snprintf(cmd, sizeof(cmd), "%s %s %s 1>/dev/null 2>&1", DIFF_CMD,
              this->ref_filename, this->out_filename);
    
     return ! system(cmd);
