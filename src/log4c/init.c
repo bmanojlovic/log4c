@@ -76,6 +76,8 @@ extern int log4c_init(void)
 		 getenv("HOME") ? getenv("HOME") : "");
         
 	for (i = 0; i < nrcfiles; i++) {
+	    if (SD_ACCESS_READ(rcfiles[i])) continue;
+
 	    if (log4c_load(rcfiles[i]) == -1) {
 		sd_error("loading %s failed", rcfiles[i]);
 		ret = -1;
