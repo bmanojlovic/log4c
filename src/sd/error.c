@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <log4c/defs.h>
 #include <sd/error.h>
+#ifdef HAVE_VARARGS_H
+#include <varargs.h>
+#endif
 
 /*
   These function provide replacements for the analogous functions
@@ -54,7 +57,6 @@ int sd_error_fn(const char *a_format,... ){
 }
 
 void sd_oserror_fn(const char *a_func, const char *a_param){
-    int rc = 0;
 
 #ifdef __SD_DEBUG__
     if ( getenv("SD_ERROR") ){	
@@ -62,5 +64,4 @@ void sd_oserror_fn(const char *a_func, const char *a_param){
     }
 #endif
 
-    return rc;
 }

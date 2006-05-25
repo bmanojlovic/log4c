@@ -116,7 +116,7 @@ extern int sd_factory_list(const sd_factory_t* this, void** a_items,
     sd_hash_iter_t* i;
     int j;
 
-    if (!this || !a_items || a_items <= 0)
+    if (!this || !a_items || a_nitems <= 0)
 	return -1;
 
     for (i = sd_hash_begin(this->fac_hash), j = 0;
