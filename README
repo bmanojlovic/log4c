@@ -61,12 +61,24 @@ This is the distribution of Log4C
    To specify a compiler other than gcc you would do something like this:
        $ ./configure --prefix=/path/of/installation --enable-test CC=/usr/SUNWspro/bin/cc
 
+   For information on compiling on Windows see the README in the msvc6 directory.
+
 * How to for library developers ...
+   
+   When you check out log4c you will need to generate the configure script and so on.  To do this
+   run the bootstrap script:
+	$ ./bootstrap
 
    To compile in extra tracing and messages you would do this:
         $ ./configure --prefix=/path/of/installation --enable-test --enable-debug=yes 
 
+   This will define the __SD_DEBUG__ variable at compile time.  Note that you still
+   need to define the SD_ERROR and SD_DEBUG envronment variables at run time
+   to get the error/debug output.
+
    See './configure --help' for a list of all the configure options
+
+   
 
 Have Fun !!
    
