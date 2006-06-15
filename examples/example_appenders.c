@@ -1,9 +1,10 @@
 /******************************************************************************
  *****************************************************************************/
 
+#include <config.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef HAVA_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #ifdef HAVE_SYSLOG_H
@@ -232,7 +233,7 @@ static int log4c_to_syslog_priority(int a_priority)
 
 /*****************************************************/
 
-
+#ifndef __GNUC__
 int init_example_appenders(){
 
 	int rc = 0;
@@ -250,7 +251,7 @@ int init_example_appenders(){
 	log4c_appender_type_syslog_user.open = syslog_user_open;
 	log4c_appender_type_syslog_user.append = syslog_user_append;
 	log4c_appender_type_syslog_user.close = syslog_user_close;
-#endif
+#else
 	log4c_appender_type_set(&log4c_appender_type_s13_file);
 	log4c_appender_type_s13_file.name = "s13_file";
 	log4c_appender_type_s13_file.open = etf_open;
@@ -262,6 +263,7 @@ int init_example_appenders(){
 	log4c_appender_type_s13_stderr.append = s13_stderr_append;
 	log4c_appender_type_s13_stderr.close = NULL;
 	log4c_appender_type_set(&log4c_appender_type_s13_stderr);
-
+#endif
 	return(rc);			
 }
+#endif

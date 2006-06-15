@@ -80,7 +80,7 @@ const log4c_layout_type_t log4c_layout_type_xml = {
 log4c_layout_type_define(log4c_layout_type_xml);
 #else
 log4c_layout_type_t log4c_layout_type_xml;
-#endif
+
 
 
 /*****************************/
@@ -119,3 +119,5 @@ int init_examples_lib() {
 	init_example_appenders();
 
 }
+
+#endif
