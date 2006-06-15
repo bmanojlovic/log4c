@@ -1,7 +1,8 @@
 
+
 LOG4C_MAJOR_VERSION=1
-LOG4C_MINOR_VERSION=0
-LOG4C_MICRO_VERSION=12
+LOG4C_MINOR_VERSION=1
+LOG4C_MICRO_VERSION=00
 VERSION=$LOG4C_MAJOR_VERSION.$LOG4C_MINOR_VERSION.$LOG4C_MICRO_VERSION${SNAPSHOT:+.$SNAPSHOT}
 LINK_VERSION := $LOG4C_MAJOR_VERSION.$LOG4C_MINOR_VERSION
 
@@ -9,13 +10,20 @@ CL=cl.exe
 LINK=c:/Program\ Files/Microsoft\ Visual\ Studio/VC98/bin/link.exe
 LIBPROG=lib.exe
 
-MSVCLINKFLAGS=/DLL /VERSION:$(LOG4C_MAJOR_VERSION).$(LOG4C_MINOR_VERSION)
-ifeq ($DEBUG,1)
-MSVCFLAGS += /MDd /Yd /Zi
-#-D__SD_DEBUG__ -D__LOG4C_DEBUG__"
-MSVCLINKFLAGS="$MSVCLINKFLAGS /DEBUG"
+MSVCLINKFLAGS=/DLL /VERSION:$(LOG4C_MAJOR_VERSION).$(LOG4C_MINOR_VERSION).$(LOG4C_MICRO_VERSION)
+
+# set DEBUG=1 to set compile time debug options
+DEBUG=1
+ifeq ($(DEBUG),1)
+MSVCFLAGS += /MDd /Yd /Zi 
+# -D__SD_DEBUG__ -D__LOG4C_DEBUG__
+# you also need to set SD_ERROR and SD_DEBUG env variables 
+# at runtilme
+MSVCLINKFLAGS +=/DEBUG
+MSLIBS= MSVCRTD.LIB WINMM.LIB
 else
 MSVCFLAGS += /MD
+MSLIBS= MSVCRT.LIB WINMM.LIB
 endif
 
 SRC_LOC=../src
@@ -35,7 +43,8 @@ all: $(OUT_DIR)/sd $(OUT_DIR)/sd/liblog4c_sd.lib \
 	$(OUT_DIR)/log4c $(OUT_DIR)/log4c/liblog4c.dll \
 	$(OUT_DIR)/tests $(OUT_DIR)/tests/test_category.exe \
 	$(OUT_DIR)/tests/test_rc.exe \
-	$(OUT_DIR)/tests/bench.exe $(OUT_DIR)/tests/test_stream2.exe
+	$(OUT_DIR)/tests/bench.exe $(OUT_DIR)/tests/test_stream2.exe \
+	examples
 
 $(OUT_DIR)/sd/%.obj:$(SRC_LOC)/sd/%.c
 	$(CL) $(INCLUDES) /DLOG4C_EXPORTS /c $(MSVCFLAGS) /Fo$@ $<
@@ -50,6 +59,9 @@ $(OUT_DIR)/tests:
 	mkdir -p $@
 
 $(OUT_DIR)/log4c:
+	mkdir -p  $@
+
+$(OUT_DIR)/examples:
 	mkdir -p  $@
 
 SOURCE_LOG4C_FILES = rc.c init.c appender_type_stream.c \
@@ -73,7 +85,7 @@ $(OUT_DIR)/log4c/liblog4c.dll: $(LOG4C_TARGET_OBJS) \
 		/EXPORT:sd_test_delete /EXPORT:sd_test_run /EXPORT:sd_test_add \
 		/EXPORT:sd_test_new /EXPORT:sd_test_out /EXPORT:sd_test_get_name \
 		/EXPORT:sd_factory_print /EXPORT:sd_debug_fn /EXPORT:sd_error_fn \
-		/LIBPATH:sd $^ MSVCRT.LIB WINMM.LIB
+		/LIBPATH:sd $^ $(MSLIBS)
 
 #	
 #############
@@ -108,5 +120,48 @@ $(OUT_DIR)/tests/bench.exe: $(addprefix $(TEST_LOC)/, $(bench_SOURCES)) \
 	$(filter %.lib,$^)
 	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests
 
-clean:
+#
+#############
+# examples
+######### ####
+
+examples: $(OUT_DIR)/examples $(OUT_DIR)/examples/application_1.exe \
+	$(OUT_DIR)/examples/libexamples.lib $(OUT_DIR)/examples/application_2.exe
+
+EXAMPLES_LOC = ../examples
+
+application_1_SOURCES = application_1.c
+$(OUT_DIR)/examples/application_1.exe: $(addprefix $(EXAMPLES_LOC)/, $(application_1_SOURCES)) \
+	$(OUT_DIR)/log4c/liblog4c.lib
+	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
+	$(filter %.lib,$^) WINMM.LIB
+	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
+ifeq ($(DEBUG),1)
+	mv *.pdb *.ilk $(OUT_DIR)/examples
+endif
+
+EXAMPLE_LIB_SOURCE_FILES := example_formatters.c example_appenders.c
+EXAMPLE_LIB_OBJS :=  $(patsubst %.c,%.obj,$(EXAMPLE_LIB_SOURCE_FILES))
+EXAMPLE_LIB_TARGET_OBJS := $(addprefix $(OUT_DIR)/examples/, $(EXAMPLE_LIB_OBJS))
+
+$(OUT_DIR)/examples/%.obj: $(EXAMPLES_LOC)/%.c
+	$(CL) $(INCLUDES) /c $(MSVCFLAGS) /Fo$@ $<
+
+$(OUT_DIR)/examples/libexamples.lib: $(EXAMPLE_LIB_TARGET_OBJS)
+	$(LIBPROG) /OUT:$@ $^ /EXPORT:init_examples_lib
+
+application_2_SOURCES = application_2.c
+$(OUT_DIR)/examples/application_2.exe: $(addprefix $(EXAMPLES_LOC)/, $(application_2_SOURCES)) \
+    $(OUT_DIR)/examples/libexamples.lib $(OUT_DIR)/log4c/liblog4c.lib
+	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
+	$(filter %.lib,$^) WINMM.LIB
+	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
+ifeq ($(DEBUG),1)
+	mv *.pdb *.ilk $(OUT_DIR)/examples
+endif
+
+clean_examples:
+	rm -rf $(OUT_DIR)/examples
+
+clean: clean_examples
 	rm -rf $(OUT_DIR)/sd $(OUT_DIR)/log4c $(OUT_DIR)/tests

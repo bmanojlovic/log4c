@@ -1,5 +1,5 @@
 
-Last updated:16 Dec 2005
+Last updated:26 May 2005
 
 This is the directory you come to to compile log4c on windows.
 
@@ -33,6 +33,18 @@ programs into ./log4c/tests.
 
 To run a test program type './gotest.sh test_stream2', for example.  To
 see the outputs from the test program go down into the log4c/tests subdirectory.
+
+Some known issues
+=================
+
+1. Configuring log4c via a configuration file doesn't seem
+to work right now.  So to get the examples and tests going you
+need to use the environment variables LOG4C_PRIORITY and
+LOG4C_APPENDER (eg. LOG4C_APPENDER=stdout LOG4C_PRIORITY=TRACE).  
+
+2. Setting an appender defined in the examples lib does  not seem to
+work.  Probably something to do with the order of calling the init routine
+for log4c and the init routine of the examples lib.
 
 Overview of the porting effort of log4c to Windows
 ==================================================
@@ -106,6 +118,7 @@ definitions.
 To do: what would the native windows packaging for a dll look like ?
 
 In the interim, we will just bundle the windows deliverables into the tarball.
+
 
 References
 ==========

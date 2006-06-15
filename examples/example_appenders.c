@@ -3,8 +3,12 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef HAVA_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef HAVE_SYSLOG_H
 #include <syslog.h>
+#endif
 #include <time.h>
 
 #include <log4c.h>
@@ -65,6 +69,7 @@ static int etf_close(log4c_appender_t* this)
     
     return (fp ? fclose(fp) : 0);
 }
+#ifdef __GNUC__
 const log4c_appender_type_t log4c_appender_type_s13_file = {
     name:	"s13_file",
     open:	etf_open,
@@ -73,6 +78,9 @@ const log4c_appender_type_t log4c_appender_type_s13_file = {
 };
 
 log4c_appender_type_define(log4c_appender_type_s13_file);
+#else
+  log4c_appender_type_t log4c_appender_type_s13_file;
+#endif
 
 
 /*******************************************************************************/
@@ -93,7 +101,7 @@ static int s13_stderr_open(log4c_appender_t* this)
     /* fprintf (stderr,"running s13_stderr appender open command now\n"); */
     return 0;
 }
-
+#ifdef __GNUC__
 const log4c_appender_type_t log4c_appender_type_s13_stderr = {
     name:	"s13_stderr",
     open:	s13_stderr_open,
@@ -102,8 +110,12 @@ const log4c_appender_type_t log4c_appender_type_s13_stderr = {
 };
 
 log4c_appender_type_define(log4c_appender_type_s13_stderr);
+#else
+    log4c_appender_type_t log4c_appender_type_s13_stderr;
+#endif
 
 
+#ifndef _WIN32
 /**************************/
 /*    User appender    */
 /**************************/
@@ -132,14 +144,18 @@ static int syslog_user_close(log4c_appender_t*	this)
 }
 
 /*******************************************************************************/
+
+#ifdef __GNUC__
 const log4c_appender_type_t log4c_appender_type_syslog_user = {
     name:	"syslog_user",
     open:	syslog_user_open,
     append:	syslog_user_append,
     close:	syslog_user_close,
 };
-
 log4c_appender_type_define(log4c_appender_type_syslog_user);
+#else
+   log4c_appender_type_t log4c_appender_type_syslog_user;
+#endif
 
 
 /**************************/
@@ -170,15 +186,17 @@ static int syslog_local0_close(log4c_appender_t*	this)
 }
 
 /*******************************************************************************/
+#ifdef __GNUC__
 const log4c_appender_type_t log4c_appender_type_syslog_local0 = {
     name:	"syslog_local0",
     open:	syslog_local0_open,
     append:	syslog_local0_append,
     close:	syslog_local0_close,
 };
-
 log4c_appender_type_define(log4c_appender_type_syslog_local0);
-
+#else
+    log4c_appender_type_t log4c_appender_type_syslog_local0; 
+#endif
 
 
 static int log4c_to_syslog_priority(int a_priority)
@@ -209,3 +227,41 @@ static int log4c_to_syslog_priority(int a_priority)
     return result;
 }
 
+
+#endif /* _WIN32 */
+
+/*****************************************************/
+
+
+int init_example_appenders(){
+
+	int rc = 0;
+
+#ifndef _WIN32	
+	log4c_appender_type_set(&log4c_appender_type_syslog_local0);
+	log4c_appender_type_syslog_local0.name = "syslog_local0";
+	log4c_appender_type_syslog_local0.open = syslog_local0_open;
+	log4c_appender_type_syslog_local0.append = syslog_local0_append;
+	log4c_appender_type_syslog_local0.close = syslog_local0_close;
+	 
+	
+	log4c_appender_type_set(&log4c_appender_type_syslog_user);
+	log4c_appender_type_syslog_user.name = "syslog_user";
+	log4c_appender_type_syslog_user.open = syslog_user_open;
+	log4c_appender_type_syslog_user.append = syslog_user_append;
+	log4c_appender_type_syslog_user.close = syslog_user_close;
+#endif
+	log4c_appender_type_set(&log4c_appender_type_s13_file);
+	log4c_appender_type_s13_file.name = "s13_file";
+	log4c_appender_type_s13_file.open = etf_open;
+	log4c_appender_type_s13_file.append = s13_file_append;
+	log4c_appender_type_s13_file.close = etf_close;
+			
+	log4c_appender_type_s13_stderr.name = "s13_stderr";
+	log4c_appender_type_s13_stderr.open = s13_stderr_open;
+	log4c_appender_type_s13_stderr.append = s13_stderr_append;
+	log4c_appender_type_s13_stderr.close = NULL;
+	log4c_appender_type_set(&log4c_appender_type_s13_stderr);
+
+	return(rc);			
+}

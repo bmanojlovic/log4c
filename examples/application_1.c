@@ -10,9 +10,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#ifndef _WIN32
 #include <sys/time.h>
+#else
+#include <time.h>
+#include <windows.h>
+#include <winsock.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include "log4c.h"
+
+#ifdef _WIN32
+int gettimeofday(struct timeval* tp, void* tzp) {
+    DWORD t;
+    t = timeGetTime();
+    tp->tv_sec = t / 1000;
+    tp->tv_usec = t % 1000;
+    /* 0 indicates that the call succeeded. */
+    return 0;
+}
+
+int sleep(DWORD t){
+
+	Sleep(1000*t);
+}
+#endif /* _WIN32 */
 
 int main(int argc, char** argv)
 {
@@ -55,3 +79,4 @@ int main(int argc, char** argv)
     }
     return 0;
 }
+

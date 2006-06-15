@@ -11,6 +11,7 @@
 #ifdef HAVE_VARARGS_H
 #include <varargs.h>
 #endif
+#include <sd_xplatform.h>
 
 /*
   These function provide replacements for the analogous functions
