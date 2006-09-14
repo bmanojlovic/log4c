@@ -23,7 +23,7 @@
 /******************************************************************************/
 
 typedef XP_UINT64 usec_t;
-static usec_t utime(void)
+static usec_t my_utime(void)
 {
     struct timeval tv;
     
@@ -38,9 +38,9 @@ static usec_t utime(void)
 #define timed_loop(name, confstr, count, expr) \
 { \
     int i; \
-    usec_t u = utime(); \
+    usec_t u = my_utime(); \
     for (i = 0; i < count; i++) (expr); \
-    u -= utime(); \
+    u -= my_utime(); \
     fprintf(stderr, name ": %s elapsed %lld us - average %lld us\n", \
 confstr, -u, - u / count); \
 }

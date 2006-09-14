@@ -26,6 +26,10 @@
 #define LOG4C_INLINE inline
 #define LOG4C_API    extern
 
+#ifdef __HP_cc
+#define inline __inline
+#endif
+
 #ifdef _WIN32
 # include <log4c/config-win32.h>
 #endif

@@ -75,5 +75,8 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #define YY_NO_UNISTD_H
 #endif
 
+#ifdef __HP_cc
+#define inline __inline
+#endif 
 
 #endif

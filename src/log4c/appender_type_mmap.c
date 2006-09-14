@@ -113,7 +113,7 @@ static int mmap_append(log4c_appender_t*	this,
 	return 0;
 
     size = strlen(a_event->evt_rendered_msg);
-    available = (minfo->addr + minfo->length) - minfo->ptr;
+    available = ((char *)minfo->addr + minfo->length) - (char *)minfo->ptr;
 
     if (size > available) {
 	memcpy(minfo->ptr, a_event->evt_rendered_msg, available);
@@ -122,7 +122,7 @@ static int mmap_append(log4c_appender_t*	this,
     }
 
     memcpy(minfo->ptr, a_event->evt_rendered_msg, size);
-    minfo->ptr += size;
+    minfo->ptr = (char *)minfo->ptr + size;
     return 0;
 }
 

@@ -75,7 +75,7 @@ AM_CONDITIONAL(TEST, test x$enable_test = xyes)
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h inttypes.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h inttypes.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h stdarg.h vararg.h getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

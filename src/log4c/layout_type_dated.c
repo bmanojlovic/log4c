@@ -27,7 +27,9 @@ static const char* dated_format(
 
 
 #ifndef _WIN32
+#ifndef __HP_cc
 #warning gmtime() routine should be defined in sd_xplatform
+#endif
     gmtime_r(&a_event->evt_timestamp.tv_sec, &tm);
 #else
     /* xxx Need a CreateMutex/ReleaseMutex or something here

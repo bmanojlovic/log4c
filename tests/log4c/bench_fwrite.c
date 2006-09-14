@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
-#ifdef __GNUC__
+#ifdef HAVE_GETOPT_H
 #include <getopt.h>
 #endif
 
