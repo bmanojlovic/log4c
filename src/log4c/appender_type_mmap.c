@@ -13,7 +13,6 @@ static const char version[] = "$Id$";
 #endif
 
 #include <log4c/appender.h>
-#include <sd/error.h>
 #include <sd/malloc.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -47,13 +46,13 @@ static struct mmap_info* mmap_info_new(const char* a_name)
     minfo->name = a_name;
 
     if ( (minfo->fd = open(minfo->name, O_RDWR, 0644)) == -1) {
-	sd_oserror("open", minfo->name);
+	perror("open");
 	mmap_info_delete(minfo);
 	return NULL;
     }
 
     if (fstat(minfo->fd, &minfo->st) == -1) {
-	sd_oserror("fstat", minfo->name);
+	perror("fstat");
 	mmap_info_delete(minfo);
 	return NULL;
     }
@@ -61,7 +60,7 @@ static struct mmap_info* mmap_info_new(const char* a_name)
     minfo->length = minfo->st.st_size;
 
     if (!minfo->length) {
-	sd_error("file %s is empty", minfo->name);
+	fprintf(stderr, "file %s is empty", minfo->name);
 	mmap_info_delete(minfo);
 	return NULL;
     }
@@ -93,7 +92,7 @@ static int mmap_open(log4c_appender_t* this)
     minfo->addr = mmap(NULL, minfo->length, PROT_READ|PROT_WRITE,
 		      MAP_SHARED, minfo->fd, 0);
     if (minfo->addr == NULL) {
-	sd_oserror("mmap", minfo->name);
+	perror("mmap");
 	mmap_info_delete(minfo);
 	return -1;
     }
@@ -136,7 +135,7 @@ static int mmap_close(log4c_appender_t*	this)
 	return 0;
 
     if (munmap(minfo->addr, minfo->length) == -1)
-	sd_oserror("munmap", minfo->name);
+	perror("munmap");
 
     mmap_info_delete(minfo);
 
