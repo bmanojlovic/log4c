@@ -31,13 +31,15 @@ int sd_debug_fn(const char *a_format,...){
     int rc = 0;   
 #ifdef __SD_DEBUG__ 
     char format_buf[2048];
-
+	
+    va_start(va_args, a_format);
     snprintf(format_buf, sizeof(format_buf),
 	     "[DEBUG] %s \n", a_format);
 
     if ( getenv("SD_DEBUG") ){
 	rc = vfprintf(stderr, format_buf, va_args );
     }
+    va_end(va_args);
 #endif
     return rc;
 }
@@ -49,12 +51,14 @@ int sd_error_fn(const char *a_format,... ){
 #ifdef __SD_DEBUG__
     char format_buf[2048];
 
+    va_start(va_args, a_format);
     snprintf(format_buf, sizeof(format_buf),
 	     "[ERROR] %s \n", a_format);
     
     if ( getenv("SD_ERROR") ){
 	 vfprintf(stderr, format_buf, va_args );
     }
+    va_end(va_args);
 #endif
 
     return rc;
