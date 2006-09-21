@@ -1,8 +1,14 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <log4c/defs.h>
 
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
@@ -17,7 +23,14 @@ extern int optind, opterr, optopt;
 #define MSG_SIZE 128
 #define NUM_MSGS 16
 #define FILENAME "/var/opt/bench_fwrite.out"
+
+
+#ifdef OLD_VARIADIC_MACRO
+#define bench_log(args...) fprintf(stderr, args)
+#else
 #define bench_log(...) fprintf(stderr, __VA_ARGS__)
+#endif /* OLD_VARIADIC_MACRO */
+
 
 #define USAGE  "This program is a log4c developer tool used to compare fwrite() performance against fprintf()\n\n" \
 		       "bench_fwrite [-f] [-n<num msgs] [-w] [-b<buffer size>]\n" \

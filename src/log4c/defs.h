@@ -34,4 +34,12 @@
 # include <log4c/config-win32.h>
 #endif
 
+#ifndef GCC_VERSION
+#define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__)
+#endif /* GCC_VERSION */
+
+#if GCC_VERSION < 2009
+#define OLD_VARIADIC_MACRO 1
+#endif
+
 #endif /* __log4c_defs_h */

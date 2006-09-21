@@ -551,11 +551,23 @@ static LOG4C_INLINE void __log4c_category_trace(const log4c_category_t* a_catego
 }
 
 #ifdef __GNUC__
+
+#ifdef OLD_VARIADIC_MACRO
+
+#  define log4c_category_trace(a_category, a_format, args...) \
+    __log4c_category_trace(a_category, log4c_location "\n" a_format, ##args )
+
+#else
+
 #  define log4c_category_trace(a_category, a_format, ...) \
     __log4c_category_trace(a_category, log4c_location "\n" a_format, ##__VA_ARGS__ )
+
+#endif /* OLD_VARIADIC_MACRO */
+
+
 #else
 #  define log4c_category_trace __log4c_category_trace
-#endif
+#endif  /* __GNUC__ */
 
 /**
  * Helper macro to define static categories.
