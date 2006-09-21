@@ -1,75 +1,56 @@
+static const char version[] = "$Id$";
+
+/* 
+ * See the COPYING file for the terms of usage and distribution.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
 #include <stdio.h>
-
-
 #include <string.h>
 #include <stdlib.h>
-#include <log4c/defs.h>
-#include <sd/error.h>
 #ifdef HAVE_STDARG_H
 #include <stdarg.h>
 #endif
 #ifdef HAVE_VARARGS_H
 #include <varargs.h>
 #endif
+
+#include <sd/error.h>
 #include <sd_xplatform.h>
 
-/*
-  These function provide replacements for the analogous functions
-  on platforms/compilers where a variable number of arguments are not supported
-  such as windows/msvc6 for example.
+int sd_debug(const char *fmt, ...)
+{
+    va_list args;
+    int r;
 
-  See error.h for the preprocessor logic as to whether these get used or not.
+    if (!getenv("SD_DEBUG"))
+	return 0;
 
-*/
+    r = fprintf(stderr, "[DEBUG] ");
+    va_start(args, fmt);
+    r += vfprintf(stderr, fmt, args);
+    va_end(args);
+    r += fprintf(stderr, "\n");
 
-int sd_debug_fn(const char *a_format,...){
-
-    va_list va_args;
-    int rc = 0;   
-#ifdef __SD_DEBUG__ 
-    char format_buf[2048];
-	
-    va_start(va_args, a_format);
-    snprintf(format_buf, sizeof(format_buf),
-	     "[DEBUG] %s \n", a_format);
-
-    if ( getenv("SD_DEBUG") ){
-	rc = vfprintf(stderr, format_buf, va_args );
-    }
-    va_end(va_args);
-#endif
-    return rc;
+    return r;
 }
 
-int sd_error_fn(const char *a_format,... ){
+int sd_error(const char *fmt, ...)
+{
+    va_list args;
+    int r;
 
-    va_list va_args;
-    int rc = 0;
-#ifdef __SD_DEBUG__
-    char format_buf[2048];
+    if (!getenv("SD_ERROR"))
+	return 0;
 
-    va_start(va_args, a_format);
-    snprintf(format_buf, sizeof(format_buf),
-	     "[ERROR] %s \n", a_format);
-    
-    if ( getenv("SD_ERROR") ){
-	 vfprintf(stderr, format_buf, va_args );
-    }
-    va_end(va_args);
-#endif
+    r = fprintf(stderr, "[ERROR] ");
+    va_start(args, fmt);
+    r += vfprintf(stderr, fmt, args);
+    va_end(args);
+    r += fprintf(stderr, "\n");
 
-    return rc;
-}
-
-void sd_oserror_fn(const char *a_func, const char *a_param){
-
-#ifdef __SD_DEBUG__
-    if ( getenv("SD_ERROR") ){	
-	sd_error("%s(%s): #%d %s", a_func, a_param, errno, strerror(errno));
-    }
-#endif
-
+    return r;
 }
