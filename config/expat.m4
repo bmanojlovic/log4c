@@ -4,7 +4,7 @@
 dnl AM_PATH_EXPAT([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 dnl Test for EXPAT, and define EXPAT_CFLAGS and EXPAT_LIBS
 dnl
-AC_DEFUN(AM_PATH_EXPAT,
+AC_DEFUN([AM_PATH_EXPAT],
 [dnl 
 dnl Get the cflags and libraries from the expat-config script
 dnl

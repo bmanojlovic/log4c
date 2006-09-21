@@ -1,5 +1,6 @@
 INCLUDES = \
-        -I$(top_srcdir)/src
+        -I$(top_srcdir)/src \
+	$(EXPAT_CFLAGS)
 
 noinst_LTLIBRARIES  = liblog4c_sd.la
 
@@ -13,13 +14,6 @@ liblog4c_sd_la_SOURCES = \
         malloc.h \
         malloc.c \
         domnode.h \
-        domnode-xml.h \
-        domnode-xml.c \
-        domnode-xml-parser.h \
-	domnode-xml-parser.c \
-        domnode-xml-scanner.h \
-        domnode-xml-scanner.c \
-        domnode.c \
         factory.h \
         factory.c \
         hash.h \
@@ -32,7 +26,21 @@ liblog4c_sd_la_SOURCES = \
         sd_xplatform.c \
 	error.c
 
-liblog4c_sd_la_LDFLAGS =
+liblog4c_sd_la_LDFLAGS = $(EXPAT_LIBS)
+
+if USE_EXPAT
+liblog4c_sd_la_SOURCES += domnode-expat.c
+else
+liblog4c_sd_la_SOURCES += \
+	domnode.c \
+	domnode-xml.h \
+	domnode-xml.c \
+	domnode-xml-parser.h \
+	domnode-xml-parser.c \
+	domnode-xml-scanner.h \
+	domnode-xml-scanner.c
+endif
+
 
 EXTRA_liblog4c_sd_la_SOURCES = \
 	domnode-xml-parser.y \
