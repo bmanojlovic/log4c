@@ -11,11 +11,13 @@ static const char version[] = "$Id$";
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #ifdef HAVE_STDARG_H
-#include <stdarg.h>
-#endif
-#ifdef HAVE_VARARGS_H
-#include <varargs.h>
+#  include <stdarg.h>
+#else
+#  ifdef HAVE_VARARGS_H
+#    include <varargs.h>
+#  endif
 #endif
 
 #include <sd/error.h>
