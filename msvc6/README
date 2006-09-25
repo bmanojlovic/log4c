@@ -18,8 +18,8 @@ driver, common practice in industry being to 'go native' on any given platform.
 Level of Support on Windows
 ===========================
 
-Apart from unix specific appenders like syslog (and maybe mmap) the Windows port
-of log4c provides the same functionality as on unix.
+Some Unix specific appenders like syslog and mmap are naturally not ported to Windows.
+The dated_r layout is not currently ported (but could be).
 
 With the above caveat, all the tests and examples run fine on Windows.
 
