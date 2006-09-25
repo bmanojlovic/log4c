@@ -1,5 +1,5 @@
 
-Last updated:26 May 2005
+Last updated: 26 Sept 2006
 
 This is the directory you come to to compile log4c on windows.
 
@@ -15,6 +15,14 @@ worked very smoothly on Windows (both with and without the --no-cygwin option).
 However our goal was to port log4c to the native Windows compiler--this is mostly a commercial
 driver, common practice in industry being to 'go native' on any given platform.
 
+Level of Support on Windows
+===========================
+
+Apart from unix specific appenders like syslog (and maybe mmap) the Windows port
+of log4c provides the same functionality as on unix.
+
+With the above caveat, all the tests and examples run fine on Windows.
+
 How to compile log4c on Windows
 ===============================
 
@@ -29,22 +37,10 @@ stuff on your path.  When you install it, it creates a batch file you
 can run to set up your environment appropriately. Type 'make'.
 
 The .dll and .lib will be compiled into the ./log4c/log4c directory and the test
-programs into ./log4c/tests.
+programs into ./log4c/tests, the examples into log4c/examples.
 
 To run a test program type './gotest.sh test_stream2', for example.  To
 see the outputs from the test program go down into the log4c/tests subdirectory.
-
-Some known issues
-=================
-
-1. Configuring log4c via a configuration file doesn't seem
-to work right now.  So to get the examples and tests going you
-need to use the environment variables LOG4C_PRIORITY and
-LOG4C_APPENDER (eg. LOG4C_APPENDER=stdout LOG4C_PRIORITY=TRACE).  
-
-2. Setting an appender defined in the examples lib does  not seem to
-work.  Probably something to do with the order of calling the init routine
-for log4c and the init routine of the examples lib.
 
 Overview of the porting effort of log4c to Windows
 ==================================================
@@ -93,7 +89,7 @@ different on windows (the function name is prefixed with '_' on Windows).  You c
 list of such functions we needed to patch in the ./src/sd/sd_xplatform.h file.
 
 Another irritating point is that msvc6 does not support variable argument
-macros..we handle that by defining the sd_debug() macros to be functions
+macros...we handle that by defining the sd_debug() macros to be functions
 on Windows, where variable numbers of arguments are supported.
 
 Similar issue for the 'inline' directive--where the function was not performance
