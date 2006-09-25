@@ -1,4 +1,13 @@
 /******************************************************************************
+ *
+ * Part of the log4c examples.
+ *
+ * Along with example_appenders.c this file is used to create a small
+ * library of custom appenders and formatters.
+ *
+ * This library is excercised using application_2 and a sample log4crc
+ * config file.
+ *
  *****************************************************************************/
 
 #include <stdlib.h>
@@ -95,18 +104,18 @@ int init_example_formatters(){
 	int rc = 0;
 
 
-	log4c_layout_type_set(&log4c_layout_type_xml);
-	log4c_layout_type_xml.name = "s13_xml";
 	log4c_layout_type_xml.format = xml_format;
+	log4c_layout_type_xml.name = "s13_xml";
+	log4c_layout_type_set(&log4c_layout_type_xml);
 
+	log4c_layout_type_none.name = "s13_none";
+	log4c_layout_type_none.format = none_format;
 	log4c_layout_type_set(&log4c_layout_type_none);
-	log4c_layout_type_xml.name = "s13_none";
-	log4c_layout_type_xml.format = none_format;
 
 
+	log4c_layout_type_cat.name = "s13_cat";
+	log4c_layout_type_cat.format = cat_format;
 	log4c_layout_type_set(&log4c_layout_type_cat);
-	log4c_layout_type_xml.name = "s13_cat";
-	log4c_layout_type_xml.format = cat_format;
 
 	return(rc);
 

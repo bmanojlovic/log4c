@@ -1,10 +1,15 @@
 /*
- * This is one of the log4c example programs
+ * This is one of the log4c example programs.
  *
- * In this example, everything is the same as application 1 EXCEPT THE
- * LINKING so here we link against a shared library that has
+ * In this example we link against a shared library that has
  * additional formatters and appenders.  This shows how easy it is to
- * add in more appenders and formatters to the log4c framnework
+ * add in more appenders and formatters to the log4c framework.
+ *
+ * With gcc this file is in fact exactly the same as application_1.c--
+ * only at link time it is linked with a new library.  
+ * With other compilers using explicit initialization, this program needs
+ * to explicitly tell the custom appender/formatter lib to initialize
+ * itself and it's appenders and formatters.
  * 
  */
 
@@ -63,17 +68,28 @@ int main(int argc, char** argv)
     }
  
     /*
-     * You could choose to wrap hte log4c_category_log with some macro
+     * Here, if using explicit initialization (as opposed to implicit via the
+     * init phase of the library) it's important to initialize the custom appenders
+     * and layouts before calling log4c_init().
+     * This is because when log4c_init() parses the config file it looks for the
+     * types mentioned in the file to set up the relations between categories, 
+     * appenders and layouts.  If it does not find a coresponding type in the 
+     * internal hash tables, it creates one with that type name, but the function
+     * table is not set up--so that at log time nothing happens. 
+     *  
+    */
+#ifndef __GNUC__
+	init_examples_lib();
+#endif
+    log4c_init();
+
+    /*
+     * You could choose to wrap the log4c_category_log with some macro
      * that then calls an accessor to get your pre-created category
      * mycat and then logs to it.  But for now we just focus on the fact
      * that we are using log4crc to have this application use the new
      * formatters and appenders we wrote as examples
      */
-
-    log4c_init();
-#ifndef __GNUC__
-	init_examples_lib();
-#endif
     mycat = log4c_category_get("six13log.log.app.application2");
 
     gettimeofday(&start_time, NULL);

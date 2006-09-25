@@ -1,7 +1,18 @@
 /******************************************************************************
+ * 
+ * Part of the log4c examples.
+ *
+ * Along with example_formatters.c this file is used to create a small
+ * library of custom appenders and formatters.
+ *
+ * This library is excercised using application_2 and a sample log4crc 
+ * config file.
+ *
  *****************************************************************************/
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
@@ -239,24 +250,24 @@ int init_example_appenders(){
 	int rc = 0;
 
 #ifndef _WIN32	
-	log4c_appender_type_set(&log4c_appender_type_syslog_local0);
 	log4c_appender_type_syslog_local0.name = "syslog_local0";
 	log4c_appender_type_syslog_local0.open = syslog_local0_open;
 	log4c_appender_type_syslog_local0.append = syslog_local0_append;
 	log4c_appender_type_syslog_local0.close = syslog_local0_close;
+	log4c_appender_type_set(&log4c_appender_type_syslog_local0);
 	 
 	
-	log4c_appender_type_set(&log4c_appender_type_syslog_user);
 	log4c_appender_type_syslog_user.name = "syslog_user";
 	log4c_appender_type_syslog_user.open = syslog_user_open;
 	log4c_appender_type_syslog_user.append = syslog_user_append;
 	log4c_appender_type_syslog_user.close = syslog_user_close;
+	log4c_appender_type_set(&log4c_appender_type_syslog_user);
 #else
-	log4c_appender_type_set(&log4c_appender_type_s13_file);
 	log4c_appender_type_s13_file.name = "s13_file";
 	log4c_appender_type_s13_file.open = etf_open;
 	log4c_appender_type_s13_file.append = s13_file_append;
 	log4c_appender_type_s13_file.close = etf_close;
+	log4c_appender_type_set(&log4c_appender_type_s13_file);
 			
 	log4c_appender_type_s13_stderr.name = "s13_stderr";
 	log4c_appender_type_s13_stderr.open = s13_stderr_open;
