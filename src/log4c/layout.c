@@ -39,7 +39,7 @@ static sd_hash_t* log4c_layout_types(void)
 
     if (!types)
 	types = sd_hash_new(20, NULL);
-
+    
     return types;
 }
 

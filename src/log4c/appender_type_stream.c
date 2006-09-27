@@ -60,4 +60,3 @@ const log4c_appender_type_t log4c_appender_type_stream = {
     stream_close,
 };
 
-log4c_appender_type_define(log4c_appender_type_stream);

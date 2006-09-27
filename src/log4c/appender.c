@@ -10,7 +10,6 @@ static const char version[] = "$Id$";
 
 #include <log4c/appender.h>
 #include <log4c/appender_type_stream.h>
-#include <log4c/appender_type_syslog.h>
 #include <string.h>
 #include <sd/malloc.h>
 #include <sd/factory.h>
@@ -91,10 +90,6 @@ extern log4c_appender_t* log4c_appender_get(const char* a_name)
 	/* build default appenders */
 	log4c_appender_set_udata(log4c_appender_get("stderr"), stderr);
 	log4c_appender_set_udata(log4c_appender_get("stdout"), stdout);
-#ifdef HAVE_SYSLOG_H
-	log4c_appender_set_type(log4c_appender_get("syslog"), 
-				&log4c_appender_type_syslog);
-#endif
     }
 
     return sd_factory_get(log4c_appender_factory, a_name);

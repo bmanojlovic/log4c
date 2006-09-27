@@ -151,8 +151,8 @@ LOG4C_API void log4c_layout_print(
  **/
 #ifdef __GNUC__
 #   define log4c_layout_type_define(a_type) \
-static void __attribute__ ((constructor)) __log4c_init_layout_type_##a_type(void) \
-{ log4c_layout_type_set(&a_type); }
+    typedef int log4c_layout_type_define_##a_type __attribute__((deprecated)); \
+    static log4c_layout_type_define_##a_type __unsused_var __attribute__((unused));
 #else
 #   define log4c_layout_type_define(a_type)
 #endif

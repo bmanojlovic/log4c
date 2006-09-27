@@ -186,8 +186,8 @@ LOG4C_API void log4c_appender_print(const log4c_appender_t* a_appender,
  **/
 #ifdef __GNUC__
 #   define log4c_appender_type_define(a_type) \
-static void __attribute__ ((constructor)) __log4c_init_appender_type_##a_type(void) \
-{ log4c_appender_type_set(&a_type); }
+    typedef int log4c_appender_type_define_##a_type __attribute__((deprecated)); \
+    static log4c_appender_type_define_##a_type __unsused_var __attribute__ ((unused));
 #else
 #   define log4c_appender_type_define(a_type)
 #endif

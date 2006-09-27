@@ -64,4 +64,3 @@ const log4c_layout_type_t log4c_layout_type_dated_r = {
     dated_r_format,
 };
 
-log4c_layout_type_define(log4c_layout_type_dated_r);

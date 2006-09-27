@@ -4,6 +4,7 @@
 
 #include <log4c/appender.h>
 #include <log4c/category.h>
+#include <log4c/init.h>
 #include <log4c/appender_type_stream2.h>
 #include <sd/malloc.h>
 #include <stdio.h>
@@ -64,17 +65,10 @@ int g_noscreen_appenders = 0;
 long g_num_msgs = NUM_MSGS;
 long g_msgsize = MSG_SIZE;
 
-#ifdef __GNUC__
-log4c_category_define(mmap, "mmap");
-log4c_category_define(stream, "stream");
-log4c_category_define(catstream2, "stream2_file");
-log4c_category_define(catstream_file, "stream_file");
-#else
 static log4c_category_t* mmap = NULL;
 static log4c_category_t* stream = NULL;
 static log4c_category_t* catstream2 = NULL;
 static log4c_category_t* catstream_file = NULL;
-#endif
 
 /******************************************************************************/
 void getopts(int argc, char **argv){
@@ -120,14 +114,14 @@ int main(int argc, char* argv[]){
     log4c_appender_t* mmap_appender = log4c_appender_get("bench.mmap");
     log4c_appender_t* stream_appender = log4c_appender_get("stdout");
     log4c_appender_t* stream2_appender = log4c_appender_get("bench.stream2");
-    log4c_appender_t* streamfile_appender =
-	log4c_appender_get("bench.stream");
-#ifndef __GNUC__
+    log4c_appender_t* streamfile_appender = log4c_appender_get("bench.stream");
+
+    log4c_init();
+
     mmap = log4c_category_get("mmap");
     stream = log4c_category_get("stream");
     catstream2 = log4c_category_get("stream2");
     catstream_file = log4c_category_get("stream_file");
-#endif
  
     getopts(argc, argv);
 
@@ -179,6 +173,9 @@ int main(int argc, char* argv[]){
 	      (flags & LOG4C_STREAM2_UNBUFFERED ? "unbuffered -":"buffered -"),
 	       g_num_msgs, 
 	       (log4c_category_error(catstream2, "%s", buffer)));    
+
+    log4c_fini();
+
     return 0;
 }
 

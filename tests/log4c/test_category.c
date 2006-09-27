@@ -22,19 +22,50 @@ static const char version[] = "$Id$";
 #include <log4c/appender.h>
 #include <log4c/layout.h>
 #include <log4c/category.h>
+#include <log4c/init.h>
 #include <sd/test.h>
 #include <sd/factory.h>
 #include <stdio.h>
+#include <string.h>
 
-#ifdef __GNUC__
-log4c_category_define(root, "root");
-log4c_category_define(sub1, "sub1");
-log4c_category_define(sun1sub2, "sub1.sub2")
-#else
 static log4c_category_t* root = NULL;
 static log4c_category_t* sub1 = NULL;
 static log4c_category_t* sun1sub2 = NULL;
-#endif
+
+/*******************************************************************************/
+static const char* test_format(
+    const log4c_layout_t*  	a_layout,
+    const log4c_logging_event_t*a_event)
+{
+    static char buffer[1024];
+
+    snprintf(buffer, sizeof(buffer), "logging %d bytes.\n",  strlen(a_event->evt_msg));
+    return buffer;
+}
+
+/*******************************************************************************/
+static const log4c_layout_type_t log4c_layout_type_test = {
+  "test",
+  test_format,
+};
+
+/*******************************************************************************/
+static int test_append(log4c_appender_t* this, 
+		       const log4c_logging_event_t* a_event)
+{
+    FILE* fp = log4c_appender_get_udata(this);
+
+    return fprintf(fp, "[%s] %s", log4c_appender_get_name(this),
+		   a_event->evt_rendered_msg);
+}
+
+/*******************************************************************************/
+static const log4c_appender_type_t log4c_appender_type_test = {
+  "test",
+  NULL,
+  test_append,
+  NULL,
+};
 
 /******************************************************************************/
 static void log4c_print(FILE* a_fp)
@@ -76,16 +107,16 @@ static int test1(sd_test_t* a_test, int argc, char* argv[])
     log4c_appender_t* appender1 = log4c_appender_get("appender1");
     log4c_appender_t* appender2 = log4c_appender_get("appender2");
 
-    log4c_layout_set_type(layout1, log4c_layout_type_get("test"));
-    log4c_layout_set_type(layout2, log4c_layout_type_get("test"));
+    log4c_layout_set_type(layout1, &log4c_layout_type_test);
+    log4c_layout_set_type(layout2, &log4c_layout_type_test);
 
     log4c_appender_set_udata(appender, sd_test_out(a_test));
 
-    log4c_appender_set_type(appender1,   log4c_appender_type_get("test"));
+    log4c_appender_set_type(appender1,   &log4c_appender_type_test);
     log4c_appender_set_layout(appender1, layout1);
     log4c_appender_set_udata(appender1,  sd_test_out(a_test));
 
-    log4c_appender_set_type(appender2,   log4c_appender_type_get("test"));
+    log4c_appender_set_type(appender2,   &log4c_appender_type_test);
     log4c_appender_set_layout(appender2, layout2);
     log4c_appender_set_udata(appender2,  sd_test_out(a_test));
 
@@ -169,15 +200,11 @@ int main(int argc, char* argv[])
   int ret;
   sd_test_t* t = sd_test_new(argc, argv);
 
-  /* If we're not using GNU C then initialize our test categories
-     explicitly
-  */
+  log4c_init();
 
-#ifndef __GNUC__
   root = log4c_category_get("root");
   sub1 = log4c_category_get("sub1");
   sun1sub2 = log4c_category_get("sub1.sub2"); 
-#endif
 
   fprintf(stderr, 
 	  "\nNote: there's a known issue with this program double closing \n"\
@@ -199,5 +226,6 @@ int main(int argc, char* argv[])
 
     sd_test_delete(t);
 
+    log4c_fini();
     return ! ret;
 }

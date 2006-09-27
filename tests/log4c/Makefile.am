@@ -5,10 +5,7 @@ INCLUDES = \
 noinst_PROGRAMS = test_category test_rc bench bench_fwrite \
 	test_stream2 test_layout_r
 
-test_category_SOURCES = \
-	layout_test.c \
-	appender_test.c \
-	test_category.c
+test_category_SOURCES = test_category.c
 test_category_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
 
 test_rc_SOURCES = test_rc.c

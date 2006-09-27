@@ -19,25 +19,43 @@ static const char version[] = "$Id$";
 #include <sd/sd_xplatform.h>
 #include <stdlib.h>
 
-#ifndef __GNUC__
 #include <appender_type_stream.h>
 #include <appender_type_stream2.h>
+#include <appender_type_syslog.h>
+#include <appender_type_mmap.h>
 #include <layout_type_basic.h>
 #include <layout_type_dated.h>
-#endif
+#include <layout_type_basic_r.h>
+#include <layout_type_dated_r.h>
 
 #if defined(__LOG4C_DEBUG__) && defined(__GLIBC__)
 #include <mcheck.h>
 #endif
 
-/**
- * @bug (hpux) the constructor needs to be first extern symbol. 
- * Otherwise, it is not called .. why ???
- */
+static const log4c_layout_type_t * const layout_types[] = {
+    &log4c_layout_type_basic,
+    &log4c_layout_type_dated,
+    &log4c_layout_type_basic_r,
+    &log4c_layout_type_dated_r    
+};
+static size_t nlayout_types = sizeof(layout_types) / sizeof(layout_types[0]);
+
+static const log4c_appender_type_t * const appender_types[] = {
+    &log4c_appender_type_stream,
+    &log4c_appender_type_stream2,
+    &log4c_appender_type_mmap,
+#ifdef HAVE_SYSLOG_H
+    &log4c_appender_type_syslog    
+#endif
+};
+static size_t nappender_types = sizeof(appender_types) / sizeof(appender_types[0]);
+
+static int log4c_is_init = 0;
 
 /******************************************************************************/
 extern int log4c_init(void)
 {    
+    int i;
     int ret = 0;
 
     /* activate GLIBC allocation debugging */
@@ -45,21 +63,18 @@ extern int log4c_init(void)
     mtrace();
 #endif
 
-    {
-	/**
-	 * @bug init default appenders/layouts/types ?? conflicts with
-	 * constructors.
-	 */	
-    }
+    if (log4c_is_init)
+	return 0;
 
-    /* Initialize default appenders and layouts if not GNU cc */
-#ifndef __GNUC__
-    log4c_appender_type_set(&log4c_appender_type_stream);
-    log4c_appender_type_set(&log4c_appender_type_stream2);
-    log4c_layout_type_set(&log4c_layout_type_basic);
-    log4c_layout_type_set(&log4c_layout_type_dated);
-#endif
-    
+    log4c_is_init++;
+
+    /* Initialize default layouts and appenders */
+    for (i = 0; i < nlayout_types; i++) 
+	log4c_layout_type_set(layout_types[i]);
+
+    for (i = 0; i < nappender_types; i++) 
+	log4c_appender_type_set(appender_types[i]);
+
     /* load configuration files */
     {
 	static char rcfiles[][256] = {
@@ -110,6 +125,11 @@ extern int log4c_fini(void)
     if (log4c_rc->config.nocleanup)
 	return -1;
 
+    if (!log4c_is_init)
+	return 0;
+
+    log4c_is_init--;
+
     sd_debug("cleaning up");
 
     if (log4c_category_factory) {
@@ -138,11 +158,11 @@ extern int log4c_fini(void)
 #ifdef __GNUC__
 extern void __attribute__ ((constructor)) __log4c_init(void)
 {    
-    log4c_init();
+    printf("please make sure log4c_init() is called to initialize log4c");
 }
 
 extern void __attribute__ ((destructor)) __log4c_fini(void)
 {    
-    log4c_fini();
+    printf("please make sure log4c_fini() is called to clean up log4c internals");
 }
 #endif

@@ -34,4 +34,3 @@ const log4c_layout_type_t log4c_layout_type_basic = {
     basic_format,
 };
 
-log4c_layout_type_define(log4c_layout_type_basic);

@@ -574,13 +574,11 @@ static LOG4C_INLINE void __log4c_category_trace(const log4c_category_t* a_catego
  *
  * @param a_category the log4c_category_t pointer name
  * @param a_name the category name
- * @warning needs GCC support
  **/
 #ifdef __GNUC__
 #   define log4c_category_define(a_category, a_name) \
-static log4c_category_t* a_category = NULL; \
-static void __attribute__ ((constructor)) __log4c_init_category##a_category(void) \
-{ a_category = log4c_category_get(a_name); }
+    typedef log4c_category_t log4c_category_define_##a_category __attribute__((deprecated)); \
+    static log4c_category_define_##a_category* a_category  __attribute__ ((unused)) = NULL;
 #else
 #   define log4c_category_define(a_category, a_name)
 #endif

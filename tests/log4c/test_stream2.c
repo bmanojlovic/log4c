@@ -13,19 +13,15 @@ static const char version[] = "$Id$";
 
 #include <log4c/layout.h>
 #include <log4c/category.h>
+#include <log4c/init.h>
 #include <sd/test.h>
 #include <sd/factory.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#ifdef __GNUC__
-log4c_category_define(root, "root");
-log4c_category_define(sub1, "sub1");
-log4c_category_define(sub1sub2, "sub1.sub2")
-#else
 static log4c_category_t* root = NULL;
 static log4c_category_t* sub1 = NULL;
 static log4c_category_t* sub1sub2 = NULL;
-#endif
 
 /******************************************************************************
 The stream2 appender is used as follows:
@@ -111,9 +107,9 @@ static int test1(sd_test_t* a_test, int argc, char* argv[])
   
     stream2_appender = 
 	log4c_appender_get("stream2_appender");
-    log4c_appender_set_type(stream2_appender,
+    log4c_appender_set_type(stream2_appender, 
 			    log4c_appender_type_get("stream2"));
-    log4c_stream2_set_fp(stream2_appender,sd_test_out(a_test));
+    log4c_stream2_set_fp(stream2_appender, sd_test_out(a_test));
     log4c_category_set_appender(root, stream2_appender);
         
     foo(root, error);
@@ -135,8 +131,7 @@ static int test2(sd_test_t* a_test, int argc, char* argv[])
   
     stream2_appender = 
 	log4c_appender_get("stream2_appender");
-    log4c_appender_set_type(stream2_appender,
-			    log4c_appender_type_get("stream2"));
+    log4c_appender_set_type(stream2_appender, &log4c_appender_type_stream2);
     log4c_stream2_set_flags(stream2_appender,LOG4C_STREAM2_UNBUFFERED);
     flags = log4c_stream2_get_flags(stream2_appender);
     fprintf(sd_test_out(a_test), "stream2 flags '%d'\n",flags);
@@ -228,25 +223,18 @@ static int test4(sd_test_t* a_test, int argc, char* argv[])
 /******************************************************************************/
 int main(int argc, char* argv[])
 {    
-  int ret;
-  sd_test_t* t = sd_test_new(argc, argv);
-
-  /* 
-     If we're not using GNU C then initialize log4c and our test categories
-     explicitly.
-  */
-#ifndef __GNUC__
-
-  if ( log4c_init() > 0 ) {
-    fprintf(stderr, "Failed to init log4c...exiting\n");
-    exit(1);
-  }
-  
-  root = log4c_category_get("root");
-  sub1 = log4c_category_get("sub1");
-  sub1sub2 = log4c_category_get("sub1.sub2"); 
-#endif
-  
+    int ret;
+    sd_test_t* t = sd_test_new(argc, argv);
+    
+    if ( log4c_init() > 0 ) {
+	fprintf(stderr, "Failed to init log4c...exiting\n");
+	exit(1);
+    }
+    
+    root = log4c_category_get("root");
+    sub1 = log4c_category_get("sub1");
+    sub1sub2 = log4c_category_get("sub1.sub2"); 
+    
     sd_test_add(t, test0);    
     sd_test_add(t, test1);
     sd_test_add(t, test2);   
@@ -256,6 +244,8 @@ int main(int argc, char* argv[])
     ret = sd_test_run(t, argc, argv);
 
     sd_test_delete(t);
+
+    log4c_fini();
 
     return ! ret;
 }

@@ -19,21 +19,18 @@ static const char version[] = "$Id$";
  *
  */
 
+#include <log4c/layout_type_basic_r.h>
 #include <log4c/appender.h>
-#include <log4c/layout.h>
 #include <log4c/category.h>
+#include <log4c/init.h>
+
 #include <log4c/rc.h>
 #include <sd/test.h>
 #include <sd/factory.h>
 #include <stdio.h>
 
-#ifdef __GNUC__
-log4c_category_define(root, "root");
-log4c_category_define(sub1, "sub1");
-#else
 static log4c_category_t* root = NULL;
 static log4c_category_t* sub1 = NULL;
-#endif
 
 /******************************************************************************/
 static void log4c_print(FILE* a_fp)
@@ -52,7 +49,7 @@ static int test0(sd_test_t* a_test, int argc, char* argv[])
     log4c_layout_t*   layout1   = log4c_layout_get("layout1");
     log4c_appender_t* appender1 = log4c_appender_get("appender1");
 
-    log4c_layout_set_type(layout1, log4c_layout_type_get("basic_r"));
+    log4c_layout_set_type(layout1, &log4c_layout_type_basic_r);
 
     log4c_appender_set_layout(appender1, layout1);
     log4c_appender_set_udata(appender1,  sd_test_out(a_test));
@@ -87,10 +84,10 @@ int main(int argc, char* argv[])
        explicitly
     */
 
-#ifndef __GNUC__
     root = log4c_category_get("root");
     sub1 = log4c_category_get("sub1");
-#endif
+
+    log4c_init();
 
     fprintf(stderr,
 	    "\nNote: there's a known issue with this program double closing \n"	\
@@ -107,6 +104,8 @@ int main(int argc, char* argv[])
     ret = sd_test_run(t, argc, argv);
 
     sd_test_delete(t);
+
+    log4c_fini();
 
     return ! ret;
 }
