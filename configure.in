@@ -93,6 +93,9 @@ AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime sbrk])
 
+###############
+# Documentation 
+#
 # Checks for doxygen
 AC_PATH_PROG(DOXYGEN, doxygen, )
 if test x$DOXYGEN = x; then
@@ -103,7 +106,7 @@ AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 #
 # Checks for the graphviz tool 'dot' used to generate graphs
 # of the class dependencies.  Probably not useful
-# for c programs.  If we don't  find dot in the pqth
+# for c programs.  If we don't  find dot in the path
 # then set HAVE_DOT to NO in Doxyfile.in
 #
 HAVE_DOT=YES
@@ -113,11 +116,28 @@ if test x$DOT = x; then
 fi
 AC_SUBST(HAVE_DOT)
 
+# Similar for latex
+HAVE_LATEX=YES
+AC_PATH_PROG(LATEX, latex, )
+if test x$LATEX = x; then
+	HAVE_LATEX=NO
+fi
+# This variable is used to turn LATEX on and off in the Doxyfile
+AC_SUBST(HAVE_LATEX)
+# This variable is used in doc/Makefile.am to set the target to make
+# the doc with latex or not
+AM_CONDITIONAL(HAVE_LATEX, test x$HAVE_LATEX = xYES)
 #
-# Test for libexpat:
+# Documentation
+###############
+
+###################
+# Test for libexpat
 #
 AM_PATH_EXPAT(1.95.1)
 AM_CONDITIONAL(USE_EXPAT, test x$with_expat != x)
+# 
+###################
 
 AC_CONFIG_FILES([
     Makefile

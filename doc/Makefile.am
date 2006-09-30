@@ -11,11 +11,21 @@ docfiles = \
 	$(PACKAGE).pdf \
 	log4cHowto.html
 
+if HAVE_LATEX
+  targets = Doxyfile main.doc $(PACKAGE).pdf
+else
+  targets = Doxyfile main.doc
+endif
 
-all-local: $(PACKAGE).pdf
+all-local: $(targets)
+	@DOXYGEN@	
 
-$(PACKAGE).pdf: Doxyfile main.doc
-	@DOXYGEN@
+#
+# If you tell Doxygen to generate latex via the GENERATE_LATEX option
+# in Doxyfile then it creates a 'latex' subdirectory containing
+# a Makefile to generate the stuff.
+#
+$(PACKAGE).pdf:
 	$(MAKE) -C ./latex pdf
 	cp -f ./latex/refman.pdf $(PACKAGE).pdf
 
