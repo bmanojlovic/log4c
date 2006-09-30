@@ -93,15 +93,29 @@ AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime sbrk])
 
-AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
-
-
 # Checks for doxygen
 AC_PATH_PROG(DOXYGEN, doxygen, )
 if test x$DOXYGEN = x; then
 	enable_doc=no
 fi
+AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 
+#
+# Checks for the graphviz tool 'dot' used to generate graphs
+# of the class dependencies.  Probably not useful
+# for c programs.  If we don't  find dot in the pqth
+# then set HAVE_DOT to NO in Doxyfile.in
+#
+HAVE_DOT=YES
+AC_PATH_PROG(DOT, dot, )
+if test x$DOT = x; then
+	HAVE_DOT=NO
+fi
+AC_SUBST(HAVE_DOT)
+
+#
+# Test for libexpat:
+#
 AM_PATH_EXPAT(1.95.1)
 AM_CONDITIONAL(USE_EXPAT, test x$with_expat != x)
 
