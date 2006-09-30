@@ -8,8 +8,12 @@ AC_DEFUN([AM_PATH_EXPAT],
 [dnl 
 dnl Get the cflags and libraries from the expat-config script
 dnl
-AC_ARG_WITH(expat-prefix,[  --with-expat=PFX   Prefix where EXPAT is installed (optional)])
-AC_ARG_ENABLE(expattest, [  --disable-expattest       Do not try to compile and run a test EXPAT program],
+AC_ARG_WITH(expat-prefix,
+    AC_HELP_STRING([--with-expat=PFX],
+              	    [LOG4C: Prefix where EXPAT is installed (optional)]))
+AC_ARG_ENABLE(expattest,
+    AC_HELP_STRING([--disable-expattest],
+      	      	    [LOG4C: Do not try to compile and run a test EXPAT program]),
 		    , enable_expattest=yes)
 
   if test x$with_expat != x ; then

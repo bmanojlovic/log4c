@@ -60,15 +60,20 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 
-# declare --enable-* args 
-AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging [default=no]])
-AC_ARG_ENABLE(test, [  --enable-test       compile test programs])
-AC_ARG_ENABLE(doc, [  --enable-doc       create documentation])
-
+##########################
+# Enable debug if required
+# 
+AC_ARG_ENABLE(debug,
+      AC_HELP_STRING([--enable-debug], [LOG4C: turn on debugging (default=no)]))
 if test x$enable_debug = xyes; then
     CFLAGS="$CFLAGS -D__SD_DEBUG__ -D__LOG4C_DEBUG__"
 fi
 
+#####################################
+# Enable test compilation if required
+#
+AC_ARG_ENABLE(test,
+       AC_HELP_STRING([--enable-test], [LOG4C: compile test programs (default=no)]))
 AM_CONDITIONAL(TEST, test x$enable_test = xyes)
 
 # Checks for libraries.
@@ -96,6 +101,10 @@ AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasec
 ###############
 # Documentation 
 #
+AC_ARG_ENABLE(doc, 
+      AC_HELP_STRING([--enable-doc], 
+      	[LOG4C: create documentation with doxygen--html/man/pdf (default=no)]))
+	
 # Checks for doxygen
 AC_PATH_PROG(DOXYGEN, doxygen, )
 if test x$DOXYGEN = x; then
