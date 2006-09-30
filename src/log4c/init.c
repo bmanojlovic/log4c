@@ -35,15 +35,20 @@ static const char version[] = "$Id$";
 static const log4c_layout_type_t * const layout_types[] = {
     &log4c_layout_type_basic,
     &log4c_layout_type_dated,
+/* These appenders are not yet ported with msvc */
+#ifndef _WIN32
     &log4c_layout_type_basic_r,
     &log4c_layout_type_dated_r    
+#endif
 };
 static size_t nlayout_types = sizeof(layout_types) / sizeof(layout_types[0]);
 
 static const log4c_appender_type_t * const appender_types[] = {
     &log4c_appender_type_stream,
     &log4c_appender_type_stream2,
+#ifdef HAVE_MMAP
     &log4c_appender_type_mmap,
+#endif    
 #ifdef HAVE_SYSLOG_H
     &log4c_appender_type_syslog    
 #endif
