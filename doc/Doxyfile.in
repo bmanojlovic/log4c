@@ -142,7 +142,7 @@ PERL_PATH              = /usr/bin/perl
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool   
 #---------------------------------------------------------------------------
-HAVE_DOT               = YES
+HAVE_DOT               = @HAVE_DOT@
 CLASS_GRAPH            = YES
 COLLABORATION_GRAPH    = YES
 TEMPLATE_RELATIONS     = NO
