@@ -78,10 +78,10 @@ int main(int argc, char** argv)
      * table is not set up--so that at log time nothing happens. 
      *  
     */
-#ifndef __GNUC__
-	init_examples_lib();
-#endif
-    log4c_init();
+
+  init_examples_lib();
+
+  log4c_init();
 
     /*
      * You could choose to wrap the log4c_category_log with some macro

@@ -33,17 +33,12 @@ static const char* cat_format(
 
     return buffer;
 }
-#ifdef __GNUC__
+
 const log4c_layout_type_t log4c_layout_type_cat  = {
-    name:       "s13_cat",
-    format:     cat_format,
+   "s13_cat",
+   cat_format,
 };
 
-log4c_layout_type_define(log4c_layout_type_cat);
-
-#else
-log4c_layout_type_t log4c_layout_type_cat;
-#endif
 
 static const char* none_format(
     const log4c_layout_t*       a_layout,
@@ -52,15 +47,11 @@ static const char* none_format(
     static char buffer[4096];
     return buffer;
 }
-#ifdef __GNUC__
-const log4c_layout_type_t log4c_layout_type_none  = {
-    name:       "s13_none",
-    format:     none_format,
-};
-#else
-log4c_layout_type_t log4c_layout_type_none;
-#endif
 
+const log4c_layout_type_t log4c_layout_type_none  = {
+  "s13_none",
+  none_format,
+};
 
 
 /**********************************************************************/
@@ -81,14 +72,12 @@ static const char* xml_format(
 
     return buffer;
 }
-#ifdef __GNUC__
+
 const log4c_layout_type_t log4c_layout_type_xml = {
-    name:       "s13_xml",
-    format:     xml_format,
+    "s13_xml",
+     xml_format,
 };
-log4c_layout_type_define(log4c_layout_type_xml);
-#else
-log4c_layout_type_t log4c_layout_type_xml;
+
 
 
 
@@ -97,27 +86,22 @@ log4c_layout_type_t log4c_layout_type_xml;
  * Here provide an init routine for this lib 
  *
 ******************************/
+static const log4c_layout_type_t * const layout_types[] = {
+    &log4c_layout_type_xml,
+    &log4c_layout_type_none,
+    &log4c_layout_type_cat    
+};
+static size_t nlayout_types = sizeof(layout_types) / sizeof(layout_types[0]);
 
 
 int init_example_formatters(){
 
-	int rc = 0;
+  int rc,i = 0;
+	
+  for (i = 0; i < nlayout_types; i++) 
+     log4c_layout_type_set(layout_types[i]);
 
-
-	log4c_layout_type_xml.format = xml_format;
-	log4c_layout_type_xml.name = "s13_xml";
-	log4c_layout_type_set(&log4c_layout_type_xml);
-
-	log4c_layout_type_none.name = "s13_none";
-	log4c_layout_type_none.format = none_format;
-	log4c_layout_type_set(&log4c_layout_type_none);
-
-
-	log4c_layout_type_cat.name = "s13_cat";
-	log4c_layout_type_cat.format = cat_format;
-	log4c_layout_type_set(&log4c_layout_type_cat);
-
-	return(rc);
+  return(rc);
 
 }
 
@@ -129,5 +113,4 @@ int init_examples_lib() {
 
 }
 
-#endif
 
