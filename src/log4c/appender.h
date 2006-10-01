@@ -60,10 +60,26 @@ typedef struct log4c_appender_type {
 LOG4C_API const log4c_appender_type_t* log4c_appender_type_get(const char* a_name);
 
 /**
- * Set an appender type.
+ * Use this function to register an appender type with log4c.
+ * Once this is done you may refer to this type by name both 
+ * programmatically and in the log4c
+ * configuration file.
  *
  * @param a_type a pointer to the new appender type to set.
  * @returns a pointer to the previous appender type of same name.
+ * 
+ * Example code fragment: 
+ * @code
+ * 
+ * const log4c_appender_type_t log4c_appender_type_s13_file = {
+ *   "s13_file",
+ *   s13_file_open,
+ *   s13_file_append,
+ *   s13_file_close,
+ * };
+ *  
+ *  log4c_appender_type_set(&log4c_appender_type_s13_file);
+ * @endcode
  **/
 LOG4C_API const log4c_appender_type_t* log4c_appender_type_set(
     const log4c_appender_type_t* a_type);
@@ -182,7 +198,12 @@ LOG4C_API void log4c_appender_print(const log4c_appender_t* a_appender,
  * Helper macro to define static appender types.
  *
  * @param a_type the log4c_appender_type_t object to define
- * @warning needs GCC support
+ * @warning needs GCC support: otherwise this macro does nothing
+ * @deprecated This macro, and the static initialialization
+ * of appenders in general, is deprecated. Use rather
+ * the log4c_appender_type_set() function to initialize your appenders
+ * before calling log4c_init() 
+ *
  **/
 #ifdef __GNUC__
 #   define log4c_appender_type_define(a_type) \

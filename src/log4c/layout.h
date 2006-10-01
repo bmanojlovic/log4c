@@ -58,10 +58,24 @@ typedef struct log4c_layout_type {
 LOG4C_API const log4c_layout_type_t* log4c_layout_type_get(const char* a_name);
 
 /**
- * Set an layout type.
+ * Use this function to register a layout type with log4c.
+ * Once this is done you may refer to this type by name both 
+ * programatically and in the log4c configuration file.
  *
  * @param a_type a pointer to the new layout type to set.
  * @returns a pointer to the previous layout type of same name.
+ *
+ * Example code fragment: 
+ * @code
+ * 
+ * const log4c_layout_type_t log4c_layout_type_xml = {
+ *    "s13_xml",
+ *    xml_format,
+ * };
+ *  
+ * log4c_layout_type_set(&log4c_layout_type_xml);
+ *
+ * @endcode
  **/
 LOG4C_API const log4c_layout_type_t* log4c_layout_type_set(
     const log4c_layout_type_t* a_type);
@@ -104,6 +118,7 @@ LOG4C_API const log4c_layout_type_t* log4c_layout_get_type(
  * @param a_layout the log4c_layout_t object
  * @param a_type the new layout type
  * @return the previous layout type
+ *
  **/
 LOG4C_API const log4c_layout_type_t* log4c_layout_set_type(
     log4c_layout_t* a_layout,
@@ -147,7 +162,11 @@ LOG4C_API void log4c_layout_print(
  * Helper macro to define static layout types.
  *
  * @param a_type the log4c_layout_type_t object to define
- * @warning needs GCC support
+ * @warning needs GCC support: otherwise this macro does nothing
+ * @deprecated This macro, and the static initialialization
+ * of layouts in general, is deprecated. Use rather
+ * the log4c_layout_type_set() function to initialize your appenders
+ * before calling log4c_init() 
  **/
 #ifdef __GNUC__
 #   define log4c_layout_type_define(a_type) \

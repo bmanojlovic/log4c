@@ -111,7 +111,7 @@ LOG4C_API FILE * log4c_stream2_get_fp(log4c_appender_t* this);
 /**
  * Set the flags for this appender.
  * @param this a pointer to the appender
- * @param the flags to set. These will overwrite the existing flags.
+ * @param flags ar teh flags to set. These will overwrite the existing flags.
  * Currently supported flags:  LOG4C_STREAM2_UNBUFFERED
  * 
  */

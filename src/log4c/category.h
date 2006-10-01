@@ -49,7 +49,7 @@ LOG4C_API log4c_category_t* log4c_category_get(const char* a_name);
  * Fill in an array with the log4c categories.
  *
  * @param a_cats array of categories that will be filled
- * @param a_name number of categories in the array
+ * @param a_ncats number of categories in the array
  *
  * @returns -1 if it fails or the number of available categories in
  * log4c.

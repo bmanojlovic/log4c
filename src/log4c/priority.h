@@ -25,18 +25,18 @@ __LOG4C_BEGIN_DECLS
  * Predefined Levels of priorities. These correspond to the priority levels
  * used by syslog(3).
  **/
-typedef enum {
-    /** . */	LOG4C_PRIORITY_FATAL	= 000,
-    /** . */	LOG4C_PRIORITY_ALERT	= 100, 
-    /** . */	LOG4C_PRIORITY_CRIT	= 200, 
-    /** . */	LOG4C_PRIORITY_ERROR	= 300, 
-    /** . */	LOG4C_PRIORITY_WARN	= 400, 
-    /** . */	LOG4C_PRIORITY_NOTICE	= 500, 
-    /** . */	LOG4C_PRIORITY_INFO	= 600, 
-    /** . */	LOG4C_PRIORITY_DEBUG	= 700,
-    /** . */	LOG4C_PRIORITY_TRACE	= 800,
-    /** . */	LOG4C_PRIORITY_NOTSET	= 900,
-    /** . */	LOG4C_PRIORITY_UNKNOWN	= 1000
+ typedef enum {
+    /** fatal */	LOG4C_PRIORITY_FATAL	= 000, 
+    /** alert */	LOG4C_PRIORITY_ALERT	= 100, 
+    /** crit */	      	LOG4C_PRIORITY_CRIT	= 200, 
+    /** error */	LOG4C_PRIORITY_ERROR	= 300, 
+    /** warn */	      	LOG4C_PRIORITY_WARN	= 400, 
+    /** notice */	LOG4C_PRIORITY_NOTICE	= 500, 
+    /** info */	      	LOG4C_PRIORITY_INFO	= 600, 
+    /** debug */	LOG4C_PRIORITY_DEBUG	= 700,
+    /** trace */	LOG4C_PRIORITY_TRACE	= 800,
+    /** notset */	LOG4C_PRIORITY_NOTSET	= 900,
+    /** unknown */	LOG4C_PRIORITY_UNKNOWN	= 1000
 } log4c_priority_level_t;
 
 /**
