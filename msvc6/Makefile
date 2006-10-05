@@ -15,6 +15,9 @@ VC_LOCATION=c:/Program\ Files/Microsoft\ Visual\ Studio/VC98
 #VC_LOCATION=c:/Program\ Files/Microsoft\ Visual\ Studio\ 8/VC
 SDK_LOCATION=c:/Program\ Files/Microsoft\ Platform\ SDK
 
+# set DEBUG=1 to set compile time debug options
+DEBUG=1
+
 # Set USE_EXPAT to 1 to use expat to parse the xml conf file.
 # Otherwise a hard coded lex//yacc is used--it works but, uggh!
 USE_EXPAT=0
@@ -40,22 +43,28 @@ LIBPROG=$(VC_LOCATION)/bin/lib.exe
 ################
 # Set the Compiler/Link flags
 ################
-MSVCLINKFLAGS=/DLL /VERSION:$(LINK_VERSION)
+# /NOLGO -- suppress banner display when cl.exe starts (quicker)
+# /W3 -- good level of warning (default is 2)
+MSVCFLAGS = /nologo /DHAVE_STDARG /W3
+MSVCLINKFLAGS=/NOLOGO /DLL /VERSION:$(LINK_VERSION)
 
 # MS Visual Studio 8 Express: need to pick up the SDK seperately
 MSINCLUDES=$(SDK_LOCATION)/Include
 MS_SDKLIB_PATH=$(SDK_LOCATION)/Lib
 
-# set DEBUG=1 to set compile time debug options
-DEBUG=1
 ifeq ($(DEBUG),1)
-MSVCFLAGS += /MDd /Yd /Zi /DHAVE_STDARG /D__SD_DEBUG__ /D__LOG4C_DEBUG__
+# options are as follows:
+# /MDd -- mutlithread debug DLL
+# /Od -- disable optimization, easier debugging
+# /Zi -- put debug info into a pdb file
+# /GZ -- makes it more likely to catch memory corruption bugs
+MSVCFLAGS += /MDd /Od /Zi /GZ /D__SD_DEBUG__ /D__LOG4C_DEBUG__
 # To see internal log4c traces remember you also need to set
-# SD_ERROR and SD_DEBUG env variables # at runtilme
+# SD_ERROR and SD_DEBUG env variables # at runtime
 MSVCLINKFLAGS +=/DEBUG
 MSLIBS= MSVCRTD.LIB WinMM.Lib
 else
-MSVCFLAGS += /MD /DHAVE_STDARG
+MSVCFLAGS += /MD
 MSLIBS= MSVCRT.LIB WINMM.LIB
 endif
 
@@ -166,7 +175,7 @@ $(OUT_DIR)/log4c/liblog4c.dll: $(LOG4C_TARGET_OBJS) \
 # tests
 #############
 TEST_LOC := ../tests/log4c
-test_category_SOURCES = test_category.c layout_test.c appender_test.c
+test_category_SOURCES = test_category.c
 $(OUT_DIR)/tests/test_category.exe: $(addprefix $(TEST_LOC)/, $(test_category_SOURCES)) \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
