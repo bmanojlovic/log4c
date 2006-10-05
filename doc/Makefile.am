@@ -11,13 +11,17 @@ docfiles = \
 	$(PACKAGE).pdf \
 	log4cHowto.html
 
+.PHONY: doxygen
+
+targets = doxygen
+
 if HAVE_LATEX
-  targets = Doxyfile main.doc $(PACKAGE).pdf
-else
-  targets = Doxyfile main.doc
+targets +=  $(PACKAGE).pdf
 endif
 
 all-local: $(targets)
+
+doxygen: Doxyfile main.doc
 	@DOXYGEN@	
 
 #
