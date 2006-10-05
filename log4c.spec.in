@@ -15,7 +15,7 @@ Vendor:		Meiosys, Inc. (www.meiosys.com)
 Packager:	Cedric Le Goater <legoater@meiosys.com>
 Url:		http://%name.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%name/%name-%version.tar.gz
-BuildRoot:	%_tmppath/%name-%version-root
+BuildRoot:	%_topdir/%name-%version-root
 Requires: 	/sbin/ldconfig
 
 %description

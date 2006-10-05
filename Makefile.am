@@ -23,4 +23,10 @@ m4data_DATA = log4c.m4
 sysconf_DATA = log4crc.sample
 
 rpm: dist
-	rpmbuild --clean -ta ${distdir}.tar.gz
+	mkdir -p $(distdir)/rpmbuild/{BUILD,RPMS,SOURCES,SRPMS,SPECS}
+	mkdir $(distdir)/rpmbuild/RPMS/i386
+# remove the "--clean" here to leave the rpmbuild intermediate file
+# for debugging the rpm generation
+# The _topdir seems to have to be absolute
+	rpmbuild -ta --clean --define='_topdir $(CURDIR)/$(distdir)/rpmbuild' ${distdir}.tar.gz
+#rpmbuild --clean -ta ${distdir}.tar.gz
