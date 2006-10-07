@@ -15,36 +15,41 @@ This is the distribution of Log4C
 
    You can find copies of the license in the file COPYING
 
-* What you will need
+* What you will need to compile Log4C on Unix systems
 
-   perl (used by the automake tools)
+   perl 5.8+ (used by the automake tools)
 
-   GNU make tools: automake, autoconf, m4 and libtool
+   GNU make tools: automake 1.7+, autoconf 2.57+, m4 1.4+ and libtool 1.4+
 
    A Compiler, among those tested are:
-   . gcc3
+   . gcc3 (on Red Hat Enterprise Linux 3 and 4)
+   . gcc4 (on Fedora Core 5)
    . Sun cc (versions 5.3 and 5.7 on Solaris 8 and higher, sparc and i386)
+   . HPUX ansi C compiler (on HPUX v11.11i, pa-risc)
 
-   you will also need the bison-1.35 and flex-2.5.27 to re generate
-   the xml parser. These are obsolete versions of bison and
-   flex. Therefore, pre-generated files are distributed in the tarball. 
+   If you request at compile time that the expat library be used to help parse
+   the configuration file, then you will need the expat library available
+   on the system.  If you do not use expat then pre-generated files from
+   obsolete versions of flex and bison are used to do the parsing--this code
+   is still supported for the moment but it is recommended to use expat.
+
+* For information on compiling on Microsoft Windows see the README in the msvc6 directory.
 
 * Where to find ...
 
    GNU automake tools:
 	     	http://gcc.gnu.org
-              	http://www.sunfreeware.com for pre-built Solaris packages
+              	http://www.sunfreeware.com/ for pre-built Solaris packages
+                http://hpux.connect.org.uk/ for re-built HP-UX depots
 
    gcc3		http://gcc.gnu.org
               	http://www.sunfreeware.com for pre-built Solaris packages
+                http://hpux.connect.org.uk/ for re-built HP-UX depots
 
    log4c	http://log4c.sf.net/
-		
-   bison	ftp://ftp.gnu.org/gnu/bison
+                This SourceForge site is now the main log4c site.
 
-   flex		http://sourceforge.net/projects/lex/
-
-   The SourceForge site is now the main log4c site.
+   expat        http://expat.sourceforge.net/
 
 * How to for library users ...
 
@@ -56,13 +61,19 @@ This is the distribution of Log4C
 	$ make
 	$ make install
 
+   To build the binary, source, developer and debuginfo RPMs for Linux:
+        make rpm
+
    To enable compilation of the test programs for the library you would do this:
         $ ./configure --prefix=/path/of/installation --enable-test
    
    To specify a compiler other than gcc you would do something like this:
        $ ./configure --prefix=/path/of/installation --enable-test CC=/usr/SUNWspro/bin/cc
 
-   For information on compiling on Windows see the README in the msvc6 directory.
+   To get started with the examples see the README in the examples source code directory:
+       cd examples
+       ./application_1
+       ./application_2
 
 * How to for library developers ...
    
@@ -71,15 +82,16 @@ This is the distribution of Log4C
 	$ ./bootstrap
 
    To compile in extra tracing and messages you would do this:
-        $ ./configure --prefix=/path/of/installation --enable-test --enable-debug=yes 
+        $ ./configure --prefix=/path/of/installation --enable-test --enable-debug
 
    This will define the __SD_DEBUG__ variable at compile time.  Note that you still
    need to define the SD_ERROR and SD_DEBUG envronment variables at run time
    to get the error/debug output.
 
-   See './configure --help' for a list of all the configure options
+   See './configure --help' for a list of all the configure options. Some of the options are
+   generic autoconf options, while the Log4c specific options are prefixed with 
+   "LOG4C" in the help text.
 
-   
 
 Have Fun !!
    
