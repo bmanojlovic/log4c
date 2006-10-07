@@ -7,6 +7,9 @@
 # We require:
 # autoconf 2.57+
 # automake 1.7+ (recommended is 1.9+)
+# libtool 1.4+
+# m4 1.4+
+# perl 5.8+
 #
 # Note that on vanilla RHEL3 you need to build on a local disk--
 # some interaction of 'cp -p' with NFS.  Fixed in RHEL4.
