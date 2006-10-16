@@ -135,6 +135,9 @@ References
 * The online msdn documents are also very good, for the compiler and linker reference for
   example.  Start here:
   http://msdn.microsoft.com/visualc/
+  
+* Very good 'translation between Unix/Windows' article:
+  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnucmg/html/UCMGch09.asp
 
 * Don't forget other Open Source projects have similar problems so constitute
   a hugely valuable resource for ideas on solving issues like porting.  In particular

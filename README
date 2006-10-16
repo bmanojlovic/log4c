@@ -23,7 +23,7 @@ This is the distribution of Log4C
 
    A Compiler, among those tested are:
    . gcc3 (on Red Hat Enterprise Linux 3 and 4)
-   . gcc4 (on Fedora Core 5)
+   . gcc4 (on HP-UX 11.11i, on Fedora Core 5)
    . Sun cc (versions 5.3 and 5.7 on Solaris 8 and higher, sparc and i386)
    . HPUX ansi C compiler (on HPUX v11.11i, pa-risc)
 
