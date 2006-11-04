@@ -1,5 +1,4 @@
-This is the distribution of Log4C
-
+This is the distribution of Log4C (last updated 4 Sept 2006)
 
 * What is Log4C
 
@@ -7,6 +6,11 @@ This is the distribution of Log4C
    destinations. It is modeled after the Log for Java library
    (http://jakarta.apache.org/log4j/), staying as close to their API as is
    reasonable.
+   
+   See also here for overviews of Log4c:
+   
+     http://log4c.sourceforge.net/
+     http://en.wikipedia.org/wiki/Log4C   
 
 * Licensing
 
@@ -33,67 +37,95 @@ This is the distribution of Log4C
    obsolete versions of flex and bison are used to do the parsing--this code
    is still supported for the moment but it is recommended to use expat.
 
-* For information on compiling on Microsoft Windows see the README in the msvc6 directory.
+   For information on compiling on Microsoft Windows see the README in the msvc6
+   directory.
 
 * Where to find ...
 
    GNU automake tools:
-	     	http://gcc.gnu.org
-              	http://www.sunfreeware.com/ for pre-built Solaris packages
-                http://hpux.connect.org.uk/ for re-built HP-UX depots
+      http://gcc.gnu.org
+      http://www.sunfreeware.com/ for pre-built Solaris packages
+      http://hpux.connect.org.uk/ for re-built HP-UX depots
 
-   gcc3		http://gcc.gnu.org
-              	http://www.sunfreeware.com for pre-built Solaris packages
-                http://hpux.connect.org.uk/ for re-built HP-UX depots
+   gcc3 or gcc4
+      http://gcc.gnu.org
+      http://www.sunfreeware.com for pre-built Solaris packages
+      http://hpux.connect.org.uk/ for re-built HP-UX depots
 
-   log4c	http://log4c.sf.net/
-                This SourceForge site is now the main log4c site.
+   Log4C
+      http://log4c.sf.net/ This SourceForge site is now the main log4c site.
 
-   expat        http://expat.sourceforge.net/
+   expat        
+      http://expat.sourceforge.net/
 
-* How to for library users ...
+* How to for library users who download a released tarball (eg.
+  log4c-1.0.12.tar.gz):
 
-   The log4c package uses the GNU autotools compilation and installation
-   framework. The following commands should build log4c on the supported
-   platforms:
-
-	$ ./configure --prefix=/path/of/installation
+  The Log4C package uses the GNU autotools compilation and installation
+  framework.
+  
+  We recommend that you do not build in the source directories themselves;
+  rather make a build directory into which the configure script will generate
+  the Makefiles and build the library and binaries in there. This is better
+  because it allows you to seperate the source from the binaries and also to
+  mantain a compiled version of Log4C for different platforms--make a build
+  directory for each of the platforms you support and run configure on each of
+  your build machines.
+  
+  So, for example, you might create directories called build-fc5, build-rh3,
+  build-Solaris10x86, build-hpuxi11 and so on for your various builds. These
+  example commands below should compile Log4C on each of the supported
+  platforms:
+  
+  $ tar -zxvf log4c-1.0.12.tar.gz
+  $ mkdir build; cd build
+	$ ../log4c-1.0.12/configure --prefix=/path/of/installation
 	$ make
 	$ make install
 
-   To build the binary, source, developer and debuginfo RPMs for Linux:
-        make rpm
+  To build the binary, source, developer and debuginfo RPMs for Linux:
+    $ make rpm
 
-   To enable compilation of the test programs for the library you would do this:
-        $ ./configure --prefix=/path/of/installation --enable-test
+  To enable compilation of the test programs for the library you would do this:
+    $ ../log4c-1.0.12/configure --prefix=/path/of/installation --enable-test
    
-   To specify a compiler other than gcc you would do something like this:
-       $ ./configure --prefix=/path/of/installation --enable-test CC=/usr/SUNWspro/bin/cc
+  To specify a compiler other than gcc at configure time you would do something
+  like this:
+    $ ../log4c-1.0.12/configure --prefix=/path/of/installation --enable-test \
+      CC=/usr/SUNWspro/bin/cc
 
-   To get started with the examples see the README in the examples source code directory:
+  To get started with the examples see the README in the examples source code
+  directory and run them from the build directory as follows:
        cd examples
        ./application_1
        ./application_2
 
 * How to for library developers ...
    
-   When you check out log4c you will need to generate the configure script and so on.  To do this
-   run the bootstrap script:
-	$ ./bootstrap
+  When you check out Log4C from CVS (as opposed to downloading a released
+  tarball) you will need to generate the configure script and so on. To do this
+  run the bootstrap script. This script must be run in the source directories
+  themselves:
+   
+    $ cvs co log4c
+    $ cd log4c
+    $ ./bootstrap
 
-   To compile in extra tracing and messages you would do this:
-        $ ./configure --prefix=/path/of/installation --enable-test --enable-debug
+  To compile in extra tracing and messages and compile the doc you would do
+  this from your build directory: 
+    $ ../log4c/configure --prefix=/path/of/installation --enable-test \
+        --enable-debug --enable-doc
 
-   This will define the __SD_DEBUG__ variable at compile time.  Note that you still
-   need to define the SD_ERROR and SD_DEBUG envronment variables at run time
-   to get the error/debug output.
+   This will define the __SD_DEBUG__ variable at compile time. Note that you
+   still need to define the SD_ERROR and SD_DEBUG envronment variables at run
+   time to actually see the error/debug output.
 
-   See './configure --help' for a list of all the configure options. Some of the options are
-   generic autoconf options, while the Log4c specific options are prefixed with 
-   "LOG4C" in the help text.
+   Type '../log4c/configure --help' for a list of all the configure
+   options. Some of the options are generic autoconf options, while the Log4C
+   specific options are prefixed with "LOG4C" in the help text.
 
 
 Have Fun !!
    
- Cédric Le Goater <legoater@free.fr>
+ Cï¿½dric Le Goater <legoater@free.fr>
 
