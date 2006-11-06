@@ -1,0 +1,942 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Linux)">
+	<META NAME="CREATED" CONTENT="20061105;12084700">
+	<META NAME="CHANGED" CONTENT="20061107;432800">
+	<STYLE>
+	<!--
+		@page { size: 8.5in 11in; margin: 0.79in }
+		P { margin-bottom: 0.08in }
+		H1 { margin-bottom: 0.08in }
+		H1.western { font-family: "Luxi Sans", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Luxi Sans"; font-size: 16pt }
+		H1.ctl { font-family: "Luxi Sans"; font-size: 16pt }
+		H2 { margin-bottom: 0.08in }
+		H2.western { font-family: "Luxi Sans", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
+		H3 { margin-bottom: 0.08in }
+		H3.western { font-family: "Luxi Sans", sans-serif }
+		H3.cjk { font-family: "HG Mincho Light J" }
+		H3.ctl { font-family: "Arial Unicode MS" }
+		H4 { margin-bottom: 0.08in }
+		H4.western { font-family: "Luxi Sans", sans-serif; font-size: 11pt; font-style: italic }
+		H4.cjk { font-family: "HG Mincho Light J"; font-size: 11pt; font-style: italic }
+		H4.ctl { font-family: "Arial Unicode MS"; font-size: 11pt; font-style: italic }
+		TD P { margin-bottom: 0in }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=812 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=323>
+	<COL WIDTH=470>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TD WIDTH=323>
+				<P><FONT SIZE=1 STYLE="font-size: 8pt">1.0.0</FONT></P>
+			</TD>
+			<TD WIDTH=470>
+				<P STYLE="margin-bottom: 0.2in"><FONT SIZE=1 STYLE="font-size: 8pt">First
+				Draft: pulls together information from README files and various
+				'how to ' documents for Log4C. Currently references some example
+				programs which are not yet committed to the repository (eg.
+				Helloworld.c etc.). </FONT>
+				</P>
+				<P STYLE="margin-bottom: 0.2in"><FONT SIZE=1 STYLE="font-size: 8pt">This
+				document was created with Open Office 2.0.2.</FONT></P>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+	</THEAD>
+</TABLE>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=5><B>Log4C
+Developers Guide</B></FONT></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<H1 CLASS="western">1 Introduction</H1>
+<P STYLE="margin-bottom: 0in">Log4C is a C-based logging library. Its
+goal is provide the C software developers with a configurable and
+efficient library for logging messages. It seems extraordinary that
+just about every C project ends up developing it's own logging
+system....the goal of Log4C is to provide the classic logging
+functionality required by most projects by default and to leave scope
+for extensibility for those projects that have special requirements.</P>
+<P STYLE="margin-bottom: 0in">Log4C may be linked with end user
+applications or other libraries that will eventually be linked into
+applications. The library is released on <A HREF="http://en.wikipedia.org/wiki/SourceForge">SourceForge</A>
+under the <A HREF="http://en.wikipedia.org/wiki/LGPL">LGPL</A>
+license. 
+</P>
+<P STYLE="margin-bottom: 0in">This document is aimed at developers
+who wish to use Log4C to manage logging in their own project.</P>
+<P STYLE="margin-bottom: 0in">It contains the following sections:</P>
+<P STYLE="margin-bottom: 0in">a general introduction to Log4C
+concepts and how Log4C can be useful to you</P>
+<P STYLE="margin-bottom: 0in">how to download and build Log4C</P>
+<P STYLE="margin-bottom: 0in">how to use and configure the library
+via examples</P>
+<P STYLE="margin-bottom: 0in">how to extend Log4C with your own code
+for customizing, for example, where messages are logged and how they
+are formatted.</P>
+<P STYLE="margin-bottom: 0in">references to useful material</P>
+<H1 CLASS="western">2 Log4C Concepts and Overview</H1>
+<P>Log4C follows the overall style of the native Java logging and
+<A HREF="http://en.wikipedia.org/wiki/Log4j">Log4j</A> utilities.
+There are three fundamental types of object in Log4C: <SPAN STYLE="text-decoration: none">categories</SPAN>,
+appenders and layouts.</P>
+<P>You can think of these objects as corresponding to the <B>what</B>,
+<B>where</B> and <B>how</B> of the logging system: categories
+describe <B>what</B> sub-system the message relates to, appenders
+determine <B>where</B> the message goes and layouts determine <B>how</B>
+the message is formatted.</P>
+<P>So for example a category might be named
+“httpd.network.connection” that may be logging messages to the
+“syslog” appender using the “dated” format. The convention of
+using dotted names for categories determines an obvious hierarchy
+which is used to determine parent and child relationships during
+logging. These are used because during logging (and this is
+configurable) a message logged by a category will also be logged to
+the appenders of any parent categories. 
+</P>
+<P>There is always a <I>root</I> category which represents a
+conceptual root of the hierarchy of categories.</P>
+<P>The categorization of the system make sit easy to select which
+messages are logged and where—if I configure an appender and
+priority for a given category then I automatically do it for all it's
+ancestors (unless I explicitly say not to). The extreme case of this
+is the <I>root</I> category—any configuration positioned there will
+by default apply to all categories in the system. However, if I need
+to drill down for finer grained control then the categorization
+allows me to do that.</P>
+<P>This means that you should expect to spend some time defining the
+categories within your system. As an example, if your system
+separates into different applications then you should have at least
+one category per application. If your product ships a set of
+libraries, then each library probably merits it's own category.
+Libraries linked in as a dependency on a given library should
+probably be sub-categories of the including library. Within a library
+you might identify other sub categories, for example a housekeeping
+category, a connection manager category, a request processor and so
+on that correspond to logging messages that will come from those
+sections of code.</P>
+<P>The other concept fundamental to Log4c is the logging priority:
+each message has an associated priority. At a given point a given
+instance of Log4c has an associated configured priority--only
+messages with a higher priority than the current Log4c priority are
+sent to an appender for processing.</P>
+<H1 CLASS="western">3 How to download and build Log4C</H1>
+<P STYLE="margin-bottom: 0in">The <A HREF="http://log4c.cvs.sourceforge.net/log4c/log4c/README?revision=1.11&amp;view=markup&amp;sortdir=down">README</A>
+file shipped in the workspace gives a good account of Log4C
+dependencies and how to build it so we will not repeat that
+information here.</P>
+<H2 CLASS="western">3.1 Some comments on building Log4C in the
+corporate factory</H2>
+<P>The Log4C source code is free, which is good, but there is still a
+cost in integrating it into your project. Here are some points to
+consider on this.</P>
+<H3 CLASS="western">3.1.1 Log4C is released under the LGPL license. 
+</H3>
+<P>See the <A HREF="http://log4c.cvs.sourceforge.net/log4c/log4c/COPYING?revision=1.1.1.1&amp;view=markup">COPYING</A>
+file in the release for the full license but this means at least two
+things:</P>
+<P>you will almost certainly require a legal review inside your
+company to approve your use of Log4C.</P>
+<P>you are required by the LGL license to ship along with your
+project a copy of the Log4C source as used in your project. You are
+also required to ship a copy of the LGL license. Typically one ships
+a file called something like, ThirdPartyLicenses which includes all
+the required licenses for the open source components used by your
+project.</P>
+<P>Ideally the changes you make to Log4C will be minor porting, bug
+fixes or integration issues required to integrate with your project.
+Ideally, you would invest some time to work with the Log4C
+maintainers to integrate your changes back into the Log4C repository
+in a way that was useful to the whole community. Thus, while one
+might go with some 'quick fixes' in order to integrate Log4C, expect
+to spend some time refactoring or generalizing the code in order to
+have it accepted back into the repository.</P>
+<P>A general aspect of integrating an open source project is that,
+for various reasons, you may wish to make it easy to remove the
+dependency. We discuss this in more detail in the section titled
+“Integrating Log4C calls into your code”.</P>
+<H3 CLASS="western">3.1.2 Building on different platforms</H3>
+<H4 CLASS="western">3.1.2.1 Building On Unix</H4>
+<P STYLE="margin-bottom: 0in">On Unix systems (certainly for Linux,
+Solaris and HP-UX) you should be able to use the provided autoconf
+tools to build Log4C as described in the README. One tip for managing
+different platforms is not to compile the code in the source
+directories, but rather to create a directory per platform, run the
+configure script therein to generate the Makefiles and then build the
+library, tests, exmples and doc in per-platform directory. This
+allows you to use the same source code to maintain binaries for
+multiple platforms at the same time. So an example compile session
+might run:</P>
+<P STYLE="margin-bottom: 0in">On my Solaris x86 build machine:</P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisx86BuildMachine
+]$ tar -zxvf log4c-1.0.12.tar.gz</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisx86BuildMachine
+]$ mkdir build-Solaris-x86; cd build-Solaris-x86</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisx86BuildMachine
+]$ ../log4c-1.0.12/configure --prefix=/path/of/installation</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisx86BuildMachine
+]$ make</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in">then on the Solaris sparc build
+machine:</P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisSparcBuildMachine
+]$ mkdir build-Solaris-sparc; cd build-Solaris-sparc</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisSparcBuildMachine
+]$ ../log4c-1.0.12/configure -prefix= path/of/installation</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[mySolarisSparcBuildMachine
+]$ make</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in">and so on.</P>
+<P STYLE="margin-bottom: 0in">If you need to use a compile other than
+gcc then use the CC environment variable as descirbed in the README
+file.</P>
+<H4 CLASS="western">3.1.2.2 Building on Windows</H4>
+<P STYLE="margin-bottom: 0in">The build for Windows is not yet
+integrated into the autoconf mechanism (due to limitations in
+autoconf on windows at the time the integration was done). So a
+makefile is provided in the msvc6 directory for building on Windows. 
+</P>
+<P STYLE="margin-bottom: 0in">Note that some of the appenders are not
+compiled on Windows...for example the syslog appender.</P>
+<P STYLE="margin-bottom: 0in">See the README in the msvc6 directory
+for the Windows build details.</P>
+<H4 CLASS="western">3.1.2.3 Building on MAC OS</H4>
+<P STYLE="margin-bottom: 0in">There are some project files provided
+for compiling on MAC OS. 
+</P>
+<P STYLE="margin-bottom: 0in">xxx Not sure of the status of the mac
+stuff at this time.</P>
+<H3 CLASS="western">3.1.3 Packaging on different platforms</H3>
+<P>Using the provided makefilery as explained in the section Building
+on different platforms it should be possible to generate the library,
+tests and examples. However native packaging is provided only for
+Linux at this time. Even there you will probably wish to customize
+the naming and so on of the generated rpms.</P>
+<P>So you should expect to spend some time creating scripts or
+makefiles that will take the binaries from a build directory and
+package them as required for your supported platforms.</P>
+<P>Another solution is just to bundle the Log4C library in one of
+your existing packages or rpms.</P>
+<H1 CLASS="western">4 Getting started—running the examples</H1>
+<P>Once you have built Log4Cyou can go into the examples directory
+and run the examples. There may be additional information in the
+README in the examples directory.</P>
+<H2 CLASS="western">4.1 Running application_1</H2>
+<P>Run the example application_1 as follows:</P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">$
+cd examples</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">$
+./application_1 4</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>You
+should see this:</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 1
+../../log4c/examples/application_1.c</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>application_1
+is a simple example that loops, logging two messages on each loop. In
+the output above we only see the error message logged at priority
+ERROR, the other message logged at priority DEBUG is not logged with
+the default configuration in the <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4crc</FONT></FONT>
+file.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>But
+why is the log message being logged twice ?</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>Thank
+you for asking.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>What's
+happening is that although the application submits the message only
+once to Log4C, it is passed to all the appenders attached to the
+originating category <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log.app.application1
+</FONT></FONT>AND it's ancestor categories. So, if you look in
+log4crc you will see this line:</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&lt;category
+name=&quot;six13log.log&quot; priority=&quot;error&quot;
+appender=&quot;stdout&quot; /&gt;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>So
+the stdout appender for the category <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log.app.application1
+</FONT></FONT>is logging the message and the stdout appender for the
+ancestor category <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log
+</FONT></FONT>is also logging it.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>So
+why this strange behavior with respect to logging messages to
+multiple appenders ? Well, in this example it's hard to see the
+point. But suppose we have multiple applications and associate
+categories <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log.app.application2,
+six13log.log.app.application3, six13log.log.app.application4 </FONT></FONT>,
+say, with them. Then I can get very tight control over what gets
+logged using the categorization of the messages: if I set an appender
+on <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log.app
+</FONT></FONT>for example then I will get the messages from <I>all</I>
+the applications. But if I am just interested in messages from a
+subset of categories then I can configure an appender and logging
+priority just for them.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>So
+once the application or system designer has done a good job defining
+the categories available for logging then Log4C offer sthe
+administrator or end user very powerful and easy control over the
+messages he chooses to log, where they get logged and the format they
+are logged in. Furthermore, even if the application developer has to
+go back and introduce new categories then with Log4C that's an easy
+task. Too often in-house logging mechanisms are hard coded for a
+specific domain and adding what would amount to new categories
+requires significant additional coding. Not so with Log4C.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>You
+can see that there is additional text being logged in addition to the
+message from the application. This 'overhead' is added by Log4C and
+the various parts of the message break down like this:</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+<FONT SIZE=3><FONT FACE="Nimbus Roman No9 L, serif">The name of the
+appender logging the message surrounded by square brackets.</FONT></FONT></FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">ERROR
+<FONT SIZE=3><FONT FACE="Nimbus Roman No9 L, serif">The log level of
+the message. </FONT></FONT></FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">six13log.log.app.application1
+<FONT SIZE=3><FONT FACE="Nimbus Roman No9 L, serif">The name of the
+catgory originating the message</FONT></FONT></FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">some
+error from app1 at line 78 in file
+../../log4c/examples/application_1.c <FONT SIZE=3><FONT FACE="Nimbus Roman No9 L, serif">The
+actual log message.</FONT></FONT></FONT></FONT></P>
+<H2 CLASS="western">4.2 Configuring the priority for a category</H2>
+<P>Now, edit the log4crc file to change the value of the priority
+field from “error” to “debug”:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&lt;category
+name=&quot; &quot; priority=&quot;debug&quot; appender=&quot;stdout&quot;
+/&gt;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>Run
+application_1 again, you should see this:</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0in"><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>What's
+happening now is that because the priority of the category has been
+lowered to DEBUG, the debug message in the application is now
+appearing. And, for the reasons explained above for the ERROR
+message, it appears twice.</FONT></FONT></P>
+<H2 CLASS="western">4.3 Configuring application_1 to log to a set of
+log files</H2>
+<P>Logging to stdout is fine but suppose we wish to trap all the
+messgaes for <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">six13log.log.app.application1
+</FONT></FONT>to a set of log files. To do this we can use the
+rolling file appender.</P>
+<P>Edit this line in log4crc to replace stdout with
+myrollingfileappender:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&lt;category
+name=&quot;six13log.log.app.application1&quot; priority=&quot;debug&quot;
+appender=&quot;stdout&quot; /&gt;</FONT></FONT></P>
+<P>Run application_1 again. This time on stdout you will see:</P>
+<P STYLE="margin-left: 0.49in">[<FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+DEBUG six13log.log.app.application1 - Debugging app 1 - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR six13log.log.app.application1 - some error from app1 at line 79
+in file ../../log4c/examples/application_1.c - loop 1</FONT></FONT></P>
+<P>The other copies of the log messages are no longer being sent to
+stdout but rather to the myrollingfileappender appender, which is
+logging them to a set of log files in the current directory of the
+form myprefix.*. Verify this by dumping one of the log files:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">$
+cat myprefix.0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[myrollingfileappender]
+20061105 16:29:33.530 DEBUG six13log.log.app.application1- Debugging
+app 1 - loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[myrollingfileappender]
+20061105 16:29:33.604 ERROR six13log.log.app.application1- some error
+from app1 at line 79in file ../../log4c/examples/application_1.c -
+loop 0</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[myrollingfileappender]
+20061105 16:29:36.605 DEBUG six13log.log.app.application1- Debugging
+app 1 - loop 1</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[myrollingfileappender]
+20061105 16:29:36.605 ERROR six13log.log.app.application1- some error
+from app1 at line 79 in file ../../log4c/examples/application_1.c -
+loop 1</FONT></FONT></P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>You will
+notice that these log messages also have a date stamp on them. This
+is because myrollingfileappender has been configured oin log4crc to
+use the dated layout (rather than the basic layout) and this layout
+inserts a date stamp in the message before logging it.</FONT></FONT></P>
+<H2 CLASS="western">4.4 What about application_2 ?</H2>
+<P>As an application application_2 does the same thing as
+applicaiton_1—it loops logging a few messages. However the
+interesting thing about application_2 is that it links with a library
+where new appenders and layouts have been defined. So we leave this
+more advanced topic to a later section.</P>
+<H1 CLASS="western">5 Using the Log4C API</H1>
+<P>In the last section we saw how to control the logging output from
+a Log4C enabled example using the configuration file. In this section
+we see how to “Log4C enable” your applications using the Log4C
+API.</P>
+<P>At the top of the main Log4C home page you will see links to the
+API documentation for the latest released Log4C, for example here:
+<A HREF="http://log4c.sourceforge.net/files.html">http://log4c.sourceforge.net/files.html</A>.
+You should keep a reference to this documentation when working with
+Log4C—it documents parameters, call conventions, return codes,
+issues and sometimes has code snippets. If you have checked out the
+workspace from CVS you will need to have added –enable-doc to build
+the documentation, which gets put into the doc directory where you
+build. You are strongly recommended to build and view (and improve!!)
+the API documentation.</P>
+<P>Depending on the utilities available (dyoxygen, latex,...) on your
+system the API documentation can be generated in html, pdf and man
+page format. See 'configure –help' and the README for details on
+this.</P>
+<H2 CLASS="western">5.1 The helloworld example with Log4C</H2>
+<P>As tradition dictates we provide a hello world example to
+illustrate the bare bones of Log4C. The hello world code looks as
+follows:</P>
+<H3 CLASS="western">5.1.1 The helloworld code</H3>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#include
+&lt;stdio.h&gt;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#include
+&quot;log4c.h&quot;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+main(int argc, char** argv){</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+rc = 0;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_category_t*
+mycat = NULL;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">if
+(log4c_init()){</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">printf(&quot;log4c_init()
+failed&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">rc
+= 1; </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}else{</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">mycat
+= log4c_category_get(&quot;log4c.examples.helloworld&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_category_log(mycat,
+LOG4C_PRIORITY_ERROR, &quot;Hello World!&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*
+Explicitly call the log4c cleanup routine */</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">if
+( log4c_fini()){</FONT></FONT></P>
+<P STYLE="margin-left: 1.48in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">printf(&quot;log4c_fini()
+failed&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">return
+0;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>As you can see
+there are four calls to the Log4C API here. </FONT></FONT>
+</P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>The
+log4c_init() call initializes the library, and reads the
+configuration files (if any) and environment variables. We will see
+more about the configuration mechanisms below. </FONT></FONT>
+</P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>The
+log4c_category_get() function returns a reference to a category
+required for logging. </FONT></FONT>
+</P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>The
+log4c_category_log() function logs the age old message .</FONT></FONT></P>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>The
+log4c_fini() tells Log4C to cleanup, freeing memory, closing files
+and so on.</FONT></FONT></P>
+<H3 CLASS="western">5.1.2 Configuring and running <FONT SIZE=3>hello&shy;world</FONT></H3>
+<P>If you compile and run the helloworld example as is you will
+see...no output :-(.</P>
+<P>This is because although we have done all the right things, we
+have not as yet configured an appender for our helloworld category.
+It will be instructive to visit each of the three ways Log4C provides
+to configure it's behavior.</P>
+<P>For information, the command line on Linux to compile a Log4C
+example, supposing that the log4c library is already compiled, looks
+like this:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">$
+gcc -I ../../log4c/src -I ../src ../../log4c/examples/helloworld.c -L
+../src/log4c/.libs/ -llog4c</FONT></FONT></P>
+<H4 CLASS="western">5.1.2.1 Configuring helloworld with the
+configuration file</H4>
+<P>Edit the log4crc file in the examples directory and add this line:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&lt;category
+name=&quot;log4c.examples.helloworld&quot; priority=&quot;debug&quot;
+appender=&quot;stdout&quot;/&gt;</FONT></FONT></P>
+<P>Run the helloworld program again. You will now see:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR log4c.examples.helloworld - Hello World!</FONT></FONT></P>
+<P>Cool. What has happened is that we have configured Log4C to send
+messages for our helloworld example, logged with priority DEBUG or
+above to stdout. Of course we could configure the messages to go to
+any of the existing Log4C appenders.</P>
+<P>By way of building a mental model of what is happening inside the
+Log4C library note that the fact that the helloworld category is
+mentioned in the configuration file means that after the call to
+log4c_init(), a nicely configured instance of that category already
+exists inside the library. In the case where that category is not
+mentioned in the configuration file then it is the call to
+<FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4c_category_get(&quot;log4c.examples.helloworld&quot;)
+</FONT></FONT><FONT FACE="Nimbus Roman No9 L, serif">that creates the
+(unconfigured) instance on this category.</FONT></P>
+<H4 CLASS="western">5.1.2.2 Configuring helloworld with the
+environment variables</H4>
+<P>Log4C provides a minimal configuration ability via two environment
+variables: LOG4C_APPENDER and LOG4C_PRIORITY. Both these variables
+act only on the root category but provide a quick way to globally
+enable logging . This can be useful to take a look at log messages
+before drilling down into a finer grained logging using the
+categorization to focus on messages of particular interest.</P>
+<P>So, remove the line from the configuration file you added above:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&lt;category
+name=&quot;log4c.examples.helloworld&quot; priority=&quot;debug&quot;
+appender=&quot;stdout&quot;/&gt;</FONT></FONT></P>
+<P>Rerun helloworld to confirm you have no output then rerun the
+program as follows:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">export
+LOG4C_APPENDER=stdout; helloworld</FONT></FONT></P>
+<P>You will now see the log message as before:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR log4c.examples.helloworld - Hello World!</FONT></FONT></P>
+<P>What is happening here is that at init time Log4C is reading the
+LOG4C_APPENDER environment variable and configuring the stdout
+appender for the root category as a result. Thus all messages logged
+to this instance of the library, at a priority higher than NOTICE
+(for that is the priority set on the root category in the
+configuration file) will be sent to stdout.</P>
+<P>We could just as well have set LOG4C_APPENDER to be
+myrollingfileappender, as defined in the configuration file, in which
+case the helloworld message would have been logged to the myprefix.0
+file. Go on, give it a lash, it works!</P>
+<H4 CLASS="western">5.1.2.3 Configuring helloworld via the Log4C API</H4>
+<P><FONT FACE="Nimbus Roman No9 L, serif"><FONT SIZE=3>The
+configuration achieved in the above sections via the configuration
+file or the environment variables can also be done manually using the
+Log4C API. Add the following call to set the appender for the
+helloworld category:</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">mycat
+= log4c_category_get(&quot;log4c.examples.helloworld&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_category_set_appender(mycat,
+log4c_appender_get(&quot;stdout&quot;)); /* ADD THIS LINE */</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_category_log(mycat,
+LOG4C_PRIORITY_ERROR, &quot;Hello World!&quot;);</FONT></FONT></P>
+<P>Recompile and rerun helloworld to see the output:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">[stdout]
+ERROR log4c.examples.helloworld - Hello World!</FONT></FONT></P>
+<H2 CLASS="western">5.2 Comments on the the different configuration
+methods</H2>
+<P>The three configuration methods demonstrated above are likely to
+be of more or less interest depending on the nature of your project.
+Far be it from Log4C developers to adopt the arms dealer pattern of
+technology development, so here are some general observations to help
+you think about which method or methods are most appropriate for your
+scenario:</P>
+<P>The environment variables seem to be generally useful as a quick
+way to get your application or system outputting messages.</P>
+<P>The configuration file is certainly a very powerful way and easy
+way to configure logging. It is probably of most utility in those
+cases where you are quite close to the final application development
+as this gives you more say in the nature of the configuration
+requirements you introduce to application users.</P>
+<P>Using the API to configure Log4C is probably of use to those
+projects delivering some intermediate technology or framework to
+other application developers. This is because as a framework or
+library provider you probably do not wish to contribute to a kind of
+“configuration file proliferation”. You probably would rather
+take configuration from your own configuration files, or even
+programmatically from your application developers and then configure
+Log4C programmatically. If you use the Log4C configuration file and
+your framework has it's own configuration file and your application
+has it's own configuration file then it's getting a bit hard for your
+administrator to keep track of all these configuration files.</P>
+<H2 CLASS="western">5.3 Interaction of the configuration methods</H2>
+<P>The log4c_init() function looks for a configuration file first and
+then reads the environment variables, so for defining the priority
+and appender for the root category the environment variables take
+precedence. The order that Log4C (up to version 1.0.12) searches for
+the configuration file is “$LOG4C_RCPATH/log4crc&quot;,
+&quot;$HOME/.log4crc&quot;, &quot;./log4crc&quot; . This seems wrong
+and will probably be changed or made configurable. Also, it is not
+clear if there is a well defined design decision about what happens
+when loading fails in a file or if, once a file is loaded
+succesfully, we should then stop trying to load other files. xxx
+revisit this on the list.</P>
+<P>If you configure Log4C objects after the call to log4c_init() then
+the new settings you configure take precedence.</P>
+<H2 CLASS="western">5.4 Including Log4C calls into your code 
+</H2>
+<H3 CLASS="western">5.4.1 Making it easy to remove Log4C calls from
+your code</H3>
+<P>For various reasons you may wish to wrap calls to the Log4C API
+either in macros or function calls. We list some of these here to
+help you decide if you want to use wrapped or naked calls to Log4C.</P>
+<P>You may wish to do this in order, for example, to do some generic
+preparation of your logging messages. 
+</P>
+<P>Another reason might be to define some smaller subset of the Log4C
+API that you wish all your library writers or application developers
+to use—by using the interface you define you can ensure a
+consistent usage of Log4C across your system. 
+</P>
+<P>Another reason might be that, Log4C being an external open source
+project, you may wish to make it easy to remove Log4C from your
+project, for fear of API stability, quality or licensing issues that
+may arise later in your project. 
+</P>
+<P>As an example, we present one way of wrapping the Log4C calls
+here. We will modify the helloworld.c file to remove the hard coded
+dependency on Log4C and introduce a level of indirection that allows
+an easy decoupling of helloworld from Log4C. 
+</P>
+<P>We simply introduce functions that wrap the required Log4C
+functions: mylog_init() for log4c_init(), mylog_fini() for
+log4c_fini() and so on. We also need to define our own copies of the
+logging priorities. See the file mylog.h for the full definitions.
+So, for logging single strings we can use a function like this:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">static
+LOG4C_INLINE void mylog_msg(char *catName,int a_priority, char *msg){</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#ifndef
+WITHOUT_LOG4C</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_category_log(log4c_category_get(catName),
+a_priority, msg);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#else</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">printf(msg);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#endif
+</FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P>You can see that if this code is compiled with -DWITHOUT_LOG4C
+then Log4C is totally removed.</P>
+<P>To use this code, rather than directly calling
+log4c_category_log() we would do this:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">mylog_msg(&quot;log4c.examples.helloworld&quot;,
+MYLOG_PRIORITY_ERROR, &quot;Hello World!&quot;);</FONT></FONT></P>
+<P>One suggestion by this writer
+<A HREF="http://jefficus.usask.ca/article.php?story=20040613140849924i">http://jefficus.usask.ca/article.php?story=20040613140849924</A>
+is to define a macro for the logging call which means you need only
+mention hte category name for your subsystem in one place, typically
+in some include file used by all files in that subsytem.</P>
+<P>So your simplified logging call actually looks like this:</P>
+<P STYLE="margin-left: 0.49in"><FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">MYLOG_MSG(MYLOG_PRIORITY_ERROR,
+&quot;Hello World!&quot;)</FONT></FONT>;</P>
+<P>but at the start of the helloworld.c file you define the category
+name to use, which is picked up by the MYLOG_MSG macro:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#define
+MYLOG_CATEGORY_NAME &quot;log4c.examples.helloworld&quot;</FONT></FONT></P>
+<P>The MYLOG_MSG macro is defined such that if you do not define a
+category name then it defaults to the root category. This means it is
+safe and, if you want to be lazy, easy to get logging.</P>
+<P>The only comment on this handy technique is that if you are
+paranoid about performance then you may not want to have the lookup
+call based on the logger name at each logging call. In this case you
+would do the call to log4c_category_get() (or the wrapped equivalent)
+at the initialize time of your subsystem and then use the actual
+reference to the category object rather than the category name.</P>
+<P>The code to wrap the log call to take a variable number of
+arguments is a bit more complex than the code used to log one string
+shown here—see the function mylog_log() defined in mylog.h for way
+to do that. The code discussed above is included in helloworld-1.c
+and the file mylog.h. The full code of helloworld-1.c is included
+here for convenience:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#include
+&lt;stdio.h&gt;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#define
+MYLOG_CATEGORY_NAME &quot;log4c.examples.helloworld&quot;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#include
+&quot;mylog.h&quot;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+main(int argc, char** argv){</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+rc = 0;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">if
+(mylog_init()){</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">printf(&quot;mylog_init()
+failed&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">rc
+= 1; </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}else{</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">MYLOGMSG(LOG4C_PRIORITY_ERROR,
+&quot;Hello World!&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*
+Explicitly call the log4c cleanup routine */</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">if
+( mylog_fini()){</FONT></FONT></P>
+<P STYLE="margin-left: 1.48in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">printf(&quot;mylog_fini()
+failed&quot;);</FONT></FONT></P>
+<P STYLE="margin-left: 1.48in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">rc
+= 1;</FONT></FONT></P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">return
+rc;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<H3 CLASS="western">5.4.2 Other useful Log4C functions</H3>
+<P>See the Log4C API documentation in your workspace (as generated by
+make if you have done 'configure –enable-doc') or here for the last
+release: <A HREF="http://log4c.sourceforge.net/files.html">http://log4c.sourceforge.net/files.html.</A></P>
+<P>Log4C provides some convenience functions that mean you do not
+have to specify the logging priority in the logging call—for
+example log4c_category_fatal(), log4c_category_error() and so on.
+These are documented here for the last release:
+<A HREF="http://log4c.sourceforge.net/category_8h.html">http://log4c.sourceforge.net/category_8h.html</A>.</P>
+<P>You can test to see the logging priority of a given category using
+the log4c_category_is_priority_enabled() function.</P>
+<P>Browse the documentation and examples and tests source to see
+other usage of the Log4C API.</P>
+<H3 CLASS="western">5.4.3 Multi threaded applications using Log4C</H3>
+<P>Log4C is not Multi thread safe (MT safe). xxx This topic should be
+discussed on the mailing list and revisited systematically to see
+what can be done and to document the MT status of the various API
+calls.</P>
+<P>In the meantime, it is possible to use Log4C safely provided you
+follow some rules related to initialization and provided the
+appenders and layouts you use are themselves MT safe.</P>
+<H4 CLASS="western">5.4.3.1 Why Log4C is not MT safe</H4>
+<P>A fully MT safe library would be such that multitple threads in
+the application could safely call any of the LOG4C API functions
+without any need for synchronization on the part of the application.
+There are several places where Log4C doe snot satisfy this:</P>
+<P>log4c_init() This function must be called successfully just once
+by the application. If two threads call this at the same time the
+behavior is undefined. The problem is that both threads will start to
+initialize global objects and the behavior is this case is undefined.</P>
+<P>log4c_fini() The same is true of log4c_fini()—this function can
+safely be called by only one thread at a time. Furthermore when you
+call log4c_fini() you must be sure that there are no calls to the
+logging API in flight—if there are then log4c_fini() goes ahead
+freeing up Log4C objects (like categories;, appenders and layouts) so
+this will probably crash your application.</P>
+<P>Readonly type Log4C calls like
+log4c_category_is_priority_enabled() and so on are MT safe between
+themselves and calls to logging functions like log4c_category_log()
+but are not MT safe with respect to log4c_init() and log4c_fini().</P>
+<P>Issues related to lazy creation and intialization of objects.</P>
+<P>Lookup and creation type calls like log4c_category_get(),
+log4c_appender_get() , log4c_layout_get() and so on are not MT safe,
+even between themselves. The problem is that if two threads call
+log4c_category_get() a the same time then, if the category instances
+do not yet exist in the internal store of category instances, then
+the threads may clash as they write to the shared hash that stores
+the instance references. This is because no synchronization is
+provided on the shared instance hash.</P>
+<P>Calls to log4c_category_log() are not MT safe when called on teh
+same categories. The problem is that log4c_category_log() eventually
+calls log4c_appender_append() to log the message. However, if the
+appender has not already been opened then it calls
+log4c_appender_open(), which is not MT safe. The result could be that
+the two threads will to open the appender at the same time which will
+give rise to undefined behavior.</P>
+<P>The calls to the currently support basic and dated layouts all
+work in the context of a logging event object which is allocated by
+the log4c_category_log() call on the stack. Thus the current usage of
+the layout interface is in fact MT-safe.</P>
+<H4 CLASS="western">5.4.3.2 How to use Log4C in an MT safe way</H4>
+<P>It can be seen from the last section that if you can ensure the
+following two conditions then you should be able to use Log4C safely
+in an MT environment:</P>
+<P>perform the initialization of Log4C and the creation and
+intialization of all the log4C logging objects before before starting
+up the multiple threads that call Log4C.</P>
+<P>In reality this can be problematic as in order to ensure that
+“open” has been called on all the appenders in your system you
+will need to know the appender names up front at init time. For
+developers configuring Log4C programatically then this may work—by
+definition they will have the names of all the Log4C objects
+available, otherwise they could not configure then programmatically.
+For those using the Log4C configuration file where the Log4C init
+time code takes care of the creation of the objects there is
+currently no way to tell that code “call open at init time”.
+There seem to be a few possibilities here that require some
+development work in Log4C xxx:</P>
+<P>A way to do that could be to provide an option 'call open at init
+time' in the configuration file.</P>
+<P>Provide a function like log4c_appender_open_all() that would call
+open on all appenders in Log4C. This way the application writer could
+call that routine to explicity open all the appenders and avoid race
+conditions as various threads try to open them. 
+</P>
+<P>A third solution would be that log4c guarantees that the open call
+on an appender is called only once in a critical section.</P>
+<P>Ensure that there are no logging calls in flight when log4c_fini()
+is called.</P>
+<H1 CLASS="western">6 Extending Log4C with your own custom appender
+and layout types</H1>
+<P>The application_2 program in the examples for how to define your
+own appender and layout types.</P>
+<P>First a short word on Log4C terminology. The Log4C library ships
+with a set of “base types”. These base types are <I>category</I>,
+<I>appender</I>, <I>layout</I> and <I>rollingpolicy</I>. These base
+types are hard coded into the library—there is no run time way to
+control the creation or deletion of these base types (which perhaps
+there should be). The base types all define an interface which one
+can use to create new types from the base type. For example the
+stream appender, the stream2 appender and the rollingfile appender
+are all types of appender. The basic and dated layouts are both type
+of layout. The only rollingpolicy currently supplied with Log4C is
+sizewin, which is a type of rollingpolicy. 
+</P>
+<P>Once a base type exists in Log4C it is very easy to add new
+types—the application_2 example shows how to do this for appenders
+and layouts. Of course it is possbile to add new base types to Log4C
+but we leave that more as a topic for the “Log4C Internals”
+document as it is less common to need to do that.</P>
+<P>So, turning to application_2...if you look at application_2.c you
+will see that it is very similar to application_1.c—it loops
+logging two messages at each loop. However, it includes an additional
+call before the call to log4c_init():</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">init_examples_lib();</FONT></FONT></P>
+<P>This function is defining some new appender and layout types that
+can be accessed in the configuration file or programatically. It
+eventually calls <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">init_example_appenders()</FONT></FONT>.
+A key code snippet from that file looks like this:</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">static
+const log4c_appender_type_t * const appender_types[] = {</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#ifdef
+HAVE_SYSLOG_H</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&amp;log4c_appender_type_syslog_local0,</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&amp;log4c_appender_type_syslog_user,</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">#endif
+</FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&amp;log4c_appender_type_s13_file,</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&amp;log4c_appender_type_s13_stderr</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">};</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">static
+size_t nappender_types = </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">sizeof(appender_types)
+/ sizeof(appender_types[0]);</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+init_example_appenders(){</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">int
+rc = 0; int i = 0;</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">for
+(i = 0; i &lt; nappender_types; i++) </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.98in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">log4c_appender_type_set(appender_types[i]);
+</FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">return(rc);
+</FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P>The key call is to the (somewhat badly named)
+<FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4c_appender_type_set()
+</FONT></FONT>function. This function is registering the appender
+types defined here with the Log4C code. Thereafter they are available
+for use in the configuration file or accessible programmatically.</P>
+<P>We list here the complete code fragment that deals with the
+<FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4c_appender_type_s13_file
+</FONT></FONT>type:</P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*******************************************************************************/</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">*
+The log4c stderr adds a &quot;[stderr] &quot; in front of the message</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">*
+it is logging. this one doesn't, and leaves the formatting</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">*
+descisions up to the formatter</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">*/</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">static
+int s13_stderr_append(log4c_appender_t* this, const
+log4c_logging_event_t* a_event)</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">{</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">return
+fprintf(stderr, &quot;%s\n&quot;, </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">a_event-&gt;evt_rendered_msg);</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">static
+int s13_stderr_open(log4c_appender_t* this)</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">{</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*
+fprintf (stderr,&quot;running s13_stderr appender open command
+now\n&quot;); */</FONT></FONT></P>
+<P STYLE="margin-left: 0.49in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">return
+0;</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">}</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">const
+log4c_appender_type_t log4c_appender_type_s13_stderr = {</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">&quot;s13_stderr&quot;,</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">s13_stderr_open,</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">13_stderr_append,</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">NULL,</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">};</FONT></FONT></P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 9pt">/*******************************************************************************/</FONT></FONT></P>
+<P>The <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4c_appender_type_s13_stderr</FONT></FONT>
+object is defining the interface that the core Log4C code will use to
+open, append and close this appender. As you can see this appender is
+pretty simple. It's close function is NULL—it is safe to do this
+the core Log4C code will not try to call a NULL function. The name of
+this appender is defined in the first field of it's interface object
+and is ”<FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">s13_stderr&quot;.</FONT></FONT>
+It is this name that can be used either in the configuration file or
+programatically in the <FONT SIZE=2 STYLE="font-size: 9pt"><FONT FACE="Courier, monospace">log4c_appender_get()</FONT></FONT>
+call to obtain a reference to the actual object.</P>
+<P>Defining new layout types follows a similar pattern. See the
+example_formatters.c file for some example code. Defining new
+rollingpolicy types--which are used to tell rollingfile appenders
+under which conditions rollover events should occur—proceeds in the
+same way.</P>
+<H1 CLASS="western">7 Troubleshooting and debugging</H1>
+<P STYLE="margin-bottom: 0in">If you have run configure with the
+–enable-debug option then by setting the environment variables
+SD_DEBUG and SD_ERROR to the value “1” you should see some useful
+internal Log4C trace messages.</P>
+<H1 CLASS="western">8 References</H1>
+<P STYLE="margin-bottom: 0in"><A HREF="http://log4c.sf.net/">http://log4c.sf.net/</A>
+This SourceForge site is now the main log4c site.</P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://expat.sourceforge.net/">http://expat.sourceforge.net/</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://gcc.gnu.org/">http://gcc.gnu.org</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://www.sunfreeware.com/">http://www.sunfreeware.com/</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://hpux.connect.org.uk/">http://hpux.connect.org.uk/</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://sourceforge.net/mailarchive/forum.php?forum_id=9231">Log4c
+developer mailing list </A>
+</P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://jefficus.usask.ca/article.php?story=20040613140849924">Nice
+'How to get developing with log4c' article</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://en.wikipedia.org/wiki/Log4j">Log4j</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://pantheios.org/">Pantheios
+- &quot;The C++ Logging Sweetspot&quot;</A></P>
+<P STYLE="margin-bottom: 0in"><A HREF="http://sourceforge.net/projects/log4cpp/">http://sourceforge.net/projects/log4cpp/</A></P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+</BODY>
+</HTML>
