@@ -32,7 +32,9 @@ AC_CANONICAL_HOST
 # Need this to get pthread etc.
 AC_DEFINE(_GNU_SOURCE,1,"POSIXandGNU extensions")
 
-# Checks for programs.
+#####################
+# Checks for programs
+#.
 AC_PROG_YACC
 AC_PROG_CC
 AC_PROG_CPP
@@ -69,6 +71,20 @@ if test x$enable_debug = xyes; then
     CFLAGS="$CFLAGS -D__SD_DEBUG__ -D__LOG4C_DEBUG__"
 fi
 
+####################################################################
+# Test for pthread and enable rollingfile code which depends on that
+# if we find it
+#
+AC_CHECK_HEADER(pthread.h,[
+        AC_CHECK_LIB(pthread,pthread_mutex_init,[
+                LIBS="$LIBS -lpthread"
+                AC_DEFINE([WITH_ROLLINGFILE], [], [Define if we found pthread.h libpthread])
+                AC_MSG_NOTICE([Compile with rollingfile code])
+                with_rollingfile=true],[AC_MSG_NOTICE([No pthread--not compiling rollingfile code])]
+                )
+])
+AM_CONDITIONAL(WITH_ROLLINGFILE, test "$with_rollingfile" == "true")
+
 #####################################
 # Enable test compilation if required
 #
@@ -80,7 +96,9 @@ AM_CONDITIONAL(TEST, test x$enable_test = xyes)
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h inttypes.h langinfo.h limits.h stddef.h stdint.h stdlib.h string.h sys/time.h syslog.h unistd.h stdarg.h varargs.h getopt.h])
+AC_CHECK_HEADERS([fcntl.h inttypes.h langinfo.h limits.h stddef.h stdint.h \
+stdlib.h string.h sys/time.h syslog.h unistd.h stdarg.h varargs.h getopt.h \
+pthread.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
