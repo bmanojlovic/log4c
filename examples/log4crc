@@ -11,6 +11,10 @@
 
 	<category name="root" priority="notice"/>
         <category name="six13log.log" priority="error" appender="stdout" />
+
+	<rollingpolicy name="myrollingpolicy" type="sizewin" maxsize="1024" maxnum="10" />
+
+	<appender name="myrollingfileappender" type="rollingfile" logdir="." prefix="myprefix" layout="dated" rollingpolicy="myrollingpolicy" />
 	
 	<appender name="stdout" type="stream" layout="basic"/>
 	<appender name="stderr" type="stream" layout="dated"/>

@@ -236,7 +236,7 @@ static size_t nappender_types =
 
 int init_example_appenders(){
 
-  int rc,i = 0;
+  int rc = 0; int i = 0;
 
   for (i = 0; i < nappender_types; i++) 
     log4c_appender_type_set(appender_types[i]);

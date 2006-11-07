@@ -14,6 +14,8 @@
 #include <string.h>
 #include <log4c.h>
 
+/* Defined in example_appenders.c */
+extern int init_example_appenders(void);
 
 /**********************************************************************
  *
@@ -96,7 +98,7 @@ static size_t nlayout_types = sizeof(layout_types) / sizeof(layout_types[0]);
 
 int init_example_formatters(){
 
-  int rc,i = 0;
+  int rc = 0; int i = 0;
 	
   for (i = 0; i < nlayout_types; i++) 
      log4c_layout_type_set(layout_types[i]);
@@ -111,6 +113,7 @@ int init_examples_lib() {
 	init_example_formatters();
 	init_example_appenders();
 
+  return(0);
 }
 
 
