@@ -23,31 +23,31 @@ static const char* dated_format(
 {
     static char buffer[1024];
 
-    struct tm	tm;
-
-
 #ifndef _WIN32
 #ifndef __HP_cc
 #warning gmtime() routine should be defined in sd_xplatform
 #endif
+    struct tm   tm;
     gmtime_r(&a_event->evt_timestamp.tv_sec, &tm);
+    snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\n",
+             tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+             tm.tm_hour, tm.tm_min, tm.tm_sec,
+             a_event->evt_timestamp.tv_usec / 1000,
+             log4c_priority_to_string(a_event->evt_priority),
+             a_event->evt_category, a_event->evt_msg);
 #else
-    /* xxx Need a CreateMutex/ReleaseMutex or something here
-     */
-    { 
-	struct tm *tmp = NULL;
-	tmp = gmtime(&a_event->evt_timestamp.tv_sec);
-	tm = *tmp; /* struct copy */
-    }
-#endif
+        SYSTEMTIME stime;
 
-    snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s - %s\n",
-	     tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, 
-	     tm.tm_hour, tm.tm_min, tm.tm_sec, 
-	     a_event->evt_timestamp.tv_usec / 1000,
-	     log4c_priority_to_string(a_event->evt_priority),
-	     a_event->evt_category, a_event->evt_msg);
-    
+        if ( FileTimeToSystemTime(&a_event->evt_timestamp, &stime)){
+
+    snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\n",
+             stime.wYear, stime.wMonth , stime.wDay,
+             stime.wHour, stime.wMinute, stime.wSecond,
+             stime.wMilliseconds,
+             log4c_priority_to_string(a_event->evt_priority),
+             a_event->evt_category, a_event->evt_msg);
+        }
+#endif
     return buffer;
 }
 

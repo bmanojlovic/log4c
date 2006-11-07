@@ -16,10 +16,14 @@ static const char version[] = "$Id$";
 #include <log4c/category.h>
 #include <log4c/appender.h>
 #include <log4c/layout.h>
+#include <log4c/appender_type_rollingfile.h>
+#include <log4c/rollingpolicy.h>
+#include <log4c/rollingpolicy_type_sizewin.h>
 #include <sd/error.h>
 #include <sd/domnode.h>
 #include <sd/malloc.h>
 #include <sd/sd_xplatform.h>
+#include <sd/factory.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -117,13 +121,59 @@ static int appender_load(log4c_rc_t* this, sd_domnode_t* anode)
 	return -1;
     }
     
+    sd_debug("appender_load[name='%s'", 
+      (name->value ? name->value :"(not set)"));
+    
     app = log4c_appender_get(name->value);
     
-    if (type)
-	log4c_appender_set_type(app, log4c_appender_type_get(type->value));
+    if (type){
+      sd_debug("appender type is '%s'",
+        (type->value ? type->value: "(not set)"));
+      log4c_appender_set_type(app, log4c_appender_type_get(type->value));
+      
+#ifdef WITH_ROLLINGFILE
+      if ( !strcasecmp(type->value, "rollingfile")) {
+        rollingfile_udata_t *rfup = NULL;
+        log4c_rollingpolicy_t *rollingpolicyp = NULL;
+        sd_domnode_t*  logdir = sd_domnode_attrs_get(anode,
+                                       "logdir");
+        sd_domnode_t*  logprefix = sd_domnode_attrs_get(anode,
+                                       "prefix");
+        sd_domnode_t*  rollingpolicy_name = sd_domnode_attrs_get(anode,
+                                       "rollingpolicy");
+                                       
+        sd_debug("logdir='%s', prefix='%s', rollingpolicy='%s'",
+           (logdir && logdir->value ? name->value :"(not set)"),
+           (logprefix && logprefix->value ? logprefix->value :"(not set)"),
+           (rollingpolicy_name && rollingpolicy_name->value ?
+               rollingpolicy_name->value :"(not set)"));
+                                        
+        rfup = rollingfile_make_udata();              
+        rollingfile_udata_set_logdir(rfup, (char *)logdir->value);
+        rollingfile_udata_set_files_prefix(rfup, (char *)logprefix->value);
+
+        if (rollingpolicy_name){
+          /* recover a rollingpolicy instance with this name */
+          rollingpolicyp = log4c_rollingpolicy_get(rollingpolicy_name->value);
+          
+          /* connect that policy to this rollingfile appender conf */
+          rollingfile_udata_set_policy(rfup, rollingpolicyp);
+          log4c_appender_set_udata(app, rfup);
+          
+          /* allow the policy to initialize itself */
+          log4c_rollingpolicy_init(rollingpolicyp, rfup);
+        } else {
+          /* no rollingpolicy specified, default to default sizewin */
+          sd_debug("no rollingpolicy name specified--will default");
+        }
+      }
+#endif
+    }
 
     if (layout)
 	log4c_appender_set_layout(app, log4c_layout_get(layout->value));
+
+    sd_debug("]");
 
     return 0;
 }
@@ -148,6 +198,67 @@ static int layout_load(log4c_rc_t* this, sd_domnode_t* anode)
     return 0;
 }
 
+#ifdef WITH_ROLLINGFILE
+/******************************************************************************/
+static int rollingpolicy_load(log4c_rc_t* this, sd_domnode_t* anode)
+{
+    sd_domnode_t*   name   = sd_domnode_attrs_get(anode, "name");
+    sd_domnode_t*   type   = sd_domnode_attrs_get(anode, "type");
+    log4c_rollingpolicy_t* rpolicyp = NULL;
+    
+    sd_debug("rollingpolicy_load[");
+    if (!name) {
+	sd_error("attribute \"name\" is missing");
+	return -1;
+    }
+
+    rpolicyp = log4c_rollingpolicy_get(name->value);    
+
+    if (type){
+	log4c_rollingpolicy_set_type(rpolicyp,
+             log4c_rollingpolicy_type_get(type->value));
+    
+      if (!strcasecmp(type->value, "sizewin")){
+        sd_domnode_t*   maxsize   = sd_domnode_attrs_get(anode, "maxsize");
+        sd_domnode_t*   maxnum  = sd_domnode_attrs_get(anode, "maxnum");
+        rollingpolicy_sizewin_udata_t *sizewin_udatap = NULL;
+        
+        sd_debug("type='sizewin', maxsize='%s', maxnum='%s', "
+                  "rpolicyname='%s'",
+           (maxsize && maxsize->value ? maxsize->value :"(not set)"),
+           (maxnum && maxnum->value ? maxnum->value :"(not set)"),
+           (name && name->value ? name->value :"(not set)"));
+        /*
+         * Get a new sizewin policy type and configure it.
+         * Then attach it to the policy object.
+         * Check to see if this policy already has a
+         sw udata object.  If so, leave as is except update
+         the params
+        */
+        if ( !(sizewin_udatap = log4c_rollingpolicy_get_udata(rpolicyp))){ 
+          sd_debug("creating new sizewin udata for this policy");
+          sizewin_udatap = sizewin_make_udata();
+          log4c_rollingpolicy_set_udata(rpolicyp,sizewin_udatap);   
+          sizewin_udata_set_file_maxsize(sizewin_udatap, atoi(maxsize->value));
+        sizewin_udata_set_max_num_files(sizewin_udatap, atoi(maxnum->value));
+        }else{
+          sd_debug("policy already has a sizewin udata--just updating params");
+        sizewin_udata_set_file_maxsize(sizewin_udatap, atoi(maxsize->value));
+        sizewin_udata_set_max_num_files(sizewin_udatap, atoi(maxnum->value));
+         /* allow the policy to initialize itself */
+        log4c_rollingpolicy_init(rpolicyp, 
+            log4c_rollingpolicy_get_rfudata(rpolicyp));
+        }        
+       
+      }
+    
+    }
+    sd_debug("]");
+
+    return 0;
+}
+#endif
+
 /******************************************************************************/
 extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
 {    
@@ -155,6 +266,8 @@ extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
     sd_domnode_t*   node = NULL;        
     sd_domnode_t*   root_node = NULL;
 
+    sd_debug("parsing file '%s'\n", a_filename);
+    
     if (!this)
 	return -1;
 
@@ -195,11 +308,15 @@ extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
 
 	if (!strcmp(node->name, "category")) category_load(this, node);
 	if (!strcmp(node->name, "appender")) appender_load(this, node);
+#ifdef WITH_ROLLINGFILE
+  if (!strcmp(node->name, "rollingpolicy"))rollingpolicy_load(this, node);
+#endif
 	if (!strcmp(node->name, "layout"))   layout_load(this, node);
 	if (!strcmp(node->name, "config"))   config_load(this, node);
     }
 	
     sd_domnode_delete(root_node);
+    
     return 0;
 }
 

@@ -43,6 +43,21 @@ static sd_hash_t* log4c_layout_types(void)
     return types;
 }
 
+
+extern void log4c_layout_types_print(FILE *fp)
+{
+   sd_hash_iter_t* i;
+ 
+  fprintf(fp, "layout types:");
+   for (i = sd_hash_begin(log4c_layout_types());
+         i != sd_hash_end(log4c_layout_types()); 
+	 i = sd_hash_iter_next(i) ) 
+   {
+      fprintf(fp, "'%s' ",((log4c_layout_type_t *)(i->data))->name );
+   }
+  fprintf(fp, "\n");
+}
+
 /*******************************************************************************/
 extern const log4c_layout_type_t* log4c_layout_type_get(const char* a_name)
 {

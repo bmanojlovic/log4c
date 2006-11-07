@@ -45,6 +45,9 @@ struct __log4c_category;
  * @li @c evt_timestamp The number of seconds elapsed since the epoch
  * (1/1/1970 00:00:00 UTC) until logging event was created.
  * @li @c evt_loc The event's location information
+ * @li @c evt_app_overhead_len The rendered msg len is the size of the msg passed
+ * by the user after it's been renered by the layout.  But the appender
+ * typically prepends some stuff, eg. it's own name in square brackets. 
  **/
 typedef struct 
 {
@@ -53,8 +56,13 @@ typedef struct
     const char* evt_msg;
     const char* evt_rendered_msg;
     log4c_buffer_t evt_buffer;
+#ifndef _WIN32
     struct timeval evt_timestamp;
+#else
+    FILETIME evt_timestamp;
+#endif
     const log4c_location_info_t* evt_loc;
+    long evt_app_overhead_len;
 
 } log4c_logging_event_t;
 

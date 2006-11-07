@@ -83,6 +83,7 @@ static const char version[] = "$Id$";
  
 /*****************************  gettimeofday *******************/
 
+
 #ifdef _WIN32
 
 #if 0 /* also in winsock[2].h */
@@ -93,11 +94,12 @@ struct timeval {
     long tv_usec;
 };
 #endif /* _TIMEVAL_DEFINED */
-int sd_gettimeofday(struct timeval* tp, void* tzp) {
-    DWORD t;
-    t = timeGetTime();
-    tp->tv_sec = t / 1000;
-    tp->tv_usec = t % 1000;
+
+int sd_gettimeofday(LPFILETIME lpft, void* tzp) {
+
+    if (lpft) {
+        GetSystemTimeAsFileTime(lpft);
+    }
     /* 0 indicates that the call succeeded. */
     return 0;
 }

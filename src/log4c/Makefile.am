@@ -21,6 +21,11 @@ liblog4c_la_SOURCES = \
 	appender.c \
 	layout.c \
 	category.c
+  
+if WITH_ROLLINGFILE
+ liblog4c_la_SOURCES += appender_type_rollingfile.c \
+                          rollingpolicy.c rollingpolicy_type_sizewin.c
+endif  
 
 liblog4c_la_LDFLAGS = -version-info @LT_VERSION@
 liblog4c_la_LIBADD  = ../sd/liblog4c_sd.la
@@ -45,4 +50,7 @@ pkginclude_HEADERS = \
 	appender_type_syslog.h \
 	appender_type_mmap.h \
 	appender.h \
-	category.h
+	category.h \
+  appender_type_rollingfile.h \
+  rollingpolicy.h \
+  rollingpolicy_type_sizewin.h

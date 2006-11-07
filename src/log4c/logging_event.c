@@ -26,7 +26,8 @@ extern log4c_logging_event_t* log4c_logging_event_new(
     evt->evt_category	= a_category;
     evt->evt_priority	= a_priority;
     evt->evt_msg	= a_message;
-
+    evt->evt_app_overhead_len = 0;
+    
     SD_GETTIMEOFDAY(&evt->evt_timestamp, NULL);
 
     return evt;

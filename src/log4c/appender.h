@@ -182,6 +182,7 @@ LOG4C_API int log4c_appender_append(
  * closes the appender
  *
  * @param a_appender the log4c_appender_t object
+ * @return zero if successful, -1 otherwise
  **/
 LOG4C_API int log4c_appender_close(log4c_appender_t* a_appender);
 
@@ -193,6 +194,13 @@ LOG4C_API int log4c_appender_close(log4c_appender_t* a_appender);
  **/
 LOG4C_API void log4c_appender_print(const log4c_appender_t* a_appender, 
 				 FILE* a_stream);
+     
+/**
+ * prints all the current registered appender types on a stream
+ *
+ * @param fp the stream
+ **/                            
+LOG4C_API void log4c_appender_types_print(FILE *fp);
 
 /**
  * Helper macro to define static appender types.

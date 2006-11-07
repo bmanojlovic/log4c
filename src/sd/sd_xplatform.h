@@ -15,6 +15,7 @@
 #include <time.h>
 #include <windows.h>
 #include <winsock.h>
+#include <process.h>
 #endif
 
 
@@ -55,6 +56,12 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #endif
 
 #ifdef _WIN32
+#define FILE_SEP "\\"
+#else
+#define FILE_SEP "/"
+#endif
+
+#ifdef _WIN32
 #define SD_ACCESS_READ(a) _access(a,04)
 #else
 #define SD_ACCESS_READ(a) access(a,R_OK)
@@ -73,7 +80,42 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #define strncasecmp strnicmp
 #define strcasecmp stricmp
 #define YY_NO_UNISTD_H
+#define sleep(x) Sleep(x*1000)
 #endif
+
+
+/* Maybe should be using this for to mean
+* MS compiler #if defined(_MSC_VER) 
+*/
+#ifdef _WIN32
+#define pthread_t HANDLE
+#define pthread_mutex_t HANDLE
+#define pthread_attr_t DWORD
+#define THREAD_FUNCTION DWORD WINAPI
+
+/*
+* This one not obvious: you would have naturally thought of mapping to
+* CreateThread()--turns out that to be safe using CRT functions
+* you need to use _begintheadex().  
+* cf. http://msdn2.microsoft.com/en-us/library/7t9ha0zh.aspx
+*  http://groups.google.com/group/comp.os.ms-windows.programmer.win32/browse_thread/thread/86d8624e7ee38c5d/f947ac76cd10f397?lnk=st&q=when+to+use+_beginthreadex&rnum=1#f947ac76cd10f397
+* 
+*/
+#define pthread_create(thhandle,attr,thfunc,tharg) \
+  (int)((*thhandle=(HANDLE)_beginthreadex(NULL,0,(THREAD_FUNCTION)thfunc,tharg,0,NULL))==NULL)
+#define pthread_join(thread, result) \
+  ((WaitForSingleObject((thread),INFINITE)!=WAIT_OBJECT_0) || !CloseHandle(thread))
+#define pthread_exit() _endthreadex(0)
+#define pthread_cancel(thread) TerminateThread(thread,0)
+
+#define pthread_mutex_init(pobject,pattr) (*pobject=CreateMutex(NULL,FALSE,NULL))
+#define pthread_mutex_lock(pobject) WaitForSingleObject(*pobject,INFINITE)
+#define pthread_mutex_unlock(pobject) ReleaseMutex(*pobject)
+
+#define pthread_mutex_destroy(pobject) CloseHandle(*pobject)
+
+#endif
+
 
 #ifdef __HP_cc
 #define inline __inline

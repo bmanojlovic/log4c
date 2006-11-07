@@ -159,6 +159,13 @@ LOG4C_API void log4c_layout_print(
     const log4c_layout_t* a_layout, FILE* a_stream);
 
 /**
+ * prints all the current registered layout types on a stream
+ *
+ * @param fp the stream
+ **/                            
+LOG4C_API void log4c_layout_types_print(FILE *fp);
+
+/**
  * Helper macro to define static layout types.
  *
  * @param a_type the log4c_layout_type_t object to define
