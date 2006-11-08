@@ -1,4 +1,18 @@
-Sample programs using log4c
+
+Sample programs using Log4C
+===========================
+
+Please refer to the developers guide in the doc directory for a fuller
+explanation of these examples. 
+
+helloworld -- classic simple program that logs the message "Hello World!" using Log4C.
+This example is used in the developers guide to explain some fundamental Log4C
+concepts.
+
+helloworld1 -- again the classic hello world example but demonstrating a technique
+for wrapping Log4C API calls to make it easy to remove Log4C from your code and
+demonstrating how to use a macro so that you name the category for your file just
+once at the start of the file.
 
 application_1 -- most basic example of using log4c.  Notice that you
 only have to setup the category.  Log4c is more powerful and flexible
@@ -17,5 +31,4 @@ the name of the appender/formatter given in the code, but that the
 name= can be any name you want.  Try and alter the priority= settings,
 the appender and layout settings in log4crc and rerunning the examples
 to see how the config affects which error messages will be printed.
-
 
