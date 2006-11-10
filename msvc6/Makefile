@@ -242,7 +242,8 @@ $(OUT_DIR)/tests/test_rollingfile_appender_mt.exe: \
 ##########
 
 examples: $(OUT_DIR)/examples $(OUT_DIR)/examples/application_1.exe \
-	$(OUT_DIR)/examples/libexamples.lib $(OUT_DIR)/examples/application_2.exe
+	$(OUT_DIR)/examples/libexamples.lib $(OUT_DIR)/examples/application_2.exe \
+	$(OUT_DIR)/examples/helloworld.exe $(OUT_DIR)/examples/helloworld1.exe
 
 EXAMPLES_LOC = ../examples
 
@@ -272,6 +273,28 @@ $(OUT_DIR)/examples/application_2.exe: $(addprefix $(EXAMPLES_LOC)/, $(applicati
     $(OUT_DIR)/examples/libexamples.lib $(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^) WINMM.LIB
+	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
+ifeq ($(DEBUG),1)
+	mv *.manifest $(OUT_DIR)/examples
+	mv *.pdb *.ilk $(OUT_DIR)/examples
+endif
+
+helloworld_SOURCES = helloworld/helloworld.c
+$(OUT_DIR)/examples/helloworld.exe: $(addprefix $(EXAMPLES_LOC)/, $(helloworld_SOURCES)) \
+	$(OUT_DIR)/log4c/liblog4c.lib
+	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
+	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
+	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
+ifeq ($(DEBUG),1)
+	mv *.manifest $(OUT_DIR)/examples
+	mv *.pdb *.ilk $(OUT_DIR)/examples
+endif
+
+helloworld1_SOURCES = helloworld1/helloworld1.c
+$(OUT_DIR)/examples/helloworld1.exe: $(addprefix $(EXAMPLES_LOC)/, $(helloworld1_SOURCES)) \
+	$(OUT_DIR)/log4c/liblog4c.lib
+	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
+	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
 	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
 ifeq ($(DEBUG),1)
 	mv *.manifest $(OUT_DIR)/examples
