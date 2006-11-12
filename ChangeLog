@@ -1,4 +1,12 @@
 
+2006-11-12  Robert Byrne <robert.byrne@sun.com>
+
+	* configure.in: add the without-expat option
+	for those who know they do not want that dependency.
+	* config/expat.m4: add some text to error messages in the case where
+	we look for expat but fail to find it.  Recall that Log4C will still
+	work using the bundled lex/yacc code for parsing the conf file.
+
 2006-11-12 Robert Byrne <robert.byrne@sun.com>
 	* Mostly stuff to tidy up the windows code:
 
