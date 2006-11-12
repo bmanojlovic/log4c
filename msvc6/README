@@ -7,7 +7,7 @@ Versions of the Compiler and Windows we tested with
 ===================================================
 
 This compile has been tested with Microsoft Visual Studio for C/C++ version 6
-on Windows XP Home Edition.
+on Windows XP Home and Professional Editions.
 
 Note that the compilation using the cygwin environment to generate the dll with gcc
 worked very smoothly on Windows (both with and without the --no-cygwin option).
@@ -22,6 +22,8 @@ Some Unix specific appenders like syslog and mmap are naturally not ported to Wi
 The dated_r layout is not currently ported (but could be).
 
 With the above caveat, all the tests and examples run fine on Windows.
+
+xxx Currently two of the tests in the test_rc test are failing.
 
 How to compile log4c on Windows
 ===============================
@@ -74,7 +76,7 @@ make, nm
 Some useful build tools from Microsoft:
 . depends.exe (ldd alike), dumpbin.exe (nm alike)
 . msdev.exe <program name> (to start the debugger with MSVC6)
-. With Visual Studio C++ Express Edition (it's free!) to start the
+. With Visual Studio C++ 2005 Express Edition (it's free!) to start the
   debugger: vcexpress.exe /debugexe <program name>
 . For debugging, the key compiler option is /Zi and for the linker, /DEBUG.
 
