@@ -77,11 +77,11 @@ This is the distribution of Log4C (last updated 4 Sept 2006)
   example commands below should compile Log4C on each of the supported
   platforms:
   
-  $ tar -zxvf log4c-1.0.12.tar.gz
-  $ mkdir build; cd build
-	$ ../log4c-1.0.12/configure --prefix=/path/of/installation
-	$ make
-	$ make install
+    $ tar -zxvf log4c-1.0.12.tar.gz
+    $ mkdir build; cd build
+    $ ../log4c-1.0.12/configure --prefix=/path/of/installation
+    $ make
+    $ make install
 
   To build the binary, source, developer and debuginfo RPMs for Linux:
     $ make rpm
@@ -96,9 +96,9 @@ This is the distribution of Log4C (last updated 4 Sept 2006)
 
   To get started with the examples see the README in the examples source code
   directory and run them from the build directory as follows:
-       cd examples
-       ./application_1
-       ./application_2
+    $ cd examples
+    $ ./application_1
+    $ ./application_2
 
 * How to for library developers ...
    

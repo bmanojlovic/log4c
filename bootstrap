@@ -4,6 +4,8 @@
 # Run this bootstrap script to 
 # create the configure script and Makefile.in files etc.
 #
+# You need to do this if you have just done 'cvs co log4c'.
+#
 # We require:
 # autoconf 2.57+
 # automake 1.7+ (recommended is 1.9+)
@@ -16,8 +18,16 @@
 #
 # Once the configure script is there you 
 # can do something like "configure --enable-test"
-# to create the Makefiles...then you can start work!
+# to create the Makefiles.  It is generarelly better if you 
+# do that outside the source tree...something like this:
 #
+# cvs co log4c
+# cd log4c; ./bootstrap
+# cd ..;
+# mkdir fc5; cd fc5
+# ../log4c/configure --enable-test --enable-debug --enable-doc
+# make
+# 
 
 # Need at least automake 1.7 
 am_major=`automake --version | grep automake | cut -d " " -f 4 | cut -d "." -f 1`
@@ -50,3 +60,7 @@ aclocal -I config $ACLOCAL_FLAGS
 autoheader --force
 automake --add-missing --copy
 autoconf --force
+#
+# "You can run the configure script now to build your Makefiles."
+#
+
