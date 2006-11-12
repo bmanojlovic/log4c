@@ -8,21 +8,31 @@ AC_DEFUN([AM_PATH_EXPAT],
 [dnl 
 dnl Get the cflags and libraries from the expat-config script
 dnl
+
 AC_ARG_WITH(expat-prefix,
-    AC_HELP_STRING([--with-expat=PFX],
-              	    [LOG4C: Prefix where EXPAT is installed (optional)]))
+    AC_HELP_STRING([--with-expat-prefix=PFX],
+              	    [LOG4C: Prefix where EXPAT is installed (defaults to just
+                    looking in the standard library locations).  If
+                    --without-expat is set to yes then this option has
+                    no effect)]))
+                    
 AC_ARG_ENABLE(expattest,
     AC_HELP_STRING([--disable-expattest],
-      	      	    [LOG4C: Do not try to compile and run a test EXPAT program]),
+      	      	    [LOG4C: Do not try to compile and run a test EXPAT program.
+                    (default is no).  If without-expat is set to yes this
+                    option has no effect.]),
 		    , enable_expattest=yes)
 
-  if test x$with_expat != x ; then
-    EXPAT_CFLAGS="-I$with_expat/include"
-    EXPAT_LIBS="-L$with_expat/lib"
+  if test x$with_expat_prefix != x ; then
+    EXPAT_CFLAGS="-I$with_expat_prefix/include"
+    EXPAT_LIBS="-L$with_expat_prefix/lib"
   fi
 
   min_expat_version=ifelse([$1], ,1.95.1, $1)
+dnl  AC_MSG_NOTICE([value of with_expat_prefix=$with_expat_prefix \
+dnl    value of with_expat=$with_expat])
   AC_MSG_CHECKING(for EXPAT - version >= $min_expat_version)
+ 
 
   EXPAT_CFLAGS="$EXPAT_CFLAGS"
   EXPAT_LIBS="$EXPAT_LIBS -lexpat"
@@ -97,9 +107,11 @@ main ()
 
   if test "x$no_expat" = x ; then
      AC_MSG_RESULT(yes)
+     use_expat=yes
      ifelse([$2], , :, [$2])     
   else
      AC_MSG_RESULT(no)
+     use_expat=no
      if test -f conf.expattest ; then
         :
      else
@@ -112,18 +124,24 @@ main ()
 ],      [ return (XML_ExpatVersion()); ],
         [ echo "*** The test program compiled, but did not run. This usually means"
           echo "*** that the run-time linker is not finding EXPAT or finding the wrong"
-          echo "*** version of EXPAT. If it is not finding EXPAT, you'll need to set your"
+          echo "*** version of EXPAT. If it is not finding EXPAT you can specify"
+          echo "*** an install location using --with-expat-prefix option to"
+          echo "*** configure. You can also set the "
           echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
           echo "*** to the installed location  Also, make sure you have run ldconfig if that"
           echo "*** is required on your system"
-	  echo "***"
+          echo "***"
           echo "*** If you have an old version installed, it is best to remove it, although"
           echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
-          echo "***" ],
+          echo "***" 
+          echo "*** Log4C will still run without EXPAT--it uses some bundled"
+          echo "*** lex/yacc code to parse the configuration file"],
         [ echo "*** The test program failed to compile or link. See the file config.log for the"
           echo "*** exact error that occured. This usually means EXPAT was incorrectly installed"
           echo "*** or that you have moved EXPAT since it was installed. In the latter case, you"
-          echo "*** may want to edit the expat-config script: $EXPAT_CONFIG" ])
+          echo "*** may want to edit the expat-config script: '$EXPAT_CONFIG'"
+          echo "*** Log4C will still run without EXPAT--it uses some bundled"
+          echo "*** lex/yacc code to parse the configuration file"])
           CFLAGS="$ac_save_CFLAGS"
           LIBS="$ac_save_LIBS"
      fi
