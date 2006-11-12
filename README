@@ -1,4 +1,4 @@
-This is the distribution of Log4C (last updated 4 Sept 2006)
+This is the distribution of Log4C (last updated 13 Nov 2006)
 
 * What is Log4C
 
@@ -7,11 +7,13 @@ This is the distribution of Log4C (last updated 4 Sept 2006)
    (http://jakarta.apache.org/log4j/), staying as close to their API as is
    reasonable.
    
-   See also here for overviews of Log4c:
+   As well as the "doc" directory in the Log4C repository, see also here for
+   more documentation on Log4c:
    
      http://log4c.sourceforge.net/
+     http://sourceforge.net/docman/?group_id=38627
      http://en.wikipedia.org/wiki/Log4C   
-
+     
 * Licensing
 
    Log4C libraries are released under the terms of the GNU Lesser
