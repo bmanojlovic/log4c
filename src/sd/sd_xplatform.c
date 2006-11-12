@@ -18,10 +18,8 @@ static const char version[] = "$Id$";
  
  int sd_opterr = 1;
  int sd_optind = 1;
-
- sd_optopt = 0;
+ int sd_optopt = 0;
  char *sd_optarg = NULL;
-
  int _sp = 1;
  
 #define warn(a,b,c)fprintf(stderr,a,b,c)
