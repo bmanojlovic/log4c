@@ -42,10 +42,24 @@ struct __sd_test
 /******************************************************************************/
 static usec_t now(void)
 {
+ 
+#ifdef _WIN32
+ FILETIME tv;
+ ULARGE_INTEGER   li;
+#else
     struct timeval tv;
+#endif
 
     SD_GETTIMEOFDAY(&tv, NULL);
+
+#ifdef _WIN32
+	memcpy(&li, &tv, sizeof(FILETIME));
+	li.QuadPart /= 10;                /* In microseconds */
+	/* printf("timestampstamp usec %I64u\n", li.QuadPart);*/
+	return li.QuadPart;
+#else
     return (usec_t) (tv.tv_sec * 1000000 + tv.tv_usec);
+#endif
 }
 
 /******************************************************************************/

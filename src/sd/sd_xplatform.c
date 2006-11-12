@@ -8,6 +8,7 @@ static const char version[] = "$Id$";
 
 #include <stdio.h>
 #include <string.h>
+#include "log4c/defs.h"
 
 #include "sd_xplatform.h"
 
@@ -15,8 +16,12 @@ static const char version[] = "$Id$";
 
 #define	EOF	(-1)
  
- int sd_opterr = 1, sd_optind = 1, sd_optopt = 0;
+ int sd_opterr = 1;
+ int sd_optind = 1;
+
+ sd_optopt = 0;
  char *sd_optarg = NULL;
+
  int _sp = 1;
  
 #define warn(a,b,c)fprintf(stderr,a,b,c)

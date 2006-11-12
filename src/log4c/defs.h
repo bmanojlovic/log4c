@@ -25,6 +25,7 @@
 
 #define LOG4C_INLINE inline
 #define LOG4C_API    extern
+#define LOG4C_DATA    extern
 
 #ifdef __HP_cc
 #define inline __inline

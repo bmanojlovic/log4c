@@ -47,6 +47,7 @@ int gettimeofday(struct timeval* tp, void* tzp) {
 int sleep(DWORD t){
   
 	Sleep(1000*t);
+	return(0);
 }
 #endif /* _WIN32 */
 

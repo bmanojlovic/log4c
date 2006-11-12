@@ -231,8 +231,8 @@ static const log4c_appender_type_t * const appender_types[] = {
   &log4c_appender_type_s13_file,
   &log4c_appender_type_s13_stderr
 };
-static size_t nappender_types = 
-  sizeof(appender_types) / sizeof(appender_types[0]);
+int nappender_types = 
+  (int)(sizeof(appender_types) / sizeof(appender_types[0]));
 
 int init_example_appenders(){
 

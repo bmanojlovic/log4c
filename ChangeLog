@@ -1,3 +1,25 @@
+
+2006-11-12 Robert Byrne <robert.byrne@sun.com>
+	* Mostly stuff to tidy up the windows code:
+
+	* tidy up in app*.c examples: to remove compile warnings on msvc6
+	* tidy up msvc6/Makefile: to take account of some difference
+	in msvc6 and msvc8 (former doesn't have manifest files for debug
+	version).
+	* bug fix in stream2 appender: not allocating the udata 
+	correctly.  Showed up if you did open/close, open/close on
+	the stream2 appender on windows.
+	* introduce LOG4C_DATA (analagous to LOG4C_API): to be used
+	for exporting data symbols.  Need this to export sd_optind
+	from the sd library so that bench.c can use sd_getopt()
+	correctly to process it's command line.  Bug was that
+	bench.exe on windows was not getting it's command line.
+	* replace several counter variables previously of type int
+	with type size_t: to avoid compile warnings 
+	* align the files bench.c, sd/test.c, test_rollingfile_appender_mt.c
+	on the way they get timestamps on windows.
+	* in bench.c, ditched the timed_loop macro--too hard to work with.
+
 2005-12-16  Cedric Le Goater <legoater@free.fr>
 
         * configure.in: log4c-1.1.0

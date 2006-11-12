@@ -11,10 +11,21 @@ LOG4C_MAJOR_VERSION:=1
 LOG4C_MINOR_VERSION:=1
 LOG4C_MICRO_VERSION:=0
 
-# We have tested log4c with msvc6 and with VC Express
+# We have tested log4c with the aged but classic msvc6 and with 
+# the new (and free!!) VC Express 2005 which is a kind of free
+# MSVC8 with some stuff missing (.net stuff, MFC...)
+# You will also need to tweak the locations below if
+# you have installed in non-default locations.
+MS_COMPILER_VER=MSVC6
+
+ifeq ($(MS_COMPILER_VER),MSVC6)
 VC_LOCATION=c:/Program\ Files/Microsoft\ Visual\ Studio/VC98
-#VC_LOCATION=c:/Program\ Files/Microsoft\ Visual\ Studio\ 8/VC
+else
+ifeq ($(MS_COMPILER_VER),MSVC8) 
+VC_LOCATION=c:/Program\ Files/Microsoft\ Visual\ Studio\ 8/VC
 SDK_LOCATION=c:/Program\ Files/Microsoft\ Platform\ SDK
+endif
+endif
 
 # set DEBUG=1 to set compile time debug options and to link
 # with msvcrtd.dll.  Note that msvcrtd.dll is not typically
@@ -189,33 +200,44 @@ $(OUT_DIR)/tests/test_category.exe: $(addprefix $(TEST_LOC)/, $(test_category_SO
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
-
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests; \
+	mv *.pdb $(OUT_DIR)/tests 
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
 
 test_rc_SOURCES = test_rc.c
 $(OUT_DIR)/tests/test_rc.exe: $(addprefix $(TEST_LOC)/, $(test_rc_SOURCES)) \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) /DSRCDIR="\"$(TEST_LOC)\"" $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests; \
+	mv *.pdb $(OUT_DIR)/tests
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
 
 test_stream2_SOURCES = test_stream2.c
 $(OUT_DIR)/tests/test_stream2.exe: $(addprefix $(TEST_LOC)/, $(test_stream2_SOURCES)) \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests; \
+	mv *.pdb $(OUT_DIR)/tests
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
 
 bench_SOURCES = bench.c
 $(OUT_DIR)/tests/bench.exe: $(addprefix $(TEST_LOC)/, $(bench_SOURCES)) \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests; \
+	mv *.pdb $(OUT_DIR)/tests
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
 
 
 test_rollingfile_appender_SOURCES = test_rollingfile_appender.c
@@ -224,8 +246,11 @@ $(OUT_DIR)/tests/test_rollingfile_appender.exe: \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests; \
+	mv *.pdb $(OUT_DIR)/tests
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
   
 test_rollingfile_appender_mt_SOURCES = test_rollingfile_appender_mt.c
 $(OUT_DIR)/tests/test_rollingfile_appender_mt.exe: \
@@ -233,8 +258,11 @@ $(OUT_DIR)/tests/test_rollingfile_appender_mt.exe: \
 	$(OUT_DIR)/log4c/liblog4c.lib
 	$(CL) $(INCLUDES) $(MSVCFLAGS) $(filter %.c,$^) /link \
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
-	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests \
-	mv *.manifest $(OUT_DIR)/tests; mv *.pdb $(OUT_DIR)/tests
+	mv *.obj $(OUT_DIR)/tests; mv *.exe $(OUT_DIR)/tests
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/tests
+endif
+	mv *.pdb $(OUT_DIR)/tests
 
   
 ##########
@@ -254,8 +282,10 @@ $(OUT_DIR)/examples/application_1.exe: $(addprefix $(EXAMPLES_LOC)/, $(applicati
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^) WINMM.LIB
 	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
 ifeq ($(DEBUG),1)
-	mv *.manifest $(OUT_DIR)/examples
 	mv *.pdb *.ilk $(OUT_DIR)/examples
+ifeq ($(MS_COMPILER_VER),MSVC8)
+	mv *.manifest $(OUT_DIR)/examples
+endif
 endif
 
 EXAMPLE_LIB_SOURCE_FILES := example_formatters.c example_appenders.c
@@ -275,7 +305,9 @@ $(OUT_DIR)/examples/application_2.exe: $(addprefix $(EXAMPLES_LOC)/, $(applicati
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^) WINMM.LIB
 	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
 ifeq ($(DEBUG),1)
+ifeq ($(MS_COMPILER_VER),MSVC8)
 	mv *.manifest $(OUT_DIR)/examples
+endif
 	mv *.pdb *.ilk $(OUT_DIR)/examples
 endif
 
@@ -286,7 +318,9 @@ $(OUT_DIR)/examples/helloworld.exe: $(addprefix $(EXAMPLES_LOC)/, $(helloworld_S
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
 	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
 ifeq ($(DEBUG),1)
+ifeq ($(MS_COMPILER_VER),MSVC8)
 	mv *.manifest $(OUT_DIR)/examples
+endif
 	mv *.pdb *.ilk $(OUT_DIR)/examples
 endif
 
@@ -297,7 +331,9 @@ $(OUT_DIR)/examples/helloworld1.exe: $(addprefix $(EXAMPLES_LOC)/, $(helloworld1
 	/LIBPATH:$(MS_SDKLIB_PATH) $(filter %.lib,$^)
 	mv *.obj $(OUT_DIR)/examples; mv *.exe $(OUT_DIR)/examples
 ifeq ($(DEBUG),1)
+ifeq ($(MS_COMPILER_VER),MSVC8)
 	mv *.manifest $(OUT_DIR)/examples
+endif
 	mv *.pdb *.ilk $(OUT_DIR)/examples
 endif
 

@@ -56,6 +56,9 @@ typedef struct
     const char* evt_msg;
     const char* evt_rendered_msg;
     log4c_buffer_t evt_buffer;
+/* ok, this is probably not a good way to do it--should define a common type here
+and have the base acessor function do the mapping
+*/
 #ifndef _WIN32
     struct timeval evt_timestamp;
 #else

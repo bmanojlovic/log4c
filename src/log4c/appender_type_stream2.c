@@ -118,7 +118,7 @@ static int stream2_close(log4c_appender_t* this)
 static log4c_stream2_udata_t* stream2_make_udata(){
 
     log4c_stream2_udata_t* s2up = 
-	(log4c_stream2_udata_t*) sd_calloc(1, sizeof(log4c_stream2_udata_t*));
+	(log4c_stream2_udata_t*) sd_calloc(1, sizeof(log4c_stream2_udata_t));
     return(s2up);
 }
 

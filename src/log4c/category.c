@@ -240,13 +240,13 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
     message = sd_vsprintf(a_format, a_args);
   }
   else {
-    int n;
+    size_t n;
     
     evt.evt_buffer.buf_size = evt.evt_buffer.buf_maxsize;
     evt.evt_buffer.buf_data = alloca(evt.evt_buffer.buf_size);
     message = alloca(evt.evt_buffer.buf_size);
     
-    if ( (n = vsnprintf(message, evt.evt_buffer.buf_size, a_format, a_args))
+    if ( (n = (size_t)vsnprintf(message, evt.evt_buffer.buf_size, a_format, a_args))
       >= evt.evt_buffer.buf_size)
     sd_error("truncating message of %d bytes (bufsize = %d)", n, 
       evt.evt_buffer.buf_size);

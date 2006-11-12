@@ -13,6 +13,7 @@
 #include <sys/time.h>
 #else
 #include <time.h>
+#include <io.h> /* needed for _access  */
 #include <windows.h>
 #include <winsock.h>
 #include <process.h>
@@ -22,18 +23,23 @@
 #ifdef HAVE_STDINT_H
 #       include <stdint.h>
 #define  XP_UINT64 uint64_t
+#define  XP_INT64 int64_t
 #else
 #ifndef _WIN32
-#define  XP_UINT64 long long
+#define  XP_UINT64 unsigned long long
+#define  XP_INT64 long long
 #else
 #define  XP_UINT64 DWORD64
+#define  XP_INT64 __int64
 #endif
 #endif
 
+#include <log4c/defs.h>
 #include <sd/defs.h>
 
 
-extern int sd_optind;
+/*extern int sd_optind; */
+LOG4C_DATA int sd_optind; 
 
 extern void getopt_reset(void); 
 
@@ -47,12 +53,13 @@ extern int sd_getopt(int argc, char *const *argv, const char *opts);
 #define SD_OPTIND optind
 #endif
 
-extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 
 #ifdef _WIN32
 #define SD_GETTIMEOFDAY(a,b) sd_gettimeofday(a,b)
+extern int sd_gettimeofday(LPFILETIME lpft, void* tzp);
 #else
 #define SD_GETTIMEOFDAY(a,b) gettimeofday(a,b)
+extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #endif
 
 #ifdef _WIN32
@@ -91,7 +98,7 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #define pthread_t HANDLE
 #define pthread_mutex_t HANDLE
 #define pthread_attr_t DWORD
-#define THREAD_FUNCTION DWORD WINAPI
+#define THREAD_FUNCTION DWORD (WINAPI *)(void *)
 
 /*
 * This one not obvious: you would have naturally thought of mapping to

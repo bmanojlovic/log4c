@@ -41,7 +41,7 @@ extern const char* log4c_priority_to_string(int a_priority)
 /*******************************************************************************/
 extern int log4c_priority_to_int(const char* a_priority_name)
 {
-    int i; 
+    size_t i; 
 
     if (a_priority_name) {
 	for (i = 0; i < npriorities; i++) {

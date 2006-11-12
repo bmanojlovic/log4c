@@ -28,7 +28,8 @@ struct __sd_hash {
 /******************************************************************************/
 static void rehash(sd_hash_t* a_this)
 {
-    int			i, h, size;
+    size_t			i;
+	int h, size;
     sd_hash_iter_t**	tab;
     sd_hash_iter_t*	p;
     sd_hash_iter_t*	q;
@@ -163,7 +164,7 @@ extern void sd_hash_delete(sd_hash_t* a_this)
 /******************************************************************************/
 extern void sd_hash_clear(sd_hash_t* a_this)
 {
-    int			h;
+    size_t		h;
     sd_hash_iter_t*	p;
     sd_hash_iter_t*	q;
     
@@ -199,7 +200,7 @@ extern void sd_hash_del(sd_hash_t* a_this, const void* a_key)
 extern void sd_hash_foreach(sd_hash_t* a_this, sd_hash_func_t a_func,
 			    void* a_data)
 {
-    int			h, ret;
+    size_t			h, ret;
     sd_hash_iter_t*	p;
     sd_hash_iter_t*	q;
     
@@ -237,7 +238,7 @@ extern unsigned int sd_hash_get_size(sd_hash_t* a_this)
 /******************************************************************************/
 extern sd_hash_iter_t* sd_hash_begin(sd_hash_t* a_this)
 {
-    int h;
+    size_t h;
     
     if (a_this == 0) return 0;
     for (h = 0; h < a_this->size; h++)
@@ -256,7 +257,8 @@ extern sd_hash_iter_t* sd_hash_end(sd_hash_t* a_this)
 /******************************************************************************/
 extern sd_hash_iter_t* sd_hash_iter_next(sd_hash_iter_t* a_this)
 {
-    int h, i;
+    int h;
+	size_t i;
     
     if (a_this == 0)		return 0;
     if (a_this->__next != 0)	return a_this->__next;

@@ -73,27 +73,28 @@ log4c_layout_t* basic_layout = NULL;
 * Local functions
 */
  
+typedef XP_UINT64 usec_t;
+static usec_t now(void)
+{
 #ifdef _WIN32
-static int my_gettimeofday(struct timeval* tp, void* tzp) {
-  FILETIME ft;
-  LARGE_INTEGER   li;
-  __int64         t;
-  
-  GetSystemTimeAsFileTime(&ft);
-  li.LowPart  = ft.dwLowDateTime;
-  li.HighPart = ft.dwHighDateTime;
-  t  = li.QuadPart;       /* In 100-nanosecond intervals */
-  /*t -= EPOCHFILETIME;      Offset to the Epoch time */
-  t /= 10;                /* In microseconds */
-  tp->tv_sec  = (t / 1000000);
-  tp->tv_usec = (t % 1000000);
-  
-  /* 0 indicates that the call succeeded. */
-  return 0;
-}
+ FILETIME tv;
+ ULARGE_INTEGER   li;
 #else
-#define my_gettimeofday gettimeofday
+ struct timeval tv;
 #endif
+  
+   SD_GETTIMEOFDAY(&tv, NULL);
+
+#ifdef _WIN32
+	memcpy(&li, &tv, sizeof(FILETIME));
+	li.QuadPart /= 10;                /* In microseconds */
+	/* printf("timestampstamp usec %I64u\n", li.QuadPart);*/
+	return li.QuadPart;
+#else
+  return (usec_t) (tv.tv_sec * 1000000 + tv.tv_usec);
+#endif
+
+}
 
 /******************************************************************************/
 
@@ -208,14 +209,17 @@ static void init_log4c_with_rollingfile_appender(){
  * thread function to log messages
  *
 */
+#ifdef _WIN32
+unsigned int thread_log_messages(void *arg) 
+#else
 void * thread_log_messages(void *arg) 
+#endif
 { 
 
   int loop;
-  struct timeval start_timeval;
-  struct timeval stop_timeval;
-  long long stop_time;
-  long long start_time;
+  usec_t stop_time;
+  usec_t start_time;
+  unsigned long elapsed;
   int tid,j;   
   char buf[1024];
 
@@ -225,9 +229,7 @@ void * thread_log_messages(void *arg)
   while (loop < param_loops_per_thread) {
 
     /* Now start the transaction measurement. */ 
-    my_gettimeofday( &start_timeval, NULL);
-	 start_time = start_timeval.tv_sec * 1000 + 
-      (start_timeval.tv_usec)/1000;
+	 start_time = now();
 
     /* Do a bit of work, fabricate a string containing the thread id */
     buf[0] = '\0';
@@ -238,20 +240,23 @@ void * thread_log_messages(void *arg)
     }
     sleep(1);
     
-    my_gettimeofday( &stop_timeval, NULL);
-    stop_time = stop_timeval.tv_sec * 1000 + 
-    (stop_timeval.tv_usec)/1000;
+    stop_time = now();
+    elapsed = (unsigned long)(((usec_t)stop_time - (usec_t)start_time)/1000);
     /*printf("Hello world--thread(%d)! (loop %d of %d) sleeping for 1 second"
       "--measured time %lld--%s\n", tid, loop, param_loops_per_thread,
         stop_time-start_time,buf);*/
     log4c_category_fatal(root,
       "Hello world--thread(%d)! (loop %d of %d) sleeping for 1 second"
-      "--measured tme %lld--%s\n", tid, loop, param_loops_per_thread,
-        stop_time-start_time,buf);
+      "--measured tme %ld ms--%s\n", tid, loop, param_loops_per_thread,
+        elapsed,buf);
     
     loop++;
   } 
+#ifndef _WIN32
   return(NULL);
+#else
+	return(0);
+#endif
 }
 
 
@@ -275,7 +280,7 @@ int main(int argc, char *argv[])
 			  exit(1);
 		  }	
 		*this_thread_arg = i;
-		pthread_create(&tid[i], NULL, thread_log_messages,
+		rc = pthread_create(&tid[i], NULL, thread_log_messages,
 								 (void *)this_thread_arg);
 		if ( tid[i] == 0 ) {
 								printf("Error creating thead %d...exiting\n", i);

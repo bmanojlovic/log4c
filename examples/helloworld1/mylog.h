@@ -45,9 +45,9 @@ static LOG4C_INLINE void mylog_msg(char *catName,int a_priority, char *msg){
 #endif
 }
 
-static LOG4C_INLINE int mysetappennder(char *catName, char *appName){
+static LOG4C_INLINE int mylog_setappender(char *catName, char *appName){
 #ifndef WITHOUT_LOG4C
-	 log4c_category_ender(log4c_category_get(catName)
+	 log4c_category_set_appender(log4c_category_get(catName)
                                   ,log4c_appender_get(appName));
    return(0);
 #else

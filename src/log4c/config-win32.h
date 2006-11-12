@@ -21,6 +21,14 @@
 #    define LOG4C_API       extern __declspec(dllimport)
 #endif
 
+#undef LOG4C_DATA
+#ifdef LOG4C_EXPORTS
+#    define LOG4C_DATA        __declspec(dllexport)
+#else
+#    define LOG4C_DATA       extern __declspec(dllimport)
+#endif
+
+
 /* This is defined to be 'inline' by default,
    but with msvc6 undef it so that inlined
    functions are just normal functions.

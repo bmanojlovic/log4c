@@ -77,7 +77,7 @@ static int log4c_is_init = 0;
 /******************************************************************************/
 extern int log4c_init(void)
 {    
-  int i;
+  size_t i;
   int ret = 0;
   
   sd_debug("log4c_init[");
