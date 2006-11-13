@@ -94,10 +94,11 @@ Another irritating point is that msvc6 does not support variable argument
 macros...we handle that by defining the sd_debug() macros to be functions
 on Windows, where variable numbers of arguments are supported.
 
-Similar issue for the 'inline' directive--where the function was not performance
-critical just drop the 'inline', where it is performance critical but 
-the function can be rewritten as a macro then do that, otherwise, too bad, just
-have to drop the inline and have a function call. 
+The inline directive on Windows is either __inline or __forceinline.  See the Mincrosoft
+language reference for Visual C++ 6.0 for details on how they work.  You will see some points
+in the code, for example in category.h where on Windows we redefine an inline the function
+as a macro.  This is not really required as we could just redefine inline to be __inline
+in sd_xplatform.h.
 
 The getopt style function does not exist on Windows, so we implemented one ourselves.
 
