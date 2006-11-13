@@ -34,3 +34,9 @@ Last updated: 12 Nov 2006
    by macros definined in sd_xplatform.h.  This works ok...but the join/cancel macros
    are not returning the right values.
   . two of the tests int eh test_rc program are failing...need to look at that.
+- tests:
+  . write a test program focused on lifecycle management of log4C objects.
+  For example it can open, append, close in a loop to make sure everything works and
+  ther eare no memory leaks.  What about log4c_init, log4c_fini in a loop...not sure what that
+  gives...not ethat the base types are not freed by log4c_fini....
+
