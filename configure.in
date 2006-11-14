@@ -162,6 +162,16 @@ AM_CONDITIONAL(HAVE_LATEX, test x$HAVE_LATEX = xYES)
 # Documentation
 ###############
 
+AC_ARG_ENABLE(constructors, AC_HELP_STRING([--enable-constructors], 
+	[LOG4C: build with initialization constructors [default=no]]))
+if test "x$enable_constructors" = "xyes"; then 
+    AC_DEFINE([WITH_CONSTRUCTORS],  1,
+	[build log4c with initialization constructors])
+    AC_MSG_NOTICE([using constructors to initialize log4c])
+fi
+
+# 
+###################
 ###################
 # Test for libexpat
 #
