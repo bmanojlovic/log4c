@@ -27,25 +27,6 @@
 #include <sd/error.h>
 #include <sd/sd_xplatform.h>
 
-/*
- * The rollingfile appender prepends the name of the appender
- * enclosed in square brackets followed by a space.
- * The 'overhead' in number of characters that amounts
- * to has to be set in the logging event object, so
- * codify the rollingfile appender overhead here to keep
- * all references to that consistent
-*/
-#define STANDARD_MSG_FORMAT "[%s] %s"
-#define STANDARD_MSG_OVERHEAD 3
-
-/*To do:    
-   . take a pattern for the file names
-   . put a cap on the num files...log4j sets a max of 12.
-   . see xxx in the code
-
-
-*/
-
 /* Internal structs that defines the conf and the state info
  * for an instance of the appender_type_rollingfile type.
  */    
@@ -78,7 +59,7 @@ static int rollingfile_open(log4c_appender_t* this)
   sd_debug("rollingfile_appender_open[");
 
  /* xxx Make the init here more fine grained */
-
+                                                       
  if (rfup == NULL ){
      
    /* No info provided so set defaults */
@@ -157,13 +138,6 @@ static int rollingfile_append(log4c_appender_t* this,
  
   pthread_mutex_lock(&rfup->rfu_mutex);  /***** LOCK ****/
 
-  /* xxx this is weird...we should not have to do bricolage to find the exact
-     message size, and in any case the overhead should be constant--not
-     calculated each time.
-  */
-  my_event->evt_app_overhead_len = STANDARD_MSG_OVERHEAD + 
-    strlen(log4c_appender_get_name(this));
-
   if ( rfup->rfu_conf.rfc_policy != NULL) {
 
     /* some policy set */
@@ -172,9 +146,10 @@ static int rollingfile_append(log4c_appender_t* this,
     if( log4c_rollingpolicy_is_triggering_event(rfup->rfu_conf.rfc_policy,
 					 a_event,		    
 					 rfup->rfu_current_file_size)){
+#ifdef __SD_DEBUG__
       sd_debug("non-buffered rotate event len=%ld, currfs=%ld",
-	       a_event->evt_app_overhead_len +
-         strlen(a_event->evt_rendered_msg), rfup->rfu_current_file_size);	
+         strlen(a_event->evt_rendered_msg), rfup->rfu_current_file_size);
+#endif
      
       if ( (rc = log4c_rollingpolicy_rollover(rfup->rfu_conf.rfc_policy,
 			    &rfup->rfu_current_fp)) <= ROLLINGPOLICY_ROLLOVER_ERR_CAN_LOG){
@@ -190,11 +165,8 @@ static int rollingfile_append(log4c_appender_t* this,
      
   /* only attempt the write if the policy implem says I can */
   if ( rc <= ROLLINGPOLICY_ROLLOVER_ERR_CAN_LOG ) {	           
-   rc = fprintf(rfup->rfu_current_fp, STANDARD_MSG_FORMAT,
-	        log4c_appender_get_name(this),
-		    a_event->evt_rendered_msg);
-   rfup->rfu_current_file_size +=  a_event->evt_app_overhead_len +
-                                    strlen(a_event->evt_rendered_msg);
+   rc = fprintf(rfup->rfu_current_fp, a_event->evt_rendered_msg);
+   rfup->rfu_current_file_size += strlen(a_event->evt_rendered_msg);
 
    /*
     * the fprintf needs to be inside the lock 

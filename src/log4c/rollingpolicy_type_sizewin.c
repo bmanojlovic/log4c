@@ -82,8 +82,7 @@ static int sizewin_is_triggering_event(
   /* find the len of this message
    xxx this should be provided by the logging_event class
   */
-  len = a_event->evt_app_overhead_len +
-    strlen(a_event->evt_rendered_msg);
+  len = strlen(a_event->evt_rendered_msg);
   sd_debug("fsize=%ld max=%ld len=%ld", current_file_size,
 	  swup->sw_conf.swc_file_maxsize, len  );
   if ( swup->sw_conf.swc_file_maxsize > 0 &&
