@@ -32,6 +32,7 @@ __LOG4C_BEGIN_DECLS
  * @li @c loc_file file name
  * @li @c loc_line file line
  * @li @c loc_function function name
+ * @li @c loc_data user data
  *
  * @todo this is not used
  **/
@@ -40,6 +41,7 @@ typedef struct
     const char* loc_file;
     int loc_line;
     const char* loc_function;
+    void* loc_data;
 
 } log4c_location_info_t;
 
