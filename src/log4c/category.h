@@ -380,6 +380,30 @@ static LOG4C_INLINE void log4c_category_log(const log4c_category_t* a_category,
 }
 
 /** 
+ * Log a message with the specified priority and a user location info.
+ * @param a_category the log4c_category_t object
+ * @param a_locinfo a user  location info
+ * @param a_priority The priority of this log message.
+ * @param a_format Format specifier for the string to write 
+ * in the log file.
+ * @param ... The arguments for a_format 
+ **/  
+static LOG4C_INLINE void log4c_category_log_info(
+    const log4c_category_t* a_category,
+    const log4c_location_info_t* a_locinfo, 
+    int a_priority,
+    const char* a_format,
+    ...)
+{
+    if (log4c_category_is_priority_enabled(a_category, a_priority)) {
+	va_list va;
+	va_start(va, a_format);
+	__log4c_category_vlog(a_category, a_locinfo, a_priority, a_format, va);
+	va_end(va);
+    }
+}
+
+/** 
  * Log a message with fatal priority.
  * @param a_category the log4c_category_t object
  * @param a_format Format specifier for the string to write 
