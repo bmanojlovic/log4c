@@ -212,6 +212,8 @@ AC_CONFIG_FILES([
     tests/Makefile
     tests/log4c/Makefile
     examples/Makefile
+    examples/helloworld/Makefile
+    examples/helloworld1/Makefile
 ])
 AC_CONFIG_COMMANDS([default],[[
     chmod +x log4c-config
