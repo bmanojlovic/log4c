@@ -212,6 +212,7 @@ AC_CONFIG_FILES([
     tests/Makefile
     tests/log4c/Makefile
     examples/Makefile
+    examples/log4crc
     examples/helloworld/Makefile
     examples/helloworld1/Makefile
 ])

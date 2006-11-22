@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE log4c SYSTEM "">
 
-<log4c version="1.1.0">
+<log4c version="@VERSION@">
 
 	<config>
 		<bufsize>0</bufsize>
-		<debug level="0"/>
+		<debug level="2"/>
 		<nocleanup>0</nocleanup>
 	</config>
 
