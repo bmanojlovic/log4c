@@ -31,7 +31,8 @@ static const char* cat_format(
     /*
      * For this formatter we put the category up front in the log message
      */
-    sprintf(buffer, "[%s] %s", a_event->evt_category,  a_event->evt_msg);
+    sprintf(buffer, "[%s][LINE:%d][FILE:%s] %s", a_event->evt_category,
+    	a_event->evt_loc->loc_line, a_event->evt_loc->loc_file, a_event->evt_msg);
 
     return buffer;
 }

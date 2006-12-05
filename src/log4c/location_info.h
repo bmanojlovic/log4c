@@ -49,9 +49,9 @@ typedef struct
  * log4c_location_info_t initializer 
  **/
 #ifdef __GNUC__
-#   define LOG4C_LOCATION_INFO_INITIALIZER { __FILE__, __LINE__, __FUNCTION__ }
+#   define LOG4C_LOCATION_INFO_INITIALIZER(user_data) { __FILE__, __LINE__, __FUNCTION__, user_data }
 #else
-#   define LOG4C_LOCATION_INFO_INITIALIZER { __FILE__, __LINE__, "(nil)" }
+#   define LOG4C_LOCATION_INFO_INITIALIZER(user_data) { __FILE__, __LINE__, "(nil)", user_data }
 #endif
 
 #define __log4c_str(n) #n

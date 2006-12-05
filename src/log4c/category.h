@@ -353,7 +353,7 @@ static LOG4C_INLINE void log4c_category_vlog(const log4c_category_t* a_category,
 				       const char* a_format, 
 				       va_list a_args)
 {
-    const log4c_location_info_t locinfo = LOG4C_LOCATION_INFO_INITIALIZER;
+    const log4c_location_info_t locinfo = LOG4C_LOCATION_INFO_INITIALIZER(NULL);
 
     __log4c_category_vlog(a_category, &locinfo, a_priority, a_format, a_args);
 }
@@ -388,7 +388,7 @@ static LOG4C_INLINE void log4c_category_log(const log4c_category_t* a_category,
  * in the log file.
  * @param ... The arguments for a_format 
  **/  
-static LOG4C_INLINE void log4c_category_log_info(
+static LOG4C_INLINE void log4c_category_log_locinfo(
     const log4c_category_t* a_category,
     const log4c_location_info_t* a_locinfo, 
     int a_priority,

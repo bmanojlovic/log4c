@@ -1,4 +1,12 @@
 
+2006-12-05  Joel Schaubert <joel4700@sbcglobal.net>
+	* src/log4c/location_info.h: Change location initialzing macro to accept
+	additional parameter for user info.
+	* src/log4c/category.h: Added new API for a logging message
+	with user provided location_info
+	* examples/: Added example usage of new extended location info
+
+
 2006-11-12  Robert Byrne <robert.byrne@sun.com>
 
 	* configure.in: add the without-expat option

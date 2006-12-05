@@ -24,6 +24,12 @@ and formatters.  Notice in Makefile.am that the linking for
 application_2 includes an additional library.  This is an example of
 how you as a user of log4c would add in appenders and formatters.
 
+application_3 -- example of using log4c with extended user information.
+You would use this if your logging wanted to add things like which
+process_id, which machine, or any other additional location information
+you wanted to add to your logging.  Notice that you have to write
+your own formatter that knows to look for the additional information.
+
 log4crc -- Notice the specifiers of how the catgories from the two
 example applications are wired up to appenders and formatters.  Notice
 how when specifying a layout and appender, the type= string must match
