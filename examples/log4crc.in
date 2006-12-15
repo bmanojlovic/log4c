@@ -7,6 +7,7 @@
 		<bufsize>0</bufsize>
 		<debug level="2"/>
 		<nocleanup>0</nocleanup>
+		<reread>1</reread>
 	</config>
 
 	<category name="root" priority="notice"/>

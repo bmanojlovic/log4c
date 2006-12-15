@@ -38,6 +38,7 @@ typedef struct
 	int nocleanup;
 	int bufsize;
 	int debug;
+	int reread;
     } config;
 
 } log4c_rc_t;
@@ -58,6 +59,11 @@ LOG4C_API int		log4c_load(const char* a_filename);
  * @internal
  **/
 LOG4C_API int		log4c_rc_load(log4c_rc_t* a_rc, const char* a_filename);
+
+/*
+ * Rereads any log4crc files that have changed
+ */
+LOG4C_API void log4c_reread(void);
 
 __LOG4C_END_DECLS
 

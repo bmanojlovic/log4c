@@ -225,8 +225,9 @@ extern void __log4c_category_vlog(const log4c_category_t* this,
   
   if (!yes)
     return;
-  
-  
+
+  log4c_reread();
+
   /* when there is no limit on the buffer size, we use malloc() to
   * give the user the possiblity to reallocate if necessary. When
   * the buffer is limited in size, we use alloca() for more

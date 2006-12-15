@@ -107,3 +107,25 @@ int sd_gettimeofday(LPFILETIME lpft, void* tzp) {
     return 0;
 }
 #endif /* _WIN32 */
+
+/*
+ * Placeholder for WIN32 version to get last changetime of a file
+ */
+#ifdef WIN32
+int sd_stat_ctime(const char* path, time_t* time)
+{ return -1; }
+#else
+int sd_stat_ctime(const char* path, time_t* time)
+{
+	struct stat astat;
+	int statret=stat(path,&astat);
+	if (0 != statret)
+	{
+		return statret;
+	}
+	*time=astat.st_ctime;
+	return statret;
+}
+#endif
+
+

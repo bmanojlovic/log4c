@@ -11,6 +11,7 @@
 #ifndef _WIN32
 #include <unistd.h>
 #include <sys/time.h>
+#include <sys/stat.h>
 #else
 #include <time.h>
 #include <io.h> /* needed for _access  */
@@ -73,6 +74,9 @@ extern int sd_gettimeofday(struct timeval* tp, void* tzp);
 #else
 #define SD_ACCESS_READ(a) access(a,R_OK)
 #endif
+
+int sd_stat_ctime(const char* path, time_t* time);
+#define SD_STAT_CTIME(path, time) sd_stat_ctime(path, time)
 
 #ifndef _WIN32
 #define DIFF_CMD  "/usr/bin/diff -q"

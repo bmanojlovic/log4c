@@ -73,6 +73,21 @@ static size_t nrollingpolicy_types =
 #endif
 
 static int log4c_is_init = 0;
+typedef struct rcfile
+{
+	char name[256];
+	time_t ctime;
+	int    exists;
+} rcfile_t;
+
+static rcfile_t rcfiles[] = {
+	{ "$LOG4C_RCPATH/log4crc" },
+	{  "$HOME/.log4crc" },
+	{ "./log4crc" }
+	};
+
+static const int nrcfiles = sizeof(rcfiles) / sizeof(rcfiles[0]);
+
 
 /******************************************************************************/
 extern int log4c_init(void)
@@ -108,29 +123,25 @@ extern int log4c_init(void)
   
     /* load configuration files */
     {
-	static char rcfiles[][256] = {
-	    "$LOG4C_RCPATH/log4crc",
-	    "$HOME/.log4crc",
-	    "./log4crc" 
-	};
-	static const int nrcfiles = sizeof(rcfiles) / sizeof(rcfiles[0]);
 	int i;
 	sd_debug("looking for conf files...");
-	snprintf(rcfiles[0], sizeof(rcfiles[0]) - 1, "%s/log4crc", 
+	snprintf(rcfiles[0].name, sizeof(rcfiles[0].name) - 1, "%s/log4crc", 
 		 getenv("LOG4C_RCPATH") ? getenv("LOG4C_RCPATH") : LOG4C_RCPATH);
-	snprintf(rcfiles[1], sizeof(rcfiles[1]) - 1, "%s/.log4crc",
+	snprintf(rcfiles[1].name, sizeof(rcfiles[1].name) - 1, "%s/.log4crc",
 		 getenv("HOME") ? getenv("HOME") : "");
     
 	for (i = 0; i < nrcfiles; i++) {
-	    sd_debug("checking for conf file at '%s'", rcfiles[i]);
-	    if (SD_ACCESS_READ(rcfiles[i])) continue;
-      
-	    if (log4c_load(rcfiles[i]) == -1) {
-		sd_error("loading %s failed", rcfiles[i]);
+	    sd_debug("checking for conf file at '%s'", rcfiles[i].name);
+	    if (SD_ACCESS_READ(rcfiles[i].name)) continue;
+	    if (SD_STAT_CTIME(rcfiles[i].name,&rcfiles[i].ctime) != 0)
+		sd_error("sd_stat_ctime %s failed", rcfiles[i].name);
+	    rcfiles[i].exists=1;
+	    if (log4c_load(rcfiles[i].name) == -1) {
+		sd_error("loading %s failed", rcfiles[i].name);
 		ret = -1;
 	    }
 	    else
-		sd_debug("loading %s succeeded", rcfiles[i]);		
+		sd_debug("loading %s succeeded", rcfiles[i].name);		
 	}
     }
   
@@ -177,6 +188,42 @@ extern int log4c_init(void)
     sd_debug("]");
     return ret;
 }
+
+/******************************************************************************/
+void __log4c_reread(void)
+{
+    time_t file_ctime;
+    int i;
+
+    for (i = 0; i < nrcfiles; i++){
+	/* only reread files that existed when we first initialized */
+	if (rcfiles[i].exists && SD_STAT_CTIME(rcfiles[i].name,&file_ctime) == 0){
+	    /* time_t is number of second since epoch, just compare for == */
+	    if (file_ctime != rcfiles[i].ctime){
+		sd_debug("Need reread on file %s\n",rcfiles[i].name);
+		SD_STAT_CTIME(rcfiles[i].name,&rcfiles[i].ctime);
+		if (log4c_rc_load(log4c_rc, rcfiles[i].name) == -1){
+		    sd_error("re-loading config file %s failed", rcfiles[i].name);
+		}
+	    }
+	}
+    }
+}
+
+/******************************************************************************/
+/*
+ * Rereads any log4crc files that have changed
+ */
+void log4c_reread(void)
+{
+#ifdef __ENABLE_REREAD__
+    if (0 != log4c_rc->config.reread){
+	__log4c_reread();
+    }
+#endif
+}
+
+
 
 /******************************************************************************/
 extern int log4c_fini(void)

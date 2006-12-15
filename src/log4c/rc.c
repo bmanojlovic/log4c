@@ -28,7 +28,7 @@ static const char version[] = "$Id$";
 #include <string.h>
 
     
-static log4c_rc_t __log4c_rc = { { 0, 0, 0 } };
+static log4c_rc_t __log4c_rc = { { 0, 0, 0, 0 } };
 
 log4c_rc_t* const log4c_rc = &__log4c_rc;
 
@@ -66,6 +66,12 @@ static int config_load(log4c_rc_t* this, sd_domnode_t* anode)
 		sd_debug("activating log4c debugging. level = %d", this->config.debug);
 	    }
 	}
+        if (!strcmp(node->name, "reread")) {
+            this->config.reread = atoi(node->value);
+            sd_debug("log4crc reread is %d",this->config.reread);
+            if (0 == this->config.reread)
+                sd_debug("deactivating log4crc reread");
+        }
     }
     
     return 0;
