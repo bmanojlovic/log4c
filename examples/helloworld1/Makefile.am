@@ -1,7 +1,7 @@
 
 AM_CPPFLAGS = -I${top_srcdir}/src
 
-bin_PROGRAMS = helloworld1
+noinst_PROGRAMS = helloworld1
 
 helloworld1_SOURCES = helloworld1.c mylog.h
 helloworld1_LDADD = \

@@ -61,7 +61,7 @@ const log4c_layout_type_t log4c_layout_type_userloc  = {
 static const log4c_layout_type_t * const layout_types[] = {
     &log4c_layout_type_userloc,
 };
-int nlayout_types = 
+static int nlayout_types =
 	(int)(sizeof(layout_types) / sizeof(layout_types[0]));
 
 

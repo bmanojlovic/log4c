@@ -94,7 +94,7 @@ static const log4c_layout_type_t * const layout_types[] = {
     &log4c_layout_type_none,
     &log4c_layout_type_cat    
 };
-int nlayout_types = 
+static int nlayout_types =
 	(int)(sizeof(layout_types) / sizeof(layout_types[0]));
 
 
