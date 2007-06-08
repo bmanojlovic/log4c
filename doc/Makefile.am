@@ -5,15 +5,15 @@ docfiles = \
 	$(top_srcdir)/AUTHORS \
 	$(top_srcdir)/NEWS \
 	$(top_srcdir)/COPYING \
-	$(top_srcdir)/ChangeLog \
-	$(PACKAGE).pdf
+	$(top_srcdir)/ChangeLog
 
 .PHONY: doxygen
 
 targets = doxygen
 
 if HAVE_LATEX
-targets +=  $(PACKAGE).pdf
+targets += $(PACKAGE).pdf
+docfiles += $(PACKAGE).pdf
 endif
 
 all-local: $(targets)
