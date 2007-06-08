@@ -15,7 +15,7 @@ liblog4c_userloc_la_SOURCES= userloc_formatter.c
 
 application_1_SOURCES = application_1.c
 application_2_SOURCES = application_2.c
-application_3_SOURCES = application_3.c
+application_3_SOURCES = application_3.c application_3.h
 
 application_1_LDADD = \
 	$(top_builddir)/src/log4c/liblog4c.la
