@@ -36,14 +36,18 @@ log4c was successfully compiled and run on the following platforms :
 
 @li HP-UX release 11.00
 @li Tru 64 release 4.0F and 5.1
-@li Red Hat Linux Intel release 7.x, 8, 9, 3AS
-@li Red Hat Enterprise Linux AS 3A (Intel, Opteron, Itanium2)
-@li Solaris Intel release 8, 9
+@li Red Hat Linux Intel release 7.x, 8, 9
+@li Red Hat Enterprise Linux 3, 4
+@li Solaris Intel release 8, 9, 10
+@li FreeBSD 6.1-RELEASE
+@li AIX 5.3 (witk xlc compiler)
+@li Mac OS X
+@li Windows X
+
 
 log4c should compile and run on the following platforms :
 
-@li AIX
-@li The BSD family: Open, Net or Free
+@li The BSD family
 @li Other Linux distributions
 
 @subsection software Software
@@ -88,9 +92,9 @@ documentation for more information.
 @subsection installation_rpm Using RPMs
 
 on SourceForge:
-@li <a href=""http://prdownloads.sourceforge.net/log4c/log4c-@VERSION@-1.i386.rpm">log4c-@VERSION@-1.i386.rpm</a>
-@li <a href=""http://prdownloads.sourceforge.net/log4c/log4c-devel-@VERSION@-1.i386.rpm">log4c-devel-@VERSION@-1.i386.rpm</a>
-@li <a href=""http://prdownloads.sourceforge.net/log4c/log4c-doc-@VERSION@-1.i386.rpm">log4c-doc-@VERSION@-1.i386.rpm</a>
+@li <a href="http://prdownloads.sourceforge.net/log4c/log4c-@VERSION@-1.i386.rpm">log4c-@VERSION@-1.i386.rpm</a>
+@li <a href="http://prdownloads.sourceforge.net/log4c/log4c-devel-@VERSION@-1.i386.rpm">log4c-devel-@VERSION@-1.i386.rpm</a>
+@li <a href="http://prdownloads.sourceforge.net/log4c/log4c-doc-@VERSION@-1.i386.rpm">log4c-doc-@VERSION@-1.i386.rpm</a>
 
 The following command install the log4c RPMs :
 

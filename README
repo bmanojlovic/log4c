@@ -32,6 +32,7 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
    . gcc4 (on HP-UX 11.11i, on Fedora Core 5)
    . Sun cc (versions 5.3 and 5.7 on Solaris 8 and higher, sparc and i386)
    . HPUX ansi C compiler (on HPUX v11.11i, pa-risc)
+   . AIX xlc compiler
 
    If you request at compile time that the expat library be used to help parse
    the configuration file, then you will need the expat library available
@@ -61,7 +62,7 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
       http://expat.sourceforge.net/
 
 * How to for library users who download a released tarball (eg.
-  log4c-1.0.12.tar.gz):
+  log4c-1.2.0.tar.gz):
 
   The Log4C package uses the GNU autotools compilation and installation
   framework.
@@ -79,9 +80,9 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
   example commands below should compile Log4C on each of the supported
   platforms:
   
-    $ tar -zxvf log4c-1.0.12.tar.gz
+    $ tar -zxvf log4c-1.2.0.tar.gz
     $ mkdir build; cd build
-    $ ../log4c-1.0.12/configure --prefix=/path/of/installation
+    $ ../log4c-1.2.0/configure --prefix=/path/of/installation
     $ make
     $ make install
 
@@ -89,11 +90,14 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
     $ make rpm
 
   To enable compilation of the test programs for the library you would do this:
-    $ ../log4c-1.0.12/configure --prefix=/path/of/installation --enable-test
+    $ ../log4c-1.2.0/configure --prefix=/path/of/installation --enable-test
+   
+  To enable the dcumentation generation
+    $ ../log4c-1.2.0/configure --prefix=/path/of/installation --enable-doc
    
   To specify a compiler other than gcc at configure time you would do something
   like this:
-    $ ../log4c-1.0.12/configure --prefix=/path/of/installation --enable-test \
+    $ ../log4c-1.2.0/configure --prefix=/path/of/installation --enable-test \
       CC=/usr/SUNWspro/bin/cc
 
   To get started with the examples see the README in the examples source code
@@ -109,7 +113,8 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
   run the bootstrap script. This script must be run in the source directories
   themselves:
    
-    $ cvs co log4c
+    $ cvs -d:pserver:anonymous@log4c.cvs.sourceforge.net:/cvsroot/log4c login
+    $ cvs -z3 -d:pserver:anonymous@log4c.cvs.sourceforge.net:/cvsroot/log4c co -P log4c
     $ cd log4c
     $ ./bootstrap
 
@@ -128,6 +133,3 @@ This is the distribution of Log4C (last updated 13 Nov 2006)
 
 
 Have Fun !!
-   
- C�dric Le Goater <legoater@free.fr>
-
