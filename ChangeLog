@@ -1,6 +1,22 @@
-2007-06-08  Cedric Le Goater <legoater@free.fr>
+2007-06-20  Cédric Le Goater  <legoater@free.fr>
 
-        * configure.in: log4c-1.2.0
+        * log4c.spec.in: minor updates
+
+2007-06-08  Cédric Le Goater  <legoater@free.fr>
+
+        * README, doc/main.doc.in: minor updates
+
+        * examples/example_formatters.c, examples/helloworld/Makefile.am, examples/helloworld1/Makefile.am, examples/userloc_formatter.c, examples/Makefile.am:
+        don't install examples
+
+        * examples/Makefile.am, examples/helloworld1/Makefile.am:
+        included .h files in tarball
+
+        * doc/Makefile.am: don't copy log4c.pdf when LATEX is not available
+
+        * doc/Makefile.am: removed old log4cHowto.html file
+
+        * ChangeLog, configure.in: Getting prepared for 1.2.0.
 	
 2006-12-15  bikeracer4700
 
