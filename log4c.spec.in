@@ -11,11 +11,12 @@ Release: 	%rel
 Summary: 	Log for C
 License:	LGPL
 Group:		Development/Libraries
-Vendor:		Meiosys, Inc. (www.meiosys.com)
-Packager:	Cedric Le Goater <legoater@meiosys.com>
+Vendor:		Cedric Le Goater <legoater@free.fr>
+Packager:	Cedric Le Goater <legoater@free.fr>
 Url:		http://%name.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%name/%name-%version.tar.gz
 BuildRoot:	%_topdir/%name-%version-root
+BuildRequires: 	doxygen
 Requires: 	/sbin/ldconfig
 
 %description
