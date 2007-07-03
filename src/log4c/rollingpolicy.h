@@ -52,12 +52,12 @@ typedef struct __rollingfile_udata rollingfile_udata_t; /* opaque */
  **/
 typedef struct log4c_rollingpolicy_type {
   const char*	name;
-  int (*init)(log4c_rollingpolicy_t *this, rollingfile_udata_t* rfudatap );
+  int (*init)(log4c_rollingpolicy_t *a_this, rollingfile_udata_t* rfudatap );
   int (*is_triggering_event)( log4c_rollingpolicy_t* a_policy,
 			      const log4c_logging_event_t*,
 			      long current_file_size );
   int (*rollover)(log4c_rollingpolicy_t* a_policy, FILE **);  
-  int (*fini)(log4c_rollingpolicy_t *this);
+  int (*fini)(log4c_rollingpolicy_t *a_this);
 } log4c_rollingpolicy_type_t;
 
 /**
@@ -119,7 +119,7 @@ LOG4C_API int log4c_rollingpolicy_init(log4c_rollingpolicy_t *policyp,
  * @param policyp pointer to the rolling policy
  * @return zero if successful, non-zero otherwise.
 */
-LOG4C_API int log4c_rollingpolicy_fini(log4c_rollingpolicy_t *this);
+LOG4C_API int log4c_rollingpolicy_fini(log4c_rollingpolicy_t *a_this);
 
 /**
  * Determine if a logging event should trigger a rollover according to
@@ -185,14 +185,14 @@ LOG4C_API void* log4c_rollingpolicy_get_udata(
 LOG4C_API rollingfile_udata_t* log4c_rollingpolicy_get_rfudata(
                         const log4c_rollingpolicy_t* policyp);
                         
-LOG4C_API void* log4c_rollingpolicy_get_name(const log4c_rollingpolicy_t* this);                        
+LOG4C_API void* log4c_rollingpolicy_get_name(const log4c_rollingpolicy_t* a_this);                        
 
 LOG4C_API log4c_rollingpolicy_t* log4c_rollingpolicy_new(const char* a_name);
-LOG4C_API void log4c_rollingpolicy_delete(log4c_rollingpolicy_t* this);
-LOG4C_API void log4c_rollingpolicy_print(const log4c_rollingpolicy_t* this,
+LOG4C_API void log4c_rollingpolicy_delete(log4c_rollingpolicy_t* a_this);
+LOG4C_API void log4c_rollingpolicy_print(const log4c_rollingpolicy_t* a_this,
 FILE* a_stream);
 
-LOG4C_API int log4c_rollingpolicy_is_initialized(log4c_rollingpolicy_t* this);
+LOG4C_API int log4c_rollingpolicy_is_initialized(log4c_rollingpolicy_t* a_this);
 LOG4C_API void log4c_rollingpolicy_types_print(FILE *fp);
 /**
  * @internal

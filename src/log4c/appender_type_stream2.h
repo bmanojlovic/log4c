@@ -96,7 +96,7 @@ LOG4C_API const log4c_appender_type_t log4c_appender_type_stream2;
  * @param fp the file pointer this appender will use.  The caller is
  * responsible for managing the file pointer (open, option setting, closing).
  */      
-LOG4C_API void log4c_stream2_set_fp(log4c_appender_t* this, FILE *fp);
+LOG4C_API void log4c_stream2_set_fp(log4c_appender_t* a_this, FILE *fp);
 
 /**
  * Get the file pointer for this appender.
@@ -105,7 +105,7 @@ LOG4C_API void log4c_stream2_set_fp(log4c_appender_t* this, FILE *fp);
  * returns NULL.
  * 
  */ 
-LOG4C_API FILE * log4c_stream2_get_fp(log4c_appender_t* this);
+LOG4C_API FILE * log4c_stream2_get_fp(log4c_appender_t* a_this);
 
 
 /**
@@ -115,7 +115,7 @@ LOG4C_API FILE * log4c_stream2_get_fp(log4c_appender_t* this);
  * Currently supported flags:  LOG4C_STREAM2_UNBUFFERED
  * 
  */
-LOG4C_API void log4c_stream2_set_flags(log4c_appender_t* this, int flags);
+LOG4C_API void log4c_stream2_set_flags(log4c_appender_t* a_this, int flags);
 #define LOG4C_STREAM2_UNBUFFERED 0x01
 
 /**
@@ -123,7 +123,7 @@ LOG4C_API void log4c_stream2_set_flags(log4c_appender_t* this, int flags);
  * @param this a pointer to the appender
  * @return the flags for this appender. returns -1 if there was a problem.
  */
-LOG4C_API int log4c_stream2_get_flags(log4c_appender_t* this);
+LOG4C_API int log4c_stream2_get_flags(log4c_appender_t* a_this);
 
 __LOG4C_END_DECLS
 
