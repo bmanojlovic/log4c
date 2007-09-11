@@ -37,5 +37,6 @@
 	
 	<category name="six13log.log.app.application2" priority="debug" appender="cat_stderr" />
 	<category name="six13log.log.app.application3" priority="debug" appender="user_stderr" />
+        <category name="six13log.log.app" priority="debug" appender="myrollingfileappender" />
 
 </log4c>
