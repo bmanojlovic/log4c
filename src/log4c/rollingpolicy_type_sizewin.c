@@ -249,13 +249,13 @@ static int sizewin_fini(log4c_rollingpolicy_t *this){
     goto sizewin_fini_exit;
   }
   
-  sd_debug("freeing filename list");
   for ( i = 0; i<swup->sw_conf.swc_file_max_num_files; i++){
     if ( swup->sw_filenames[i]){
       free(swup->sw_filenames[i]);
     }
   }
-  
+  free(swup->sw_filenames);
+
   /* logdir and files_prefix are just pointers into the rollingfile udata
   * so they are not ours to free--that will be done by the free call to
   * the rollingfile appender
