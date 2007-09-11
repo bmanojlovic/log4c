@@ -31,6 +31,21 @@ extern sd_list_t* sd_list_new(size_t a_capacity)
 /******************************************************************************/
 extern void sd_list_delete(sd_list_t* a_this)
 {
+    sd_list_iter_t *a_next;
+    sd_list_iter_t *a_current;
+    
+     if (!a_this)
+	return;
+
+    /* Free every sd_list_iter_t element in the list */
+    if (a_this->nelem > 0){
+	a_current = a_this->head;
+	do {
+	    a_next = a_current->__next;
+	    free(a_current);
+	    a_current = a_next;
+	} while (a_current);
+    }
     free(a_this);
 }
 
