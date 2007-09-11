@@ -27,10 +27,36 @@ static const char version[] = "$Id$";
 #include <stdlib.h>
 #include <string.h>
 
-    
+ 
 static log4c_rc_t __log4c_rc = { { 0, 0, 0, 0 } };
 
 log4c_rc_t* const log4c_rc = &__log4c_rc;
+
+/******************************************************************************/
+static int parse_byte_size (const char *astring)
+{
+    /* Parse size in bytes depending on the suffix.   Valid suffixes are KB, MB and GB */
+    int res = atoi(astring);
+
+    if (astring[ strlen (astring) - 1 ] == 'B') {
+	switch (astring[ strlen (astring) - 2 ]) {
+	    case 'K':
+		res = res * 1024;
+		break;
+	    case 'M':
+		res = res * 1048576;
+		break;
+	    case 'G':
+		res = res * 1073741824;
+		break;
+	    default:
+		sd_debug("Wrong suffix parsing size in bytes for string %s, ignoring suffix", 
+			astring);
+	}
+    }
+    sd_debug("Parsed size parameter %s to value %d",astring, res);
+    return (res);
+}
 
 /******************************************************************************/
 static int config_load(log4c_rc_t* this, sd_domnode_t* anode)
@@ -49,7 +75,7 @@ static int config_load(log4c_rc_t* this, sd_domnode_t* anode)
 	}
 
 	if (!strcmp(node->name, "bufsize")) {	    
-	    this->config.bufsize = atoi(node->value);
+	    this->config.bufsize = parse_byte_size(node->value);
 
 	    if (this->config.bufsize)
 		sd_debug("using fixed buffer size of %d bytes", 
@@ -245,11 +271,11 @@ static int rollingpolicy_load(log4c_rc_t* this, sd_domnode_t* anode)
           sd_debug("creating new sizewin udata for this policy");
           sizewin_udatap = sizewin_make_udata();
           log4c_rollingpolicy_set_udata(rpolicyp,sizewin_udatap);   
-          sizewin_udata_set_file_maxsize(sizewin_udatap, atoi(maxsize->value));
+          sizewin_udata_set_file_maxsize(sizewin_udatap, parse_byte_size(maxsize->value));
         sizewin_udata_set_max_num_files(sizewin_udatap, atoi(maxnum->value));
         }else{
           sd_debug("policy already has a sizewin udata--just updating params");
-        sizewin_udata_set_file_maxsize(sizewin_udatap, atoi(maxsize->value));
+        sizewin_udata_set_file_maxsize(sizewin_udatap, parse_byte_size(maxsize->value));
         sizewin_udata_set_max_num_files(sizewin_udatap, atoi(maxnum->value));
          /* allow the policy to initialize itself */
         log4c_rollingpolicy_init(rpolicyp, 
