@@ -1,37 +1,52 @@
+2007-09-11  Joel Schaubert    <joel4700@sbcglobal.net>
+
+	* examples/log4crc.in add rolling file appender for testing
+	* src/log4c/rollingpolicy.h fix c++ compile error
+	* src/log4c/appender_type_stream2.h fix c++ compile error
+	* src/log4c/create_cpp_tester.sh new file to create c++ syntax tester
+	* src/log4c/Makefile.am added BUILT_SOURCES directive to make c++ syntax checker
+	* src/tests/Makefile.am build c++ syntax test program
+
+	* Francisco Camenforte Torres fct.dev@gmail.com patches
+	* src/log4c/rc.c allow use of KB,MB,GB when specifying sizes in config file
+	* src/log4c/rollingpolicy_type_sizewin.c fix a memory leak
+	* src/sd/list.c make sd_list_delete do a deep delete
+	* examples/application_3.h syntax fix for hpux
+
 2007-06-20  Cédric Le Goater  <legoater@free.fr>
 
-        * log4c.spec.in: minor updates
+	* log4c.spec.in: minor updates
 
 2007-06-08  Cédric Le Goater  <legoater@free.fr>
 
-        * README, doc/main.doc.in: minor updates
+	* README, doc/main.doc.in: minor updates
 
-        * examples/example_formatters.c, examples/helloworld/Makefile.am, examples/helloworld1/Makefile.am, examples/userloc_formatter.c, examples/Makefile.am:
-        don't install examples
+	* examples/example_formatters.c, examples/helloworld/Makefile.am, examples/helloworld1/Makefile.am, examples/userloc_formatter.c, examples/Makefile.am:
+	don't install examples
 
-        * examples/Makefile.am, examples/helloworld1/Makefile.am:
-        included .h files in tarball
+	* examples/Makefile.am, examples/helloworld1/Makefile.am:
+	included .h files in tarball
 
-        * doc/Makefile.am: don't copy log4c.pdf when LATEX is not available
+	* doc/Makefile.am: don't copy log4c.pdf when LATEX is not available
 
-        * doc/Makefile.am: removed old log4cHowto.html file
+	* doc/Makefile.am: removed old log4cHowto.html file
 
-        * ChangeLog, configure.in: Getting prepared for 1.2.0.
+	* ChangeLog, configure.in: Getting prepared for 1.2.0.
 	
 2006-12-15  bikeracer4700
 
-        * configure.in, examples/README, examples/log4crc.in, 
+	* configure.in, examples/README, examples/log4crc.in, 
 	src/log4c/category.c, src/log4c/init.c, src/log4c/rc.c, 
 	src/log4c/rc.h, src/sd/sd_xplatform.c, src/sd/sd_xplatform.h:
-        log4crc reread patch
+	log4crc reread patch
 
 2006-12-05  bikeracer4700
 
-        * examples/application_3.c, examples/application_3.h, 
+	* examples/application_3.c, examples/application_3.h, 
 	examples/userloc_formatter.c, ChangeLog, examples/Makefile.am, 
 	examples/README, examples/example_formatters.c, examples/log4crc.in, 
 	src/log4c/category.h, src/log4c/location_info.h:
-        adding user defined location information patch
+	adding user defined location information patch
 
 	
 2006-12-05  Joel Schaubert <joel4700@sbcglobal.net>
@@ -73,7 +88,7 @@
 
 2005-12-16  Cedric Le Goater <legoater@free.fr>
 
-        * configure.in: log4c-1.1.0
+	* configure.in: log4c-1.1.0
 
 2005-12-16  Robert Byrne <robert.byrne@sun.com>
 
