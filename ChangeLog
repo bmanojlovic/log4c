@@ -3,15 +3,15 @@
 	* examples/log4crc.in add rolling file appender for testing
 	* src/log4c/rollingpolicy.h fix c++ compile error
 	* src/log4c/appender_type_stream2.h fix c++ compile error
-	* src/log4c/create_cpp_tester.sh new file to create c++ syntax tester
-	* src/log4c/Makefile.am added BUILT_SOURCES directive to make c++ syntax checker
-	* src/tests/Makefile.am build c++ syntax test program
+	* src/tests/log4c/Makefile.am build c++ syntax test program
+	* src/tests/log4c/cpp_compile_test.cpp added 
 
 	* Francisco Camenforte Torres fct.dev@gmail.com patches
 	* src/log4c/rc.c allow use of KB,MB,GB when specifying sizes in config file
 	* src/log4c/rollingpolicy_type_sizewin.c fix a memory leak
 	* src/sd/list.c make sd_list_delete do a deep delete
 	* examples/application_3.h syntax fix for hpux
+	* src/log4c/category.h guards for hp compiler
 
 2007-06-20  Cédric Le Goater  <legoater@free.fr>
 
