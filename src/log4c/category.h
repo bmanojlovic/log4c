@@ -163,7 +163,7 @@ LOG4C_API void log4c_category_print(const log4c_category_t* a_category, FILE* a_
  * @param a_priority The priority to compare with.
  * @returns whether logging is enable for this priority.
  **/
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_priority_enabled(const log4c_category_t* a_category,
 						     int a_priority)
 {
@@ -181,7 +181,7 @@ static inline int log4c_category_is_priority_enabled(const log4c_category_t* a_c
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_fatal_enabled(const log4c_category_t* a_category)
 {	
   return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_FATAL);
@@ -198,7 +198,7 @@ static inline int log4c_category_is_fatal_enabled(const log4c_category_t* a_cate
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_alert_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_ALERT); 
@@ -215,7 +215,7 @@ static inline int log4c_category_is_alert_enabled(const log4c_category_t* a_cate
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_crit_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_CRIT); 
@@ -232,7 +232,7 @@ static inline int log4c_category_is_crit_enabled(const log4c_category_t* a_categ
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_error_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_ERROR); 
@@ -249,7 +249,7 @@ static inline int log4c_category_is_error_enabled(const log4c_category_t* a_cate
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_warn_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_WARN); 
@@ -267,7 +267,7 @@ static inline int log4c_category_is_warn_enabled(const log4c_category_t* a_categ
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_notice_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_NOTICE); 
@@ -284,7 +284,7 @@ static inline int log4c_category_is_notice_enabled(const log4c_category_t* a_cat
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_info_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_INFO); 
@@ -301,7 +301,7 @@ static inline int log4c_category_is_info_enabled(const log4c_category_t* a_categ
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32 
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_debug_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_DEBUG); 
@@ -318,7 +318,7 @@ static inline int log4c_category_is_debug_enabled(const log4c_category_t* a_cate
  * @param a_category the log4c_category_t object
  * @returns Whether the category will log.
  **/ 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__HP_cc)
 static inline int log4c_category_is_trace_enabled(const log4c_category_t* a_category) 
 {	
     return log4c_category_is_priority_enabled(a_category, LOG4C_PRIORITY_TRACE); 
