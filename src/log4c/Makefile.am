@@ -27,10 +27,6 @@ if WITH_ROLLINGFILE
                           rollingpolicy.c rollingpolicy_type_sizewin.c
 endif  
 
-if TEST
-
-endif
-
 liblog4c_la_LDFLAGS = -version-info @LT_VERSION@
 liblog4c_la_LIBADD  = ../sd/liblog4c_sd.la
 
@@ -58,11 +54,4 @@ pkginclude_HEADERS = \
   appender_type_rollingfile.h \
   rollingpolicy.h \
   rollingpolicy_type_sizewin.h
-
-EXTRA_DIST = create_cpp_tester.sh
-
-BUILT_SOURCES = ../../tests/cpp_test
-
-../../tests/cpp_test: Makefile
-	./create_cpp_tester.sh ${pkginclude_HEADERS}
 

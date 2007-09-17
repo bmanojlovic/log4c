@@ -36,18 +36,19 @@ log4c_rc_t* const log4c_rc = &__log4c_rc;
 static int parse_byte_size (const char *astring)
 {
     /* Parse size in bytes depending on the suffix.   Valid suffixes are KB, MB and GB */
+    size_t sz = strlen (astring);
     int res = atoi(astring);
 
-    if (astring[ strlen (astring) - 1 ] == 'B') {
-	switch (astring[ strlen (astring) - 2 ]) {
+    if (astring[ sz - 1 ] == 'B') {
+	switch (astring[ sz - 2 ]) {
 	    case 'K':
-		res = res * 1024;
+		res *= 1024;
 		break;
 	    case 'M':
-		res = res * 1048576;
+		res *= 1024 * 1024;
 		break;
 	    case 'G':
-		res = res * 1073741824;
+		res *= 1024 * 1024 * 1024;
 		break;
 	    default:
 		sd_debug("Wrong suffix parsing size in bytes for string %s, ignoring suffix", 

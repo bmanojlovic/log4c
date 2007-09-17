@@ -3,11 +3,13 @@ INCLUDES = \
 	-DSRCDIR="\"$(srcdir)\""
 
 noinst_PROGRAMS = test_category test_rc bench bench_fwrite \
-	test_stream2 test_layout_r
+	test_stream2 test_layout_r cpp_compile_test
 
 if WITH_ROLLINGFILE
 noinst_PROGRAMS += test_rollingfile_appender test_rollingfile_appender_mt
 endif
+
+cpp_compile_test_SOURCES = cpp_compile_test.cpp
 
 test_category_SOURCES = test_category.c
 test_category_LDADD   = $(top_builddir)/src/log4c/liblog4c.la
