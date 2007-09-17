@@ -37,7 +37,7 @@ extern void sd_list_delete(sd_list_t* a_this)
      if (!a_this)
 	return;
 
-    /* Free every sd_list_iter_t element in the list */
+    /* Free the iterators */
     if (a_this->nelem > 0){
 	a_current = a_this->head;
 	do {
@@ -46,6 +46,7 @@ extern void sd_list_delete(sd_list_t* a_this)
 	    a_current = a_next;
 	} while (a_current);
     }
+
     free(a_this);
 }
 
