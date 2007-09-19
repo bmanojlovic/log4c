@@ -33,11 +33,14 @@ static log4c_rc_t __log4c_rc = { { 0, 0, 0, 0 } };
 log4c_rc_t* const log4c_rc = &__log4c_rc;
 
 /******************************************************************************/
-static int parse_byte_size (const char *astring)
+static long parse_byte_size (const char *astring)
 {
     /* Parse size in bytes depending on the suffix.   Valid suffixes are KB, MB and GB */
     size_t sz = strlen (astring);
-    int res = atoi(astring);
+    long res = strtol(astring, (char **) NULL, 10);
+
+    if (res <= 0)
+	return 0;
 
     if (astring[ sz - 1 ] == 'B') {
 	switch (astring[ sz - 2 ]) {
@@ -55,7 +58,7 @@ static int parse_byte_size (const char *astring)
 			astring);
 	}
     }
-    sd_debug("Parsed size parameter %s to value %d",astring, res);
+    sd_debug("Parsed size parameter %s to value %ld",astring, res);
     return (res);
 }
 
@@ -238,6 +241,7 @@ static int rollingpolicy_load(log4c_rc_t* this, sd_domnode_t* anode)
     sd_domnode_t*   name   = sd_domnode_attrs_get(anode, "name");
     sd_domnode_t*   type   = sd_domnode_attrs_get(anode, "type");
     log4c_rollingpolicy_t* rpolicyp = NULL;
+    long a_maxsize;
     
     sd_debug("rollingpolicy_load[");
     if (!name) {
@@ -272,7 +276,15 @@ static int rollingpolicy_load(log4c_rc_t* this, sd_domnode_t* anode)
           sd_debug("creating new sizewin udata for this policy");
           sizewin_udatap = sizewin_make_udata();
           log4c_rollingpolicy_set_udata(rpolicyp,sizewin_udatap);   
-          sizewin_udata_set_file_maxsize(sizewin_udatap, parse_byte_size(maxsize->value));
+	  a_maxsize = parse_byte_size(maxsize->value);
+	  if (a_maxsize)
+            sizewin_udata_set_file_maxsize(sizewin_udatap, a_maxsize);
+	  else{
+	    sd_debug("When parsing %s a size of 0 was returned. Default size %d will be used",
+	      maxsize->value, ROLLINGPOLICY_SIZE_DEFAULT_MAX_FILE_SIZE);
+	    sizewin_udata_set_file_maxsize(sizewin_udatap, ROLLINGPOLICY_SIZE_DEFAULT_MAX_FILE_SIZE); 
+	  }
+
         sizewin_udata_set_max_num_files(sizewin_udatap, atoi(maxnum->value));
         }else{
           sd_debug("policy already has a sizewin udata--just updating params");
