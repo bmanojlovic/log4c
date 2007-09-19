@@ -1,39 +1,39 @@
 2007-09-18  Joel Schaubert    <joel4700@sbcglobal.net>
 
-        * configure.in: prep for release 1.2.1
+	* configure.in: prep for release 1.2.1
 
 2007-09-17  Joel Schaubert    <joel4700@sbcglobal.net>
 
-        * src/sd/list.c: correct a comment
+	* src/sd/list.c: correct a comment
 
-        * ChangeLog: update changelog
+	* ChangeLog: update changelog
 
-        * tests/Makefile.am, tests/log4c/Makefile.am, tests/log4c/cpp_compile_test.cpp, src/log4c/Makefile.am, src/log4c/create_cpp_tester.sh, src/log4c/rc.c:
-        simplify c++ syntax checker
+	* tests/Makefile.am, tests/log4c/Makefile.am, tests/log4c/cpp_compile_test.cpp, src/log4c/Makefile.am, src/log4c/create_cpp_tester.sh, src/log4c/rc.c:
+	simplify c++ syntax checker
 
-        * src/log4c/category.h:
-        guards for hpp compiler problem with inlines and varags
+	* src/log4c/category.h:
+	guards for hpp compiler problem with inlines and varags
 
 2007-09-12  Cedric Le Goater  <legoater@free.fr>
 
-        * examples/README: fix line wrapping.
+	* examples/README: fix line wrapping.
 
 2007-09-11  Joel Schaubert    <joel4700@sbcglobal.net>
 
-        * examples/README: new rollingfile appender
+	* examples/README: new rollingfile appender
 
-        * ChangeLog: update changelog
+	* ChangeLog: update changelog
 
-        * examples/log4crc.in: add rolling file appender for testing
+	* examples/log4crc.in: add rolling file appender for testing
 
-        * examples/application_3.h: syntax fix for hpux
+	* examples/application_3.h: syntax fix for hpux
 
-        * src/sd/list.c: make sd_list_delete do a deep delete
+	* src/sd/list.c: make sd_list_delete delete iterators 
 
-        * src/log4c/rollingpolicy_type_sizewin.c: fix a memory leak
+	* src/log4c/rollingpolicy_type_sizewin.c: fix a memory leak
 
-        * src/log4c/rc.c:
-        allow use of KB,MB,GB when specifying sizes in config file
+	* src/log4c/rc.c:
+	allow use of KB,MB,GB when specifying sizes in config file
 
 2007-09-11  Joel Schaubert    <joel4700@sbcglobal.net>
 
