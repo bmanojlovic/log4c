@@ -1,0 +1,74 @@
+#
+# Get log4c version and contruct directory name
+#
+major=$(grep LOG4C_MAJOR_VERSION= configure.in)
+minor=$(grep LOG4C_MINOR_VERSION= configure.in)
+micro=$(grep LOG4C_MICRO_VERSION= configure.in)
+fname=log4c-${major:20}.${minor:20}.${micro:20}
+tagname=log4c_${major:20}_${minor:20}_${micro:20}
+
+echo "Building dist tarball for release $fname"
+echo "CVS tagname $tagname"
+
+#
+# clean up from previous run
+#
+rm -fr log4c_dist
+rm -fr $fname
+
+
+mkdir log4c_dist
+pushd log4c_dist
+
+
+
+prompt="Do you want a fresh cvs checkout , cvs co -r $tagname    (y/n)"
+echo -n $prompt
+read answer
+
+if [ "y" == "$answer" ] 
+then
+  echo "Pulling from CVS with  cvs co -r $tagname"
+  cvs co -r $tagname log4c
+else
+  echo "Copying from starting working dir"
+  cp -r ../../log4c .
+fi
+
+#
+# make dist
+#
+
+pushd log4c
+./bootstrap
+./configure 
+make dist
+popd
+#
+#
+#
+echo "unpacking and testing tarball $fname.tar.gz"
+tar -xzvf log4c/$fname.tar.gz
+pushd $fname
+mkdir build
+pushd build
+# --enable-debug
+../configure --enable-doc --enable-test --enable-reread --enable-test --prefix=`pwd`/install
+make
+make install
+make check
+popd
+
+popd
+
+
+#
+# Resync the docs
+# rsync -av --delete log4c-1.2.1/build/doc/html/ your_username@shell.sf.net:/home/groups/l/lo/log4c/htdocs/
+#
+
+#
+# Upload the new file and create the release
+#
+# https://sourceforge.net/docman/display_doc.php?docid=6445&group_id=1
+#
