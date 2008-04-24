@@ -51,7 +51,7 @@ fi
 set -x
 
 if uname -a | egrep -i 'darwin'; then
-	echo "darwin contains no libtoolize\n"
+	glibtoolize --force --automake --copy
 else
     libtoolize --force --automake --copy
 fi
