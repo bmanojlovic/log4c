@@ -4,7 +4,7 @@
 dnl AM_PATH_LOG4C([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 dnl Test for LOG4C, and define LOG4C_CFLAGS and LOG4C_LIBS
 dnl
-AC_DEFUN(AM_PATH_LOG4C,
+AC_DEFUN([AM_PATH_LOG4C],
 [dnl 
 dnl Get the cflags and libraries from the log4c-config script
 dnl
