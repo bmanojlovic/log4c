@@ -250,7 +250,7 @@ rollingfile_udata_t *rollingfile_make_udata(void){
 
 /*******************************************************************************/
 
-LOG4C_API int rollingfile_udata_set_logdir(rollingfile_udata_t* rfup, char *logdir){
+LOG4C_API int rollingfile_udata_set_logdir(rollingfile_udata_t* rfup, const char *logdir){
 
   rfup->rfu_conf.rfc_logdir = strdup(logdir);  
 
@@ -265,7 +265,7 @@ LOG4C_API const char * rollingfile_udata_get_logdir(rollingfile_udata_t* rfup){
 }
 /*******************************************************************************/
 
-LOG4C_API int rollingfile_udata_set_files_prefix( rollingfile_udata_t* rfup, char* fprefix){
+LOG4C_API int rollingfile_udata_set_files_prefix( rollingfile_udata_t* rfup, const char* fprefix){
 
   rfup->rfu_conf.rfc_files_prefix = strdup(fprefix);
 

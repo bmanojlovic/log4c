@@ -76,7 +76,7 @@ LOG4C_API rollingfile_udata_t *rollingfile_make_udata(void);
  */
 LOG4C_API int rollingfile_udata_set_logdir(
                 rollingfile_udata_t *rfudatap,
-                char* logdir);
+                const char* logdir);
 /**
  * Set the prefix string in this rolling file appender configuration.
  * @param rfudatap the rolling file appender configuration object.
@@ -84,7 +84,8 @@ LOG4C_API int rollingfile_udata_set_logdir(
  * @return zero if successful, non-zero otherwise.
  */                            
 LOG4C_API int rollingfile_udata_set_files_prefix(
-              rollingfile_udata_t *rfudatap, char * prefix);
+              rollingfile_udata_t *rfudatap,
+              const char * prefix);
 /**
  * Set the rolling policy in this rolling file appender configuration.
  * @param rfudatap the rolling file appender configuration object.
