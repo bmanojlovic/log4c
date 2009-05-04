@@ -47,6 +47,8 @@ __LOG4C_BEGIN_DECLS
  **/
 extern const log4c_appender_type_t log4c_appender_type_syslog;
 
+extern int log4c_appender_syslog_set_facility(const log4c_appender_t*, int);
+
 __LOG4C_END_DECLS
 
 #endif

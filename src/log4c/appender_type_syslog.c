@@ -50,7 +50,12 @@ static int log4c_to_syslog_priority(int a_priority)
 /*******************************************************************************/
 static int syslog_open(log4c_appender_t* this)
 {
-    openlog(log4c_appender_get_name(this), LOG_PID, LOG_USER); 
+    int facility = (int) log4c_appender_get_udata(this);
+
+    if (!facility)
+	facility = LOG_USER;
+
+    openlog(log4c_appender_get_name(this), LOG_PID, facility); 
     return 0;
 }
 
@@ -58,8 +63,12 @@ static int syslog_open(log4c_appender_t* this)
 static int syslog_append(log4c_appender_t*	this, 
 			 const log4c_logging_event_t* a_event)
 {
+    int facility = (int) log4c_appender_get_udata(this);
 
-    syslog(log4c_to_syslog_priority(a_event->evt_priority) | LOG_USER, 
+    if (!facility)
+	facility = LOG_USER;
+
+    syslog(log4c_to_syslog_priority(a_event->evt_priority) | facility, 
 	   a_event->evt_rendered_msg); 
     return 0;
 }
@@ -93,6 +102,10 @@ static int syslog_close(log4c_appender_t*	this)
 }
 #endif
 
+extern int log4c_appender_syslog_set_facility(log4c_appender_t* this, int facility)
+{
+    return (int) log4c_appender_set_udata(this, (void*) facility);
+}
 
 /*******************************************************************************/
 const log4c_appender_type_t log4c_appender_type_syslog = {
