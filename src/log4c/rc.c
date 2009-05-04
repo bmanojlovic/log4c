@@ -171,26 +171,40 @@ static int appender_load(log4c_rc_t* this, sd_domnode_t* anode)
       if ( !strcasecmp(type->value, "rollingfile")) {
         rollingfile_udata_t *rfup = NULL;
         log4c_rollingpolicy_t *rollingpolicyp = NULL;
-        sd_domnode_t*  logdir = sd_domnode_attrs_get(anode,
-                                       "logdir");
-        sd_domnode_t*  logprefix = sd_domnode_attrs_get(anode,
-                                       "prefix");
-        sd_domnode_t*  rollingpolicy_name = sd_domnode_attrs_get(anode,
-                                       "rollingpolicy");
-                                       
-        sd_debug("logdir='%s', prefix='%s', rollingpolicy='%s'",
-           (logdir && logdir->value ? name->value :"(not set)"),
-           (logprefix && logprefix->value ? logprefix->value :"(not set)"),
-           (rollingpolicy_name && rollingpolicy_name->value ?
-               rollingpolicy_name->value :"(not set)"));
-                                        
-        rfup = rollingfile_make_udata();              
-        rollingfile_udata_set_logdir(rfup, (char *)logdir->value);
-        rollingfile_udata_set_files_prefix(rfup, (char *)logprefix->value);
+        sd_domnode_t *dom = NULL;
+        const char *logdir = ".";
+        const char *logprefix = "unnamed.log";
+        const char *rollingpolicy_name = NULL;
 
-        if (rollingpolicy_name){
+        dom = sd_domnode_attrs_get(anode, "logdir");
+        if (dom && dom->value) {
+          logdir = dom->value;
+        }
+
+        dom = sd_domnode_attrs_get(anode, "prefix");
+        if (dom && dom->value) {
+          logprefix = dom->value;
+        } else if (name && name->value) {
+          logprefix = name->value;
+        }
+
+        dom = sd_domnode_attrs_get(anode, "rollingpolicy");
+        if (dom && dom->value) {
+          rollingpolicy_name = dom->value;
+        }
+
+        sd_debug("logdir='%s', prefix='%s', rollingpolicy='%s'",
+           logdir, logprefix,
+           rollingpolicy_name ? rollingpolicy_name : "(not set)");
+
+        rfup = rollingfile_make_udata();
+
+        rollingfile_udata_set_logdir(rfup, logdir);
+        rollingfile_udata_set_files_prefix(rfup, logprefix);
+
+        if (rollingpolicy_name && *rollingpolicy_name) {
           /* recover a rollingpolicy instance with this name */
-          rollingpolicyp = log4c_rollingpolicy_get(rollingpolicy_name->value);
+          rollingpolicyp = log4c_rollingpolicy_get(rollingpolicy_name);
           
           /* connect that policy to this rollingfile appender conf */
           rollingfile_udata_set_policy(rfup, rollingpolicyp);
