@@ -113,7 +113,16 @@ int sd_gettimeofday(LPFILETIME lpft, void* tzp) {
  */
 #ifdef WIN32
 int sd_stat_ctime(const char* path, time_t* time)
-{ return -1; }
+{
+	struct stat astat;
+	int statret=stat(path,&astat);
+	if (0 != statret)
+	{
+		return statret;
+	}
+	*time=astat.st_mtime;
+	return statret;
+}
 #else
 int sd_stat_ctime(const char* path, time_t* time)
 {
